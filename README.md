@@ -1,4 +1,3 @@
-# This is a Fork Project
 # Minecart Trains Mod
 
 This mod allows you to build more realistic Minecart trains in Minecraft while trying to stay close to vanilla mechanics.
