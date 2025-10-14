@@ -95,7 +95,7 @@ public class MinecartTrains implements ModInitializer {
 			if(entity instanceof AbstractMinecartEntity cart) {
 				ItemStack stack = player.getStackInHand(hand);
 
-				if(player.isSneaking() && stack.isOf(Items.CHAIN) && CONFIG.enableCartChaining()) {
+				if(player.isSneaking() && stack.isOf(Items.IRON_CHAIN) && CONFIG.enableCartChaining()) {
 					if(world instanceof ServerWorld server) {
 						UUID uuid = stack.get(PARENT_ID);
 

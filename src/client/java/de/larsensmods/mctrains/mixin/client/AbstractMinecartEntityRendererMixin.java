@@ -39,32 +39,34 @@ public abstract class AbstractMinecartEntityRendererMixin<T extends AbstractMine
         childCart = abstractMinecartEntity;
     }
 
-    @Inject(method = "render(Lnet/minecraft/client/render/entity/state/MinecartEntityRenderState;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("TAIL"))
-    public void mctrains$render(S minecartEntityRenderState, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light, CallbackInfo ci){
-        AbstractMinecartEntity parent = childCart != null ? childCart.getChainedParent() : null;
-        if(parent != null){
-            double startX = parent.getX();
-            double startY = parent.getY();
-            double startZ = parent.getZ();
+    // *** Develeping code *** //
+    
+    // @Inject(method = "render(Lnet/minecraft/client/render/entity/state/MinecartEntityRenderState;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("TAIL"))
+    // public void mctrains$render(S minecartEntityRenderState, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light, CallbackInfo ci){
+    //     AbstractMinecartEntity parent = childCart != null ? childCart.getChainedParent() : null;
+    //     if(parent != null){
+    //         double startX = parent.getX();
+    //         double startY = parent.getY();
+    //         double startZ = parent.getZ();
 
-            double endX = childCart.getX();
-            double endY = childCart.getY();
-            double endZ = childCart.getZ();
+    //         double endX = childCart.getX();
+    //         double endY = childCart.getY();
+    //         double endZ = childCart.getZ();
 
-            float distanceX = (float) (startX - endX);
-            float distanceY = (float) (startY - endY);
-            float distanceZ = (float) (startZ - endZ);
+    //         float distanceX = (float) (startX - endX);
+    //         float distanceY = (float) (startY - endY);
+    //         float distanceZ = (float) (startZ - endZ);
 
-            float distance = childCart.distanceTo(parent);
+    //         float distance = childCart.distanceTo(parent);
 
-            double hAngle = Math.toDegrees(Math.atan2(endZ - startZ, endX - startX));
-            hAngle += Math.ceil(-hAngle / 360) * 360;
+    //         double hAngle = Math.toDegrees(Math.atan2(endZ - startZ, endX - startX));
+    //         hAngle += Math.ceil(-hAngle / 360) * 360;
 
-            double vAngle = Math.asin(distanceY / distance);
+    //         double vAngle = Math.asin(distanceY / distance);
 
-            renderChain(distanceX, distanceY, distanceZ, (float) hAngle, (float) vAngle, matrixStack, vertexConsumerProvider, light);
-        }
-    }
+    //         renderChain(distanceX, distanceY, distanceZ, (float) hAngle, (float) vAngle, matrixStack, vertexConsumerProvider, light);
+    //     }
+    // }
 
     @Unique
     public void renderChain(float distanceX, float distanceY, float distanceZ, float hAngle, float vAngle, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light) {

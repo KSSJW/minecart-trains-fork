@@ -1,15 +1,15 @@
 {
 	"schemaVersion": 1,
-	"id": "minecart-trains",
-	"version": "${version}",
-	"name": "Minecart Trains",
-	"description": "This mod adds additional mechanics and blocks to make minecart transportation more fun and useful as a train system!",
+	"id": "minecart-trains-fork",
+	"version": "1.21.9-beta1.0",
+	"name": "Minecart Trains Fork",
+	"description": "Forked from Minecart Trains, This mod adds additional mechanics and blocks to make minecart transportation more fun and useful as a train system!",
 	"authors": [
-		"LarsenR"
+		"LarsenR KSSJW"
 	],
 	"contact": {
-		"homepage": "https://larsensmods.de/",
-		"sources": "https://github.com/Larsens-Mods/minecart-trains"
+		"homepage": "https://github.com/KSSJW/minecart-trains-fork",
+		"sources": "https://github.com/KSSJW/minecart-trains-fork"
 	},
 	"license": "GPL-3.0",
 	"icon": "assets/minecart-trains/icon.png",
@@ -41,7 +41,7 @@
 	],
 	"depends": {
 		"fabricloader": ">=0.17.0",
-		"minecraft": ">=1.21.7",
+		"minecraft": ">=1.21.9",
 		"java": ">=21",
 		"fabric-api": "*"
 	},
