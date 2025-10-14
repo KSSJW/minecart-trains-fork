@@ -1,4 +1,5 @@
-# Minecart Trains Mod
+# Minecart Trains Mod Fork
+This mod was forked from [Minecart Trains Mod](https://github.com/Larsens-Mods/minecart-trains).
 
 This mod allows you to build more realistic Minecart trains in Minecraft while trying to stay close to vanilla mechanics.
 
