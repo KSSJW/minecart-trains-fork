@@ -1,14 +1,15 @@
 {
 	"schemaVersion": 1,
 	"id": "minecart-trains-fork",
-	"version": "1.21.9-beta.1",
+	"version": "1.21.9-beta.2",
 	"name": "Minecart Trains Fork",
-	"description": "Forked from Minecart Trains, This mod adds additional mechanics and blocks to make minecart transportation more fun and useful as a train system!",
+	"description": "Forked from Minecart Trains, This mod adds additional mechanics to make minecart transportation more fun and useful as a train system!",
 	"authors": [
 		"LarsenR KSSJW"
 	],
 	"contact": {
 		"homepage": "https://github.com/KSSJW/minecart-trains-fork",
+		"issues": "https://github.com/KSSJW/minecart-trains-fork/issues",
 		"sources": "https://github.com/KSSJW/minecart-trains-fork"
 	},
 	"license": "GPL-3.0",
