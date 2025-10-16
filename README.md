@@ -15,8 +15,6 @@ Render particle effects (blue) between minecarts.
 
 The lead car has individual particle effects (green).
 
-The lead car has individual particle effects.
-
 ![Two Minecarts chained together](https://raw.githubusercontent.com/KSSJW/minecart-trains-fork/refs/heads/dev/Big.png)
 
 ## Compatibility
