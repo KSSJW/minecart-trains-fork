@@ -11,7 +11,7 @@ Only the front cart can be pushed by the player and is the only one to be affect
 
 ## New Features
 
-Render particle effects between mine carts.
+Render particle effects between minecarts.
 
 ![Two Minecarts chained together](https://raw.githubusercontent.com/KSSJW/minecart-trains-fork/refs/heads/dev/Big.png)
 
