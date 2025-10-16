@@ -11,7 +11,9 @@ Only the front cart can be pushed by the player and is the only one to be affect
 
 ## New Features
 
-Render particle effects between minecarts.
+Render particle effects (blue) between minecarts.
+
+The lead car has individual particle effects (green).
 
 The lead car has individual particle effects.
 
