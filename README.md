@@ -3,11 +3,15 @@ This mod was forked from [Minecart Trains Mod](https://github.com/Larsens-Mods/m
 
 This mod allows you to build more realistic Minecart trains in Minecraft while trying to stay close to vanilla mechanics.
 
-## Features
+## Basic Features
 
 Currently the mod only allow you to chain Minecarts together. This is done by sneak-clicking the first cart of your train with a chain in your hand and then on the next one down. This process can be repeated as often as desired to construct your train.
 
-![Two Minecarts chained together](https://cdn.modrinth.com/data/ZDGlOexE/images/dd19f1719d756937acabe62d95236d276c392424.png)
+## New Features
+
+Render particle effects between mine carts.
+
+![Two Minecarts chained together](https://raw.githubusercontent.com/KSSJW/minecart-trains-fork/refs/heads/dev/Big.png)
 
 Only the front cart can be pushed by the player and is the only one to be affected by booster rails, all other cars just act as wagons. Chaining works with all types of Minecarts.
 
