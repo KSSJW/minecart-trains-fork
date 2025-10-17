@@ -76,10 +76,10 @@ public abstract class AbstractMinecartEntityRendererMixin<T extends AbstractMine
                 double py = sy + dy * t;
                 double pz = sz + dz * t;
                 try {
-                    world.addParticleClient(ParticleTypes.SOUL_FIRE_FLAME, px, py, pz, 0.0, 0.0, 0.0);
+                    world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, px, py, pz, 0.0, 0.0, 0.0);
                 } catch (Throwable e) {
                     // 退回到 FLAME 以防某些 mappings 签名不匹配
-                    try { world.addParticleClient(ParticleTypes.FLAME, px, py, pz, 0.0, 0.0, 0.0); }
+                    try { world.addParticle(ParticleTypes.FLAME, px, py, pz, 0.0, 0.0, 0.0); }
                     catch (Throwable ignored) { break; }
                 }
             }
@@ -120,9 +120,9 @@ public abstract class AbstractMinecartEntityRendererMixin<T extends AbstractMine
                 double pz = baseZ + offsetZ;
 
                 try {
-                    world.addParticleClient(ParticleTypes.COMPOSTER, px, py, pz, 0.0, 0.0, 0.0);
+                    world.addParticle(ParticleTypes.COMPOSTER, px, py, pz, 0.0, 0.0, 0.0);
                 } catch (Throwable e) {
-                    try { world.addParticleClient(ParticleTypes.FLAME, px, py, pz, 0.0, 0.0, 0.0); }
+                    try { world.addParticle(ParticleTypes.FLAME, px, py, pz, 0.0, 0.0, 0.0); }
                     catch (Throwable ignored) {}
                 }
             }
