@@ -38,12 +38,12 @@ public abstract class AbstractMinecartEntityMixin extends VehicleEntity implemen
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void mctrains$tick(CallbackInfo info) {
-        if (!getEntityWorld().isClient()) {
+        if (!getWorld().isClient()) {
             if(getChainedParent() != null) {
                 double distance = getChainedParent().distanceTo(this) - 1;
 
                 if(distance <= 4) {
-                    Vec3d directionToParent = getChainedParent().getEntityPos().subtract(getEntityPos()).normalize();
+                    Vec3d directionToParent = getChainedParent().getPos().subtract(getPos()).normalize();
 
                     if(distance > 1) {
                         Vec3d parentVelocity = getChainedParent().getVelocity();
@@ -61,7 +61,7 @@ public abstract class AbstractMinecartEntityMixin extends VehicleEntity implemen
                     }
                 } else {
                     IChainable.unsetChainedParentChild(getChainedParent(), this);
-                    dropStack((ServerWorld) getEntityWorld(), new ItemStack(Items.IRON_CHAIN));
+                    dropStack((ServerWorld) getWorld(), new ItemStack(Items.CHAIN));
                     return;
                 }
 
@@ -74,7 +74,7 @@ public abstract class AbstractMinecartEntityMixin extends VehicleEntity implemen
                 IChainable.unsetChainedParentChild(this, getChainedChild());
             }
 
-            for(Entity otherEntity : getEntityWorld().getOtherEntities(this, getBoundingBox().expand(0.1), this::collidesWith)) {
+            for(Entity otherEntity : getWorld().getOtherEntities(this, getBoundingBox().expand(0.1), this::collidesWith)) {
                 if(otherEntity instanceof AbstractMinecartEntity otherCart && getChainedParent() != null && !otherCart.equals(getChainedChild())) {
                     otherCart.setVelocity(getVelocity());
                 }
@@ -84,7 +84,7 @@ public abstract class AbstractMinecartEntityMixin extends VehicleEntity implemen
 
     @Override
     public @Nullable AbstractMinecartEntity getChainedParent() {
-        Entity entity = this.getEntityWorld() instanceof ServerWorld sWorld && this.parentUUID != null ? sWorld.getEntity(this.parentUUID) : this.getEntityWorld().getEntityById(this.parentClientID);
+        Entity entity = this.getWorld() instanceof ServerWorld sWorld && this.parentUUID != null ? sWorld.getEntity(this.parentUUID) : this.getWorld().getEntityById(this.parentClientID);
         return entity instanceof AbstractMinecartEntity minecart ? minecart : null;
     }
 
@@ -97,7 +97,7 @@ public abstract class AbstractMinecartEntityMixin extends VehicleEntity implemen
             this.parentUUID = null;
             this.parentClientID = -1;
         }
-        if(!this.getEntityWorld().isClient()) {
+        if(!this.getWorld().isClient()) {
             PlayerLookup.tracking(this).forEach(player -> ServerPlayNetworking.send(player, new ClientboundSyncMinecartTrainPacket(getChainedParent() != null ? getChainedParent().getId() : -1, getId())));
         }
     }
@@ -109,7 +109,7 @@ public abstract class AbstractMinecartEntityMixin extends VehicleEntity implemen
 
     @Override
     public @Nullable AbstractMinecartEntity getChainedChild() {
-        Entity entity = this.getEntityWorld() instanceof ServerWorld sWorld && this.childUUID != null ? sWorld.getEntity(this.childUUID) : this.getEntityWorld().getEntityById(this.childClientID);
+        Entity entity = this.getWorld() instanceof ServerWorld sWorld && this.childUUID != null ? sWorld.getEntity(this.childUUID) : this.getWorld().getEntityById(this.childClientID);
         return entity instanceof AbstractMinecartEntity minecart ? minecart : null;
     }
 
