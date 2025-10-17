@@ -44,8 +44,8 @@ public abstract class AbstractMinecartEntityRendererMixin<T extends AbstractMine
             AbstractMinecartEntity child = entity;
             AbstractMinecartEntity parent = child.getChainedParent();
             if (parent == null) return;
-            if (!(child.getEntityWorld() instanceof ClientWorld)) return;
-            ClientWorld world = (ClientWorld) child.getEntityWorld();
+            if (!(child.getWorld() instanceof ClientWorld)) return;
+            ClientWorld world = (ClientWorld) child.getWorld();
             
             // 速度与最大数量
             final int FRAME_SKIP = 40;
@@ -98,8 +98,8 @@ public abstract class AbstractMinecartEntityRendererMixin<T extends AbstractMine
     ) {
         try {
             if (entity == null || entity.getChainedParent() != null) return;
-            if (!(entity.getEntityWorld() instanceof ClientWorld)) return;
-            ClientWorld world = (ClientWorld) entity.getEntityWorld();
+            if (!(entity.getWorld() instanceof ClientWorld)) return;
+            ClientWorld world = (ClientWorld) entity.getWorld();
 
             final int FRAME_SKIP_HEAD = 40;         // 每 X 时间刻染一次
             final int MAX_HEAD_PARTICLES = 6;      // 每次最多生成 X 个粒子
