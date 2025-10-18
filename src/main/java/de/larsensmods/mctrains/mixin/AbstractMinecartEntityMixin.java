@@ -10,9 +10,8 @@ import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.entity.vehicle.VehicleEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -38,12 +37,12 @@ public abstract class AbstractMinecartEntityMixin extends VehicleEntity implemen
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void mctrains$tick(CallbackInfo info) {
-        if (!getEntityWorld().isClient()) {
+        if (!getWorld().isClient()) {
             if(getChainedParent() != null) {
                 double distance = getChainedParent().distanceTo(this) - 1;
 
                 if(distance <= 4) {
-                    Vec3d directionToParent = getChainedParent().getEntityPos().subtract(getEntityPos()).normalize();
+                    Vec3d directionToParent = getChainedParent().getPos().subtract(getPos()).normalize();
 
                     if(distance > 1) {
                         Vec3d parentVelocity = getChainedParent().getVelocity();
@@ -61,7 +60,7 @@ public abstract class AbstractMinecartEntityMixin extends VehicleEntity implemen
                     }
                 } else {
                     IChainable.unsetChainedParentChild(getChainedParent(), this);
-                    dropStack((ServerWorld) getEntityWorld(), new ItemStack(Items.IRON_CHAIN));
+                    ((AbstractMinecartEntity)(Object)this).dropStack(new ItemStack(Items.CHAIN));
                     return;
                 }
 
@@ -74,7 +73,7 @@ public abstract class AbstractMinecartEntityMixin extends VehicleEntity implemen
                 IChainable.unsetChainedParentChild(this, getChainedChild());
             }
 
-            for(Entity otherEntity : getEntityWorld().getOtherEntities(this, getBoundingBox().expand(0.1), this::collidesWith)) {
+            for(Entity otherEntity : getWorld().getOtherEntities(this, getBoundingBox().expand(0.1), this::collidesWith)) {
                 if(otherEntity instanceof AbstractMinecartEntity otherCart && getChainedParent() != null && !otherCart.equals(getChainedChild())) {
                     otherCart.setVelocity(getVelocity());
                 }
@@ -84,7 +83,7 @@ public abstract class AbstractMinecartEntityMixin extends VehicleEntity implemen
 
     @Override
     public @Nullable AbstractMinecartEntity getChainedParent() {
-        Entity entity = this.getEntityWorld() instanceof ServerWorld sWorld && this.parentUUID != null ? sWorld.getEntity(this.parentUUID) : this.getEntityWorld().getEntityById(this.parentClientID);
+        Entity entity = this.getWorld() instanceof ServerWorld sWorld && this.parentUUID != null ? sWorld.getEntity(this.parentUUID) : this.getWorld().getEntityById(this.parentClientID);
         return entity instanceof AbstractMinecartEntity minecart ? minecart : null;
     }
 
@@ -97,7 +96,7 @@ public abstract class AbstractMinecartEntityMixin extends VehicleEntity implemen
             this.parentUUID = null;
             this.parentClientID = -1;
         }
-        if(!this.getEntityWorld().isClient()) {
+        if(!this.getWorld().isClient()) {
             PlayerLookup.tracking(this).forEach(player -> ServerPlayNetworking.send(player, new ClientboundSyncMinecartTrainPacket(getChainedParent() != null ? getChainedParent().getId() : -1, getId())));
         }
     }
@@ -109,7 +108,7 @@ public abstract class AbstractMinecartEntityMixin extends VehicleEntity implemen
 
     @Override
     public @Nullable AbstractMinecartEntity getChainedChild() {
-        Entity entity = this.getEntityWorld() instanceof ServerWorld sWorld && this.childUUID != null ? sWorld.getEntity(this.childUUID) : this.getEntityWorld().getEntityById(this.childClientID);
+        Entity entity = this.getWorld() instanceof ServerWorld sWorld && this.childUUID != null ? sWorld.getEntity(this.childUUID) : this.getWorld().getEntityById(this.childClientID);
         return entity instanceof AbstractMinecartEntity minecart ? minecart : null;
     }
 
@@ -130,8 +129,8 @@ public abstract class AbstractMinecartEntityMixin extends VehicleEntity implemen
     }
 
     //DATA STORAGE NBT
-    @Inject(method = "writeCustomData", at = @At("TAIL"))
-    public void mctrains$writeData(WriteView writeView, CallbackInfo ci) {
+    @Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
+    public void mctrains$writeData(NbtCompound writeView, CallbackInfo ci) {
         writeView.putLong("ParentUUIDMost", parentUUID != null ? parentUUID.getMostSignificantBits() : 0L);
         writeView.putLong("ParentUUIDLeast", parentUUID != null ? parentUUID.getLeastSignificantBits() : 0L);
 
@@ -142,18 +141,30 @@ public abstract class AbstractMinecartEntityMixin extends VehicleEntity implemen
         writeView.putInt("ChildClientID", childClientID);
     }
 
-    @Inject(method="readCustomData", at = @At("TAIL"))
-    public void mctrains$readData(ReadView readView, CallbackInfo ci) {
-        long parentMost = readView.getLong("ParentUUIDMost", 0L);
-        long parentLeast = readView.getLong("ParentUUIDLeast", 0L);
+    // NBT Data Adapted for version 1.21.4
+    @Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
+    public void mctrains$readData(NbtCompound nbt, CallbackInfo ci) {
+        long parentMost = 0L;
+        long parentLeast = 0L;
+        if (nbt.contains("ParentUUIDMost") && nbt.contains("ParentUUIDLeast")) {
+            parentMost = nbt.getLong("ParentUUIDMost");
+            parentLeast = nbt.getLong("ParentUUIDLeast");
+        }
         this.parentUUID = (parentMost != 0L || parentLeast != 0L) ? new UUID(parentMost, parentLeast) : null;
 
-        long childMost = readView.getLong("ChildUUIDMost", 0L);
-        long childLeast = readView.getLong("ChildUUIDLeast", 0L);
+        long childMost = 0L;
+        long childLeast = 0L;
+        if (nbt.contains("ChildUUIDMost") && nbt.contains("ChildUUIDLeast")) {
+            childMost = nbt.getLong("ChildUUIDMost");
+            childLeast = nbt.getLong("ChildUUIDLeast");
+        }
         this.childUUID = (childMost != 0L || childLeast != 0L) ? new UUID(childMost, childLeast) : null;
 
-        this.parentClientID = readView.getInt("ParentClientID", -1);
-        this.childClientID = readView.getInt("ChildClientID", -1);
+        if (nbt.contains("ParentClientID")) this.parentClientID = nbt.getInt("ParentClientID");
+        else this.parentClientID = -1;
+
+        if (nbt.contains("ChildClientID")) this.childClientID = nbt.getInt("ChildClientID");
+        else this.childClientID = -1;
     }
 
 }
