@@ -10,8 +10,8 @@ public class ClientPacketHandler {
 
     public static void handleSyncMinecartTrain(ClientboundSyncMinecartTrainPacket payload) {
         ClientWorld clientWorld = MinecraftClient.getInstance().world;
-        int parentID = payload.parentEntityID();
-        int childID = payload.childEntityID();
+        int parentID = payload.parentEntityID;
+        int childID = payload.childEntityID;
 
         if(clientWorld != null) {
             @Nullable Entity parentEntity = clientWorld.getEntityById(parentID);
