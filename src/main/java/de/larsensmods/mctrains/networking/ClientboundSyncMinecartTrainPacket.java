@@ -1,27 +1,29 @@
 package de.larsensmods.mctrains.networking;
 
 import de.larsensmods.mctrains.MinecartTrains;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 
-public record ClientboundSyncMinecartTrainPacket(int parentEntityID, int childEntityID) implements CustomPayload {
+public class ClientboundSyncMinecartTrainPacket {
 
-    public static final CustomPayload.Id<ClientboundSyncMinecartTrainPacket> TYPE = new CustomPayload.Id<>(Identifier.of(MinecartTrains.MOD_ID, "sync_minecart_chain"));
-    public static final PacketCodec<RegistryByteBuf, ClientboundSyncMinecartTrainPacket> CODEC = PacketCodec.of((packet, buffer) -> {
-        buffer.writeVarInt(packet.parentEntityID);
-        buffer.writeVarInt(packet.childEntityID);
-    }, buffer -> {
-        int parentId = buffer.readVarInt();
-        int childId = buffer.readVarInt();
+    public static final Identifier ID = new Identifier(MinecartTrains.MOD_ID, "sync_minecart_chain");
 
-        return new ClientboundSyncMinecartTrainPacket(parentId, childId);
-    });
+    public final int parentEntityID;
+    public final int childEntityID;
 
-    @Override
-    public Id<? extends CustomPayload> getId() {
-        return TYPE;
+    public ClientboundSyncMinecartTrainPacket(int parentEntityID, int childEntityID) {
+        this.parentEntityID = parentEntityID;
+        this.childEntityID = childEntityID;
     }
 
+    public static ClientboundSyncMinecartTrainPacket read(PacketByteBuf buf) {
+        int parent = buf.readVarInt();
+        int child = buf.readVarInt();
+        return new ClientboundSyncMinecartTrainPacket(parent, child);
+    }
+
+    public void write(PacketByteBuf buf) {
+        buf.writeVarInt(parentEntityID);
+        buf.writeVarInt(childEntityID);
+    }
 }
