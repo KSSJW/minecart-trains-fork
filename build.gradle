@@ -1,13 +1,24 @@
 plugins {
-	id 'fabric-loom' version "${loom_version}"
+	id 'fabric-loom' version '0.10-SNAPSHOT'
 	id 'maven-publish'
 }
 
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
+
+archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
-base {
-	archivesName = project.archives_base_name
+sourceSets {
+    main {
+        java {
+            srcDirs = ["src/main/java", "src/client/java"]
+        }
+        resources {
+            srcDirs = ["src/main/resources"]
+        }
+    }
 }
 
 repositories {
@@ -18,24 +29,6 @@ repositories {
 	// for more information about repositories.
 }
 
-loom {
-	splitEnvironmentSourceSets()
-
-	mods {
-		"minecart-trains" {
-			sourceSet sourceSets.main
-			sourceSet sourceSets.client
-		}
-	}
-
-}
-
-fabricApi {
-	configureDataGeneration {
-		client = true
-	}
-}
-
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -44,19 +37,19 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	
 }
 
 processResources {
 	inputs.property "version", project.version
 
 	filesMatching("fabric.mod.json") {
-		expand "version": inputs.properties.version
+		expand "version": project.version
 	}
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.release = 21
+	// Minecraft 1.17 (21w19a) upwards uses Java 16.
+	it.options.release = 16
 }
 
 java {
@@ -64,24 +57,18 @@ java {
 	// if it is present.
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
-
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
 }
 
 jar {
-	inputs.property "archivesName", project.base.archivesName
-
 	from("LICENSE") {
-		rename { "${it}_${inputs.properties.archivesName}"}
+		rename { "${it}_${project.archivesBaseName}"}
 	}
 }
 
 // configure the maven publication
 publishing {
 	publications {
-		create("mavenJava", MavenPublication) {
-			artifactId = project.archives_base_name
+		mavenJava(MavenPublication) {
 			from components.java
 		}
 	}

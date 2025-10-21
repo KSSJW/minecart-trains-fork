@@ -1,7 +1,8 @@
 {
 	"schemaVersion": 1,
 	"id": "minecart-trains-fork",
-	"version": "1.21.9-beta.3",
+	"version": "1.17-beta.1",
+
 	"name": "Minecart Trains Fork",
 	"description": "Forked from Minecart Trains, This mod adds additional mechanics to make minecart transportation more fun and useful as a train system!",
 	"authors": [
@@ -12,8 +13,10 @@
 		"issues": "https://github.com/KSSJW/minecart-trains-fork/issues",
 		"sources": "https://github.com/KSSJW/minecart-trains-fork"
 	},
+
 	"license": "GPL-3.0",
 	"icon": "assets/minecart-trains/icon.png",
+
 	"environment": "*",
 	"entrypoints": {
 		"main": [
@@ -34,18 +37,16 @@
 		}
 	},
 	"mixins": [
-		"minecart-trains.mixins.json",
-		{
-			"config": "minecart-trains.client.mixins.json",
-			"environment": "client"
-		}
+		"minecart-trains.mixins.json"
 	],
+
 	"depends": {
-		"fabricloader": ">=0.17.0",
-		"minecraft": ">=1.21.9",
-		"java": ">=21",
-		"fabric-api": "*"
+		"fabricloader": ">=0.11.3",
+		"minecraft": "1.17.x",
+		"java": ">=16",
+		"fabric": "*"
 	},
 	"suggests": {
+	    "another-mod": "*"
 	}
 }

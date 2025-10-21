@@ -1,10 +1,11 @@
-package de.larsensmods.mctrains.mixin.client;
+package de.larsensmods.mctrains.mixin;
 
-import net.minecraft.client.render.entity.AbstractMinecartEntityRenderer;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.state.MinecartEntityRenderState;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+import net.minecraft.client.render.entity.MinecartEntityRenderer;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.util.math.MatrixStack;
 
 import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,47 +14,46 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import de.larsensmods.mctrains.interfaces.IChainable;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.client.MinecraftClient;
 
 @Debug(export = true)
-@Mixin(AbstractMinecartEntityRenderer.class)
-public abstract class AbstractMinecartEntityRendererMixin<T extends AbstractMinecartEntity, S extends MinecartEntityRenderState> extends EntityRenderer<T, S> {
+@Mixin(MinecartEntityRenderer.class)
+public abstract class MinecartEntityRendererMixin<T extends AbstractMinecartEntity> extends EntityRenderer<T> {
 
     @Unique
     private AbstractMinecartEntity childCart = null;
 
-    protected AbstractMinecartEntityRendererMixin(EntityRendererFactory.Context context) {super(context);}
-
-    @Inject(method = "Lnet/minecraft/client/render/entity/AbstractMinecartEntityRenderer;updateRenderState(Lnet/minecraft/entity/vehicle/AbstractMinecartEntity;Lnet/minecraft/client/render/entity/state/MinecartEntityRenderState;F)V", at= @At("TAIL"))
-    public void mctrains(T abstractMinecartEntity, S minecartEntityRenderState, float f, CallbackInfo ci){
-        childCart = abstractMinecartEntity;
+    protected MinecartEntityRendererMixin(EntityRendererFactory.Context context) {
+        super(context);
     }
 
-    // 此方法放在已验证可命中的 updateRenderState 注入，矿车之间的粒子渲染
-    @Inject(method = "Lnet/minecraft/client/render/entity/AbstractMinecartEntityRenderer;updateRenderState(Lnet/minecraft/entity/vehicle/AbstractMinecartEntity;Lnet/minecraft/client/render/entity/state/MinecartEntityRenderState;F)V", at = @At("TAIL"))
-    public void mctrains$updateRenderState(
-        AbstractMinecartEntity entity,
-        MinecartEntityRenderState state,
+    @Inject(method = "render(Lnet/minecraft/entity/vehicle/AbstractMinecartEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V",
+            at= @At("HEAD"))
+    public void mctrains_updateRenderState(
+        T entity,
+        float yaw,
         float tickDelta,
+        MatrixStack matrices,
+        VertexConsumerProvider vertexConsumers,
+        int light,
         CallbackInfo ci
     ) {
         try {
             if (entity == null) return;
             AbstractMinecartEntity child = entity;
-            AbstractMinecartEntity parent = child.getChainedParent();
+            AbstractMinecartEntity parent = ((IChainable)(Object)child).getChainedParent();
             if (parent == null) return;
             if (!(child.getEntityWorld() instanceof ClientWorld)) return;
             ClientWorld world = (ClientWorld) child.getEntityWorld();
-            
-            // 速度与最大数量
+
             final int FRAME_SKIP = 40;
             final int MAX_STEPS = 6;
             long ticks = MinecraftClient.getInstance().inGameHud.getTicks();
             if (ticks % FRAME_SKIP != 0) return;
 
-            // 粒子位置
             double sx = parent.getX();
             double sy = parent.getY() + 0.6;
             double sz = parent.getZ();
@@ -69,18 +69,15 @@ public abstract class AbstractMinecartEntityRendererMixin<T extends AbstractMine
             double spacing = Math.max(0.25, dist / MAX_STEPS);
             int steps = Math.min(MAX_STEPS, Math.max(1, (int)Math.ceil(dist / spacing)));
 
-            // 使用 MC 自带的 粒子
             for (int i = 0; i <= steps; i++) {
                 double t = (double)i / (double)steps;
                 double px = sx + dx * t;
                 double py = sy + dy * t;
                 double pz = sz + dz * t;
                 try {
-                    world.addParticleClient(ParticleTypes.SOUL_FIRE_FLAME, px, py, pz, 0.0, 0.0, 0.0);
+                    world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, px, py, pz, 0.0, 0.0, 0.0);
                 } catch (Throwable e) {
-                    // 退回到 FLAME 以防某些 mappings 签名不匹配
-                    try { world.addParticleClient(ParticleTypes.FLAME, px, py, pz, 0.0, 0.0, 0.0); }
-                    catch (Throwable ignored) { break; }
+                    world.addParticle(ParticleTypes.FLAME, px, py, pz, 0.0, 0.0, 0.0);
                 }
             }
         } catch (Throwable ex) {
@@ -88,25 +85,27 @@ public abstract class AbstractMinecartEntityRendererMixin<T extends AbstractMine
         }
     }
 
-    // 头车渲染粒子
-    @Inject(method = "Lnet/minecraft/client/render/entity/AbstractMinecartEntityRenderer;updateRenderState(Lnet/minecraft/entity/vehicle/AbstractMinecartEntity;Lnet/minecraft/client/render/entity/state/MinecartEntityRenderState;F)V", at = @At("TAIL"))
-    public void mctrains$renderHeadParticles(
-        AbstractMinecartEntity entity,
-        MinecartEntityRenderState state,
+    @Inject(method = "render(Lnet/minecraft/entity/vehicle/AbstractMinecartEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V",
+            at = @At("HEAD"))
+    public void mctrains_renderHeadParticles(
+        T entity,
+        float yaw,
         float tickDelta,
+        MatrixStack matrices,
+        VertexConsumerProvider vertexConsumers,
+        int light,
         CallbackInfo ci
     ) {
         try {
-            if (entity == null || entity.getChainedParent() != null) return;
+            if (entity == null || ((IChainable)(Object)entity).getChainedParent() != null) return;
             if (!(entity.getEntityWorld() instanceof ClientWorld)) return;
             ClientWorld world = (ClientWorld) entity.getEntityWorld();
 
-            final int FRAME_SKIP_HEAD = 40;         // 每 X 时间刻染一次
-            final int MAX_HEAD_PARTICLES = 6;      // 每次最多生成 X 个粒子
+            final int FRAME_SKIP_HEAD = 40;
+            final int MAX_HEAD_PARTICLES = 6;
             long ticks = MinecraftClient.getInstance().inGameHud.getTicks();
             if (ticks % FRAME_SKIP_HEAD != 0) return;
 
-            // 粒子位置
             double baseX = entity.getX();
             double baseY = entity.getY() + 0.8;
             double baseZ = entity.getZ();
@@ -120,10 +119,9 @@ public abstract class AbstractMinecartEntityRendererMixin<T extends AbstractMine
                 double pz = baseZ + offsetZ;
 
                 try {
-                    world.addParticleClient(ParticleTypes.COMPOSTER, px, py, pz, 0.0, 0.0, 0.0);
+                    world.addParticle(ParticleTypes.COMPOSTER, px, py, pz, 0.0, 0.0, 0.0);
                 } catch (Throwable e) {
-                    try { world.addParticleClient(ParticleTypes.FLAME, px, py, pz, 0.0, 0.0, 0.0); }
-                    catch (Throwable ignored) {}
+                    world.addParticle(ParticleTypes.FLAME, px, py, pz, 0.0, 0.0, 0.0);
                 }
             }
         } catch (Throwable ex) {
