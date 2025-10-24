@@ -1,33 +1,30 @@
 package de.larsensmods.mctrains.mixin.client;
 
+import de.larsensmods.mctrains.interfaces.IChainable;
+import de.larsensmods.mctrains.util.ChainableHelpers;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.client.render.entity.MinecartEntityRenderer;
-import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
-
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+import net.minecraft.particle.ParticleTypes;
 import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.client.MinecraftClient;
-
-@Debug(export = true)
+@Debug(export = false)
 @Mixin(MinecartEntityRenderer.class)
 public abstract class MinecartEntityRendererMixin<T extends AbstractMinecartEntity, S extends AbstractMinecartEntity> extends EntityRenderer<T> {
 
-    @Unique
-    private AbstractMinecartEntity childCart = null;
+    protected MinecartEntityRendererMixin(EntityRendererFactory.Context context) { super(context); }
 
-    protected MinecartEntityRendererMixin(EntityRendererFactory.Context context) {super(context);}
-
-    @Inject(method = "render(Lnet/minecraft/entity/vehicle/AbstractMinecartEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at= @At("HEAD"))
+    @Inject(method = "render(Lnet/minecraft/entity/vehicle/AbstractMinecartEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("HEAD"))
     public void mctrains(
         T entity,
         float yaw,
@@ -37,7 +34,7 @@ public abstract class MinecartEntityRendererMixin<T extends AbstractMinecartEnti
         int light,
         CallbackInfo ci
     ){
-        childCart = entity;
+        // 保留占位或后续扩展；不再使用 childCart 字段以避免未使用警告
     }
 
     // 矿车之间的粒子渲染
@@ -53,12 +50,18 @@ public abstract class MinecartEntityRendererMixin<T extends AbstractMinecartEnti
     ) {
         try {
             if (entity == null) return;
-            AbstractMinecartEntity child = entity;
-            AbstractMinecartEntity parent = child.getChainedParent();
-            if (parent == null) return;
+
+            // 先把实体安全转换为 IChainable
+            IChainable childChain = ChainableHelpers.asChainable((Entity) entity);
+            if (childChain == null) return;
+
+            AbstractMinecartEntity parent = childChain.getChainedParent() != null ? childChain.getChainedParent().asMinecart() : null;
+            AbstractMinecartEntity child = childChain.asMinecart();
+            if (parent == null || child == null) return;
+
             if (!(child.getEntityWorld() instanceof ClientWorld)) return;
             ClientWorld world = (ClientWorld) child.getEntityWorld();
-            
+
             // 速度与最大数量
             final int FRAME_SKIP = 40;
             final int MAX_STEPS = 6;
@@ -112,37 +115,38 @@ public abstract class MinecartEntityRendererMixin<T extends AbstractMinecartEnti
         CallbackInfo ci
     ) {
         try {
-            if (entity == null || entity.getChainedParent() != null) return;
-            if (!(entity.getEntityWorld() instanceof ClientWorld)) return;
-            ClientWorld world = (ClientWorld) entity.getEntityWorld();
+            if (entity == null) return;
+
+            IChainable chain = ChainableHelpers.asChainable((Entity) entity);
+            if (chain == null) return;
+
+            // 头车：只有没有父车时才渲染头车粒子
+            if (chain.getChainedParent() != null) return;
+
+            AbstractMinecartEntity head = chain.asMinecart();
+            if (head == null) return;
+            if (!(head.getEntityWorld() instanceof ClientWorld)) return;
+            ClientWorld world = (ClientWorld) head.getEntityWorld();
 
             final int FRAME_SKIP_HEAD = 40;         // 每 X 时间刻染一次
             final int MAX_HEAD_PARTICLES = 6;      // 每次最多生成 X 个粒子
             long ticks = MinecraftClient.getInstance().inGameHud.getTicks();
             if (ticks % FRAME_SKIP_HEAD != 0) return;
 
-            // 粒子位置
-            double baseX = entity.getX();
-            double baseY = entity.getY() + 0.8;
-            double baseZ = entity.getZ();
-
+            // 在 head 周围生成粒子（示例位置，可以按需要调整）
             for (int i = 0; i < MAX_HEAD_PARTICLES; i++) {
-                double offsetX = (Math.random() - 0.5) * 0.4;
-                double offsetY = (Math.random() - 0.5) * 0.2;
-                double offsetZ = (Math.random() - 0.5) * 0.4;
-                double px = baseX + offsetX;
-                double py = baseY + offsetY;
-                double pz = baseZ + offsetZ;
-
+                double px = head.getX() + (Math.random() - 0.5) * 0.6;
+                double py = head.getY() + 0.5 + Math.random() * 0.3;
+                double pz = head.getZ() + (Math.random() - 0.5) * 0.6;
                 try {
                     world.addParticle(ParticleTypes.COMPOSTER, px, py, pz, 0.0, 0.0, 0.0);
                 } catch (Throwable e) {
                     try { world.addParticle(ParticleTypes.FLAME, px, py, pz, 0.0, 0.0, 0.0); }
-                    catch (Throwable ignored) {}
+                    catch (Throwable ignored) { break; }
                 }
             }
         } catch (Throwable ex) {
-            System.out.println("mctrains: head particle error: " + ex);
+            System.out.println("mctrains: renderHeadParticles particle error: " + ex);
         }
     }
 }

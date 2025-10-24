@@ -10,6 +10,7 @@ import de.larsensmods.mctrains.interfaces.IChainable;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -76,26 +77,38 @@ public class MinecartTrains implements ModInitializer {
             UUID stored = getStackParent(stack, player);
 
             if (stored != null && !cart.getUuid().equals(stored)) {
-                if (server.getEntity(stored) instanceof AbstractMinecartEntity parent) {
+                Entity maybeParent = server.getEntity(stored);
+                if (maybeParent instanceof AbstractMinecartEntity && maybeParent instanceof IChainable parentChain) {
                     Set<IChainable> train = new HashSet<>();
-                    train.add(parent);
+                    train.add(parentChain);
 
-                    AbstractMinecartEntity nextChainedParent;
-                    while ((nextChainedParent = parent.getChainedParent()) != null && !train.contains(nextChainedParent)) {
-                        train.add(nextChainedParent);
+                    // 遍历父链（全部以 IChainable 操作）
+                    IChainable cursor = parentChain.getChainedParent();
+                    while (cursor != null && !train.contains(cursor)) {
+                        train.add(cursor);
+                        cursor = cursor.getChainedParent();
                     }
 
-                    if (train.contains(cart) || parent.getChainedChild() != null) {
-                        player.sendMessage(new TranslatableText(MOD_ID + ".invalid_chaining").formatted(Formatting.RED), true);
+                    // 确保 cart 实现 IChainable
+                    if (!(cart instanceof IChainable cartChain)) {
+                        removeStackParent(stack, player);
                     } else {
-                        if (cart.getChainedParent() != null) {
-                            IChainable.unsetChainedParentChild(cart, cart.getChainedParent());
+                        // 检查环或父已有子车
+                        if (train.contains(cartChain) || parentChain.getChainedChild() != null) {
+                            player.sendMessage(new TranslatableText(MOD_ID + ".invalid_chaining").formatted(Formatting.RED), true);
+                        } else {
+                            // 先断开已有父链（如果有）
+                            if (cartChain.getChainedParent() != null) {
+                                IChainable.unsetChainedParentChild(cartChain, cartChain.getChainedParent());
+                            }
+                            // 建立新链（均为 IChainable）
+                            IChainable.setChainedParentChild(parentChain, cartChain);
                         }
-                        IChainable.setChainedParentChild(parent, cart);
                     }
                 } else {
                     removeStackParent(stack, player);
                 }
+
 
                 world.playSound(null, cart.getX(), cart.getY(), cart.getZ(), SoundEvents.BLOCK_CHAIN_PLACE, SoundCategory.NEUTRAL, 1f, 1.1f);
 

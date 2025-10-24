@@ -20,96 +20,137 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.UUID;
-
 import net.minecraft.network.PacketByteBuf;
 import io.netty.buffer.Unpooled;
 
-@Debug(export = true)
+import java.util.UUID;
+
+@Debug(export = false)
 @Mixin(AbstractMinecartEntity.class)
 public abstract class AbstractMinecartEntityMixin extends Entity implements IChainable {
 
     @Unique private @Nullable UUID parentUUID;
     @Unique private @Nullable UUID childUUID;
-    @Unique private int parentClientID;
-    @Unique private int childClientID;
+    @Unique private int parentClientID = -1;
+    @Unique private int childClientID = -1;
 
     public AbstractMinecartEntityMixin(EntityType<?> entityType, World world) {
         super(entityType, world);
     }
 
+    // ------------------------
+    // tick logic (uses IChainable at compile-time)
+    // ------------------------
     @Inject(method = "tick", at = @At("HEAD"))
     private void mctrains$tick(CallbackInfo info) {
         World world = this.getWorld();
-        if (!world.isClient()) {
-            if (getChainedParent() != null) {
-                double distance = getChainedParent().distanceTo((Entity)(Object)this) - 1;
+        if (world.isClient()) return;
 
-                if (distance <= 4) {
-                    Vec3d directionToParent = getChainedParent().getPos().subtract(getPos()).normalize();
+        // treat this as IChainable at runtime
+        IChainable selfChain = (this instanceof IChainable) ? (IChainable) this : null;
+        if (selfChain == null) return;
 
-                    if (distance > 1) {
-                        Vec3d parentVelocity = getChainedParent().getVelocity();
+        IChainable parentChain = selfChain.getChainedParent();
+        if (parentChain != null) {
+            AbstractMinecartEntity parent = parentChain.asMinecart();
+            AbstractMinecartEntity selfMinecart = selfChain.asMinecart();
+            if (parent == null || selfMinecart == null) return;
 
-                        if (parentVelocity.length() == 0) {
-                            setVelocity(directionToParent.multiply(0.05));
-                        } else {
-                            setVelocity(directionToParent.multiply(parentVelocity.length()));
-                            setVelocity(getVelocity().multiply(distance));
-                        }
-                    } else if (distance < 0.8) {
-                        setVelocity(directionToParent.multiply(-0.05));
+            double distance = parent.distanceTo(selfMinecart) - 1;
+
+            if (distance <= 4) {
+                Vec3d directionToParent = parent.getPos().subtract(selfMinecart.getPos()).normalize();
+
+                if (distance > 1) {
+                    Vec3d parentVelocity = parent.getVelocity();
+
+                    if (parentVelocity.length() == 0) {
+                        selfMinecart.setVelocity(directionToParent.multiply(0.05));
                     } else {
-                        setVelocity(Vec3d.ZERO);
+                        selfMinecart.setVelocity(directionToParent.multiply(parentVelocity.length()));
+                        selfMinecart.setVelocity(selfMinecart.getVelocity().multiply(distance));
                     }
+                } else if (distance < 0.8) {
+                    selfMinecart.setVelocity(directionToParent.multiply(-0.05));
                 } else {
-                    IChainable.unsetChainedParentChild(getChainedParent(), (AbstractMinecartEntity)(Object)this);
-                    ((AbstractMinecartEntity)(Object)this).dropStack(new ItemStack(Items.CHAIN));
-                    return;
+                    selfMinecart.setVelocity(Vec3d.ZERO);
                 }
-
-                if (getChainedParent().isRemoved()) {
-                    IChainable.unsetChainedParentChild(getChainedParent(), (AbstractMinecartEntity)(Object)this);
-                }
+            } else {
+                // disconnect and drop chain
+                IChainable.unsetChainedParentChild(parentChain, selfChain);
+                selfMinecart.dropStack(new ItemStack(Items.CHAIN));
+                return;
             }
 
-            if (getChainedChild() != null && getChainedChild().isRemoved()) {
-                IChainable.unsetChainedParentChild((AbstractMinecartEntity)(Object)this, getChainedChild());
+            Entity parentEntity = parentChain.asEntity();
+            if (parentEntity == null || parentEntity.isRemoved()) {
+                IChainable.unsetChainedParentChild(parentChain, selfChain);
             }
+        }
 
-            for (Entity otherEntity : world.getOtherEntities((Entity)(Object)this, getBoundingBox().expand(0.1), this::collidesWith)) {
-                if (otherEntity instanceof AbstractMinecartEntity otherCart && getChainedParent() != null && !otherCart.equals(getChainedChild())) {
-                    otherCart.setVelocity(getVelocity());
+        IChainable childChain = selfChain.getChainedChild();
+        if (childChain != null) {
+            Entity childEntity = childChain.asEntity();
+            if (childEntity == null || childEntity.isRemoved()) {
+                IChainable.unsetChainedParentChild(selfChain, childChain);
+            }
+        }
+
+        // propagate velocity to nearby carts (use Entity methods; adjust getOtherEntities signature by mappings)
+        for (Entity otherEntity : world.getOtherEntities((Entity)(Object)this, getBoundingBox().expand(0.1), this::collidesWith)) {
+            if (otherEntity instanceof AbstractMinecartEntity otherCart) {
+                IChainable selfParent = selfChain.getChainedParent();
+                IChainable selfChild  = selfChain.getChainedChild();
+                Entity childEntity = (selfChild != null) ? selfChild.asEntity() : null;
+                if (selfParent != null && !otherCart.equals(childEntity)) {
+                    otherCart.setVelocity(((Entity)(Object)this).getVelocity());
                 }
             }
         }
     }
 
+    // ------------------------
+    // IChainable implementations (interface-level types)
+    // ------------------------
     @Override
-    public @Nullable AbstractMinecartEntity getChainedParent() {
+    public @Nullable IChainable getChainedParent() {
         World world = this.getWorld();
-        Entity entity = (world instanceof ServerWorld sWorld && this.parentUUID != null) ? sWorld.getEntity(this.parentUUID) : (world.getEntityById(this.parentClientID));
-        return entity instanceof AbstractMinecartEntity minecart ? minecart : null;
+        Entity entity = null;
+        try {
+            if (world instanceof ServerWorld sWorld && this.parentUUID != null) {
+                entity = sWorld.getEntity(this.parentUUID);
+            } else {
+                // defensive: if client or server but uuid absent, try client id
+                if (this.parentClientID >= 0) entity = world.getEntityById(this.parentClientID);
+            }
+        } catch (Throwable ignored) {}
+        return (entity instanceof IChainable) ? (IChainable) entity : null;
     }
 
     @Override
-    public void setChainedParent(@Nullable AbstractMinecartEntity newParent) {
+    public void setChainedParent(@Nullable IChainable newParent) {
         if (newParent != null) {
-            this.parentUUID = newParent.getUuid();
-            this.parentClientID = newParent.getId();
+            Entity e = newParent.asEntity();
+            if (e != null) {
+                this.parentUUID = e.getUuid();
+                // use getEntityId/getId depending on mappings; try to call getEntityId if available
+                try { this.parentClientID = e.getId(); } catch (Throwable ex) { try { this.parentClientID = e.getId(); } catch (Throwable ignored) { this.parentClientID = -1; } }
+            } else {
+                this.parentUUID = null;
+                this.parentClientID = -1;
+            }
         } else {
             this.parentUUID = null;
             this.parentClientID = -1;
         }
+
         World world = this.getWorld();
         if (!world.isClient()) {
             PlayerLookup.tracking((Entity)(Object)this).forEach(player -> {
                 PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
-                new ClientboundSyncMinecartTrainPacket(
-                    getChainedParent() != null ? getChainedParent().getId() : -1,
-                    getId()
-                ).write(buf);
+                int parentId = (getChainedParent() != null) ? (getChainedParent().asEntity() != null ? safeGetEntityId(getChainedParent().asEntity()) : -1) : -1;
+                int selfId   = safeGetEntityId((Entity)(Object)this);
+                new ClientboundSyncMinecartTrainPacket(parentId, selfId).write(buf);
                 ServerPlayNetworking.send(player, ClientboundSyncMinecartTrainPacket.ID, buf);
             });
         }
@@ -121,17 +162,30 @@ public abstract class AbstractMinecartEntityMixin extends Entity implements ICha
     }
 
     @Override
-    public @Nullable AbstractMinecartEntity getChainedChild() {
+    public @Nullable IChainable getChainedChild() {
         World world = this.getWorld();
-        Entity entity = (world instanceof ServerWorld sWorld && this.childUUID != null) ? sWorld.getEntity(this.childUUID) : (world.getEntityById(this.childClientID));
-        return entity instanceof AbstractMinecartEntity minecart ? minecart : null;
+        Entity entity = null;
+        try {
+            if (world instanceof ServerWorld sWorld && this.childUUID != null) {
+                entity = sWorld.getEntity(this.childUUID);
+            } else {
+                if (this.childClientID >= 0) entity = world.getEntityById(this.childClientID);
+            }
+        } catch (Throwable ignored) {}
+        return (entity instanceof IChainable) ? (IChainable) entity : null;
     }
 
     @Override
-    public void setChainedChild(@Nullable AbstractMinecartEntity newChild) {
+    public void setChainedChild(@Nullable IChainable newChild) {
         if (newChild != null) {
-            this.childUUID = newChild.getUuid();
-            this.childClientID = newChild.getId();
+            Entity e = newChild.asEntity();
+            if (e != null) {
+                this.childUUID = e.getUuid();
+                try { this.childClientID = e.getId(); } catch (Throwable ex) { try { this.childClientID = e.getId(); } catch (Throwable ignored) { this.childClientID = -1; } }
+            } else {
+                this.childUUID = null;
+                this.childClientID = -1;
+            }
         } else {
             this.childUUID = null;
             this.childClientID = -1;
@@ -143,7 +197,23 @@ public abstract class AbstractMinecartEntityMixin extends Entity implements ICha
         this.childClientID = entityId;
     }
 
-    //DATA STORAGE NBT
+    // ------------------------
+    // IChainable entity accessors
+    // ------------------------
+    @Override
+    public @Nullable Entity asEntity() {
+        return (Entity)(Object)this;
+    }
+
+    @Override
+    public @Nullable AbstractMinecartEntity asMinecart() {
+        Entity e = asEntity();
+        return (e instanceof AbstractMinecartEntity) ? (AbstractMinecartEntity) e : null;
+    }
+
+    // ------------------------
+    // NBT persistence hooks (injects)
+    // ------------------------
     @Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
     public void mctrains$writeData(NbtCompound writeView, CallbackInfo ci) {
         writeView.putLong("ParentUUIDMost", parentUUID != null ? parentUUID.getMostSignificantBits() : 0L);
@@ -181,4 +251,14 @@ public abstract class AbstractMinecartEntityMixin extends Entity implements ICha
         else this.childClientID = -1;
     }
 
+    // ------------------------
+    // Utility: safe get entity id across mappings
+    // ------------------------
+    @Unique
+    private static int safeGetEntityId(@Nullable Entity e) {
+        if (e == null) return -1;
+        try { return e.getId(); } catch (Throwable ex) {
+            try { return e.getId(); } catch (Throwable ignored) { return -1; }
+        }
+    }
 }

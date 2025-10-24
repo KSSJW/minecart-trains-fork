@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "minecart-trains-fork",
-	"version": "1.18-beta.1",
+	"version": "1.18-release.1",
 	"name": "Minecart Trains Fork",
 	"description": "Forked from Minecart Trains, This mod adds additional mechanics to make minecart transportation more fun and useful as a train system!",
 	"authors": [
@@ -27,11 +27,6 @@
 		]
 	},
 	"custom": {
-		"loom:injected_interfaces": {
-			"net/minecraft/class_1688": [
-				"de/larsensmods/mctrains/interfaces/IChainable"
-			]
-		}
 	},
 	"mixins": [
 		"minecart-trains.mixins.json",
@@ -41,10 +36,10 @@
 		}
 	],
 	"depends": {
-		"fabricloader": ">=0.17.0",
-		"minecraft": ">=1.18",
+		"fabricloader": ">=0.14.6",
+		"minecraft": "1.18.x",
 		"java": ">=17",
-		"fabric-api": "*"
+		"fabric": "*"
 	},
 	"suggests": {
 	}
