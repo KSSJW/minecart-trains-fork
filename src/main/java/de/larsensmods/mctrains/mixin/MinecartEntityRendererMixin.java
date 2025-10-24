@@ -19,7 +19,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.client.MinecraftClient;
 
-@Debug(export = true)
+@Debug(export = false)
 @Mixin(MinecartEntityRenderer.class)
 public abstract class MinecartEntityRendererMixin<T extends AbstractMinecartEntity> extends EntityRenderer<T> {
 
