@@ -26,7 +26,7 @@ import java.util.UUID;
 import net.minecraft.network.PacketByteBuf;
 import io.netty.buffer.Unpooled;
 
-@Debug(export = true)
+@Debug(export = false)
 @Mixin(AbstractMinecartEntity.class)
 public abstract class AbstractMinecartEntityMixin extends Entity implements IChainable {
 
