@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "minecart-trains-fork",
-	"version": "1.21.5-beta.1",
+	"version": "${version}",
 	"name": "Minecart Trains Fork",
 	"description": "Forked from Minecart Trains, This mod adds additional mechanics to make minecart transportation more fun and useful as a train system!",
 	"authors": [
@@ -41,8 +41,8 @@
 		}
 	],
 	"depends": {
-		"fabricloader": ">=0.17.0",
-		"minecraft": ">=1.21.5",
+		"fabricloader": ">=0.16.10",
+		"minecraft": "1.21.5",
 		"java": ">=21",
 		"fabric-api": "*"
 	},
