@@ -4,7 +4,7 @@ This mod was forked from [Minecart Trains Mod](https://github.com/Larsens-Mods/m
 This mod allows you to build more realistic Minecart trains in Minecraft while trying to stay close to vanilla mechanics.
 
 ## Releases
-This project is published in [GitHub](https://github.com/KSSJW/minecart-trains-fork/releases/) and [Modrinth](https://modrinth.com/mod/minecart-trains-fork).
+This project is published in [GitHub](https://github.com/KSSJW/minecart-trains-fork/releases/) , [Modrinth](https://modrinth.com/mod/minecart-trains-fork) and [CurseForge](https://www.curseforge.com/minecraft/mc-mods/minecart-trains-fork).
 
 ## Basic Features
 
