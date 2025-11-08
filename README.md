@@ -3,8 +3,15 @@ This mod was forked from [Minecart Trains Mod](https://github.com/Larsens-Mods/m
 
 This mod allows you to build more realistic Minecart trains in Minecraft while trying to stay close to vanilla mechanics.
 
+## Loader
+[![Available for Fabric](https://img.shields.io/badge/Available%20for-Fabric-b2a995)](https://fabricmc.net)
+
 ## Releases
-This project is published in [GitHub](https://github.com/KSSJW/minecart-trains-fork/releases/) , [Modrinth](https://modrinth.com/mod/minecart-trains-fork) and [CurseForge](https://www.curseforge.com/minecraft/mc-mods/minecart-trains-fork).
+[![Published in Github](https://img.shields.io/badge/Published%20in-GitHub-333333)](https://github.com/KSSJW/kinetic-minecart/releases)
+
+[![Published in Modrith](https://img.shields.io/badge/Published%20in-Modrith-16ae55)](https://modrinth.com/mod/kinetic-minecart)
+
+[![Published in CurseForge](https://img.shields.io/badge/Published%20in-CurseForge-da5b32)](https://www.curseforge.com/minecraft/mc-mods/kinetic-minecart)
 
 ## Basic Features
 
