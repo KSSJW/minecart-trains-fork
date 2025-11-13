@@ -8,7 +8,7 @@ This mod allows you to build more realistic Minecart trains in Minecraft while t
 
 ## Releases
 [![Github](https://img.shields.io/badge/Published%20in-GitHub-808284?logo=github&logoColor=white)](https://github.com/KSSJW/minecart-trains-fork/releases)
-[![Modrith](https://img.shields.io/badge/Published%20in-Modrinth-1bd96a?logo=modrinth&logoColor=white)](https://modrinth.com/mod/minecart-trains-fork)
+[![Modrinth](https://img.shields.io/badge/Published%20in-Modrinth-1bd96a?logo=modrinth&logoColor=white)](https://modrinth.com/mod/minecart-trains-fork)
 [![CurseForge](https://img.shields.io/badge/Published%20in-CurseForge-f16436?logo=curseforge&logoColor=white)](https://www.curseforge.com/minecraft/mc-mods/minecart-trains-fork)
 
 ## Basic Features
