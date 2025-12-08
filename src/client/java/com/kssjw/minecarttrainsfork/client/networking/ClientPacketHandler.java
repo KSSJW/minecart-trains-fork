@@ -1,6 +1,8 @@
-package de.larsensmods.mctrains.networking;
+package com.kssjw.minecarttrainsfork.client.networking;
 
-import de.larsensmods.mctrains.interfaces.IChainable;
+import com.kssjw.minecarttrainsfork.manager.NetWorkManager.ClientboundSyncMinecartTrainPacket;
+import com.kssjw.minecarttrainsfork.util.IChainableUtil;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
@@ -17,10 +19,10 @@ public class ClientPacketHandler {
             @Nullable Entity parentEntity = clientWorld.getEntityById(parentID);
             @Nullable Entity childEntity = clientWorld.getEntityById(childID);
 
-            if(parentEntity instanceof IChainable chainable){
+            if(parentEntity instanceof IChainableUtil chainable){
                 chainable.setClientChainedChild(childID);
             }
-            if(childEntity instanceof IChainable chainable){
+            if(childEntity instanceof IChainableUtil chainable){
                 chainable.setClientChainedParent(parentID);
             }
         }

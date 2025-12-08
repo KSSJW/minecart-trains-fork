@@ -1,4 +1,4 @@
-package de.larsensmods.mctrains.mixin.client;
+package com.kssjw.minecarttrainsfork.client.mixin;
 
 import net.minecraft.client.render.entity.AbstractMinecartEntityRenderer;
 import net.minecraft.client.render.entity.EntityRenderer;
@@ -6,7 +6,6 @@ import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.state.MinecartEntityRenderState;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 
-import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,7 +16,6 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.client.MinecraftClient;
 
-@Debug(export = true)
 @Mixin(AbstractMinecartEntityRenderer.class)
 public abstract class AbstractMinecartEntityRendererMixin<T extends AbstractMinecartEntity, S extends MinecartEntityRenderState> extends EntityRenderer<T, S> {
 

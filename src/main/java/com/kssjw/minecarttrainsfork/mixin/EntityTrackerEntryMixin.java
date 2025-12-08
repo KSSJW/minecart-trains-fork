@@ -1,9 +1,7 @@
-package de.larsensmods.mctrains.mixin;
+package com.kssjw.minecarttrainsfork.mixin;
 
-import de.larsensmods.mctrains.networking.ClientboundSyncMinecartTrainPacket;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import com.kssjw.minecarttrainsfork.manager.NetWorkManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.server.network.EntityTrackerEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Final;
@@ -22,10 +20,7 @@ public abstract class EntityTrackerEntryMixin {
 
     @Inject(method = "startTracking(Lnet/minecraft/server/network/ServerPlayerEntity;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;onStartedTrackingBy(Lnet/minecraft/server/network/ServerPlayerEntity;)V"))
     public void minecarttweaks$sendLinkingInitData(ServerPlayerEntity player, CallbackInfo ci) {
-        if(this.entity instanceof AbstractMinecartEntity minecart) {
-            ServerPlayNetworking.send(player, new ClientboundSyncMinecartTrainPacket(minecart.getChainedParent() != null ? minecart.getChainedParent().getId() : -1, entity.getId()));
-            ServerPlayNetworking.send(player, new ClientboundSyncMinecartTrainPacket(entity.getId(), minecart.getChainedChild() != null ? minecart.getChainedChild().getId() : -1));
-        }
+        NetWorkManager.sendLinkingInitData(entity, player);
     }
 
 }

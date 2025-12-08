@@ -1,9 +1,10 @@
 {
 	"required": true,
-	"package": "de.larsensmods.mctrains.mixin",
+	"package": "com.kssjw.minecarttrainsfork.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
 		"AbstractMinecartEntityMixin",
+		"CartRemoveMixin",
 		"EntityTrackerEntryMixin"
 	],
 	"injectors": {

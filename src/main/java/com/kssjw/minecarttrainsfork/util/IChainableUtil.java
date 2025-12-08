@@ -1,10 +1,28 @@
-package de.larsensmods.mctrains.interfaces;
+package com.kssjw.minecarttrainsfork.util;
 
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+
+import java.util.UUID;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface IChainable {
+public interface IChainableUtil {
+
+    /* Interfaces cannot have constructors */
+
+    UUID getParentUUID();
+    void setParentUUID(UUID uuid);
+
+    UUID getChildUUID();
+    void setChildUUID(UUID uuid);
+
+    int getParentClientID();
+    void setParentClientID(int id);
+    
+    int getChildClientID();
+    void setChildClientID(int id);
+
     default @Nullable AbstractMinecartEntity getChainedParent(){
         return null;
     }
@@ -21,14 +39,14 @@ public interface IChainable {
         return (AbstractMinecartEntity) this;
     }
 
-    static void setChainedParentChild(@NotNull IChainable parent, @NotNull IChainable child){
+    static void setChainedParentChild(@NotNull IChainableUtil parent, @NotNull IChainableUtil child){
         unsetChainedParentChild(parent, parent.getChainedChild());
         unsetChainedParentChild(child, child.getChainedParent());
         parent.setChainedChild(child.getAsAbstractMinecartEntity());
         child.setChainedParent(parent.getAsAbstractMinecartEntity());
     }
 
-    static void unsetChainedParentChild(@Nullable IChainable parent, @Nullable IChainable child){
+    static void unsetChainedParentChild(@Nullable IChainableUtil parent, @Nullable IChainableUtil child){
         if(parent != null){
             parent.setChainedChild(null);
         }
@@ -36,5 +54,4 @@ public interface IChainable {
             child.setChainedParent(null);
         }
     }
-
 }
