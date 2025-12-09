@@ -1,4 +1,7 @@
 {
+    "toast.minecart-trains-fork.apinotfound.title": "Cloth Config API not found",
+    "toast.minecart-trains-fork.apinotfound.desc": "You need to install the §6Cloth Config API.",
+
     "text.autoconfig.minecart-trains-fork.title": "Minecart Trains Fork Configuration",
 
     "text.autoconfig.minecart-trains-fork.category.general": "General Settings",
