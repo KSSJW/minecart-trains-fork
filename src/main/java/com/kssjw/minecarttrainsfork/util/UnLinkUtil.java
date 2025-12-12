@@ -39,7 +39,6 @@ public class UnLinkUtil {
         icu.setChildClientID(0);
 
         // 掉落铁链
-        // TODO ShouldFix: 掉落的铁链比较特殊
         if (wasLinked && icu instanceof Entity entity) {
             ItemStack chain = new ItemStack(Items.IRON_CHAIN, 1);
             entity.dropStack(world, chain);
