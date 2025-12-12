@@ -11,6 +11,7 @@ import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
+// TODO 全局广播
 public class NetWorkManager {
     
     public static void sendLinkingInitData(Entity entity, ServerPlayerEntity player) {

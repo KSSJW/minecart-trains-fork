@@ -106,24 +106,6 @@ public class EventManager {
             if (unlinkResult == ActionResult.SUCCESS) {
                 return ActionResult.SUCCESS;
             }
-
-            // TODO Testing
-            // 潜行 + 空手 → 结束编组
-            if (player.isSneaking() && stack.isEmpty()) {
-                if (world instanceof ServerWorld) {
-                    // 清理掉铁链上的 PARENT_ID
-                    stack.remove(PARENT_ID);
-
-                    // 播放提示音
-                    world.playSound(null, cart.getX(), cart.getY(), cart.getZ(),
-                            SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, SoundCategory.NEUTRAL, 1f, 1f);
-
-                    // 给玩家提示
-                    player.sendMessage(Text.translatable(ModIdUtil.MOD_ID + ".chaining_cleared")
-                            .formatted(Formatting.YELLOW), true);
-                }
-                return ActionResult.SUCCESS;
-            }
         }
 
         return ActionResult.PASS;
