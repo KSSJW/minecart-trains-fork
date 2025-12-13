@@ -8,6 +8,8 @@ import net.minecraft.server.world.ServerWorld;
 
 public final class ResendUtil {
 
+    private ResendUtil() {}
+
     private static void forceResendEntity(AbstractMinecartEntity cart, ServerPlayerEntity player) {
         
         // 让客户端删除实体
@@ -47,7 +49,6 @@ public final class ResendUtil {
 
                     // 判断是否为头车
                     if (chainable.getParentClientID() == -1 || chainable.getParentUUID() == null) {
-                        LogUtil.print("HEAD CART");
                         forceResendEntityToAll(cart, world);
                         continue;
                     }

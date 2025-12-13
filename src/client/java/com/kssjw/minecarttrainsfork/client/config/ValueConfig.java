@@ -8,6 +8,8 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 public class ValueConfig implements ConfigData {
 
     @ConfigEntry.Category("general")
-    @ConfigEntry.Gui.Tooltip(count = 0)
-    public boolean testValue = false;
+    public boolean enabledLinkParticle = true;
+
+    @ConfigEntry.Category("general")
+    public boolean enabledHeadParticle = true;
 }

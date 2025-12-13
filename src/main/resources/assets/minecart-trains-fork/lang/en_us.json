@@ -2,9 +2,14 @@
     "toast.minecart-trains-fork.apinotfound.title": "Cloth Config API not found",
     "toast.minecart-trains-fork.apinotfound.desc": "You need to install the §6Cloth Config API.",
 
+    "message.minecart-trains-fork.chainingstarted": "Chaining Started",
+    "message.minecart-trains-fork.chainingcleared": "Chaining Cleared",
+    "message.minecart-trains-fork.invalidchaining": "Invalid Chaining",
+
     "text.autoconfig.minecart-trains-fork.title": "Minecart Trains Fork Configuration",
 
     "text.autoconfig.minecart-trains-fork.category.general": "General Settings",
 
-    "text.autoconfig.minecart-trains-fork.option.testValue": "This ia a test value"
+    "text.autoconfig.minecart-trains-fork.option.enabledLinkParticle": "Show Link Particle",
+    "text.autoconfig.minecart-trains-fork.option.enabledHeadParticle": "Show Head Particle"
 }

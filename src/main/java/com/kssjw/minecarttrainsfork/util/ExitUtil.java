@@ -14,7 +14,8 @@ public class ExitUtil {
     public static void exit(ItemStack current, ItemStack lastMainHand, PlayerEntity player) {
 
         if (!lastMainHand.isOf(Items.IRON_CHAIN) && current.isOf(Items.IRON_CHAIN)) {
-            player.sendMessage(Text.translatable(ModIdUtil.MOD_ID + ".chaining_started")
+            player.sendMessage(Text.translatable(ModIdUtil.MOD_ID + " ")
+                .append(Text.translatable("message.minecart-trains-fork.chainingstarted"))
                 .formatted(Formatting.GREEN), true);
         }
 
@@ -29,7 +30,8 @@ public class ExitUtil {
                 }
             }
 
-            player.sendMessage(Text.translatable(ModIdUtil.MOD_ID + ".chaining_cleared")
+            player.sendMessage(Text.translatable(ModIdUtil.MOD_ID + " ")
+                .append(Text.translatable("message.minecart-trains-fork.chainingcleared"))
                 .formatted(Formatting.YELLOW), true);
         }
     }

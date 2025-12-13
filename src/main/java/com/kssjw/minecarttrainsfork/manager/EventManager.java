@@ -43,7 +43,9 @@ public class EventManager {
                         }
 
                         if(train.contains(cart) || parent.getChainedChild() != null) {
-                            player.sendMessage(Text.translatable(ModIdUtil.MOD_ID + ".invalid_chaining").formatted(Formatting.RED), true);
+                            player.sendMessage(Text.translatable(ModIdUtil.MOD_ID + " ")
+                                .append(Text.translatable("message.minecart-trains-fork.invalidchaining"))
+                                .formatted(Formatting.RED), true);
                         } else {
                             if(cart.getChainedParent() != null) {
                                 IChainableUtil.unsetChainedParentChild(cart, cart.getChainedParent());

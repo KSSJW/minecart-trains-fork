@@ -7,6 +7,8 @@ import org.jetbrains.annotations.Nullable;
 
 public interface IChainableUtil {
 
+    /* Interfaces cannot have constructors */
+
     UUID getParentUUID();
     void setParentUUID(@Nullable UUID uuid);
 

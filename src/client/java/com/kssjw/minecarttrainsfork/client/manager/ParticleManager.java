@@ -8,6 +8,9 @@ import net.minecraft.particle.ParticleTypes;
 public class ParticleManager {
     
     public static void linkParticle(AbstractMinecartEntity entity) {
+
+        if (ConfigManager.isEnabledLinkParticle() == false) return;
+
         if (entity == null) return;
         AbstractMinecartEntity child = entity;
         AbstractMinecartEntity parent = child.getChainedParent();
@@ -54,6 +57,9 @@ public class ParticleManager {
     }
 
     public static void headParticle(AbstractMinecartEntity entity) {
+
+        if (ConfigManager.isEnabledHeadParticle() == false) return;
+
         if (entity == null || entity.getChainedParent() != null) return;
         if (!(entity.getEntityWorld() instanceof ClientWorld)) return;
         ClientWorld world = (ClientWorld) entity.getEntityWorld();
