@@ -1,6 +1,7 @@
 package com.kssjw.minecarttrainsfork;
 
 import com.kssjw.minecarttrainsfork.manager.EventManager;
+import com.kssjw.minecarttrainsfork.manager.NetWorkManager.ClientboundFullSyncTrainPacket;
 import com.kssjw.minecarttrainsfork.manager.NetWorkManager.ClientboundSyncMinecartTrainPacket;
 import com.kssjw.minecarttrainsfork.util.ComponentUtil;
 import com.kssjw.minecarttrainsfork.util.ModIdUtil;
@@ -19,6 +20,7 @@ public class MinecartTrainsFork implements ModInitializer {
 	public void onInitialize() {
 		
 		PayloadTypeRegistry.playS2C().register(ClientboundSyncMinecartTrainPacket.TYPE, ClientboundSyncMinecartTrainPacket.CODEC);
+		PayloadTypeRegistry.playS2C().register(ClientboundFullSyncTrainPacket.TYPE, ClientboundFullSyncTrainPacket.CODEC);
 
 		Registry.register(Registries.DATA_COMPONENT_TYPE, Identifier.of(ModIdUtil.MOD_ID, "parent_id"), ComponentUtil.PARENT_ID);
 

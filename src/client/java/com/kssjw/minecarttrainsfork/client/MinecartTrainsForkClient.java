@@ -2,6 +2,7 @@ package com.kssjw.minecarttrainsfork.client;
 
 import com.kssjw.minecarttrainsfork.client.loader.ConfigLoader;
 import com.kssjw.minecarttrainsfork.client.networking.ClientPacketHandler;
+import com.kssjw.minecarttrainsfork.manager.NetWorkManager.ClientboundFullSyncTrainPacket;
 import com.kssjw.minecarttrainsfork.manager.NetWorkManager.ClientboundSyncMinecartTrainPacket;
 
 import net.fabricmc.api.ClientModInitializer;
@@ -13,6 +14,9 @@ public class MinecartTrainsForkClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		ClientPlayNetworking.registerGlobalReceiver(ClientboundSyncMinecartTrainPacket.TYPE, (payload, context) -> {
 			ClientPacketHandler.handleSyncMinecartTrain(payload);
+		});
+		ClientPlayNetworking.registerGlobalReceiver(ClientboundFullSyncTrainPacket.TYPE, (payload, context) -> {
+			ClientPacketHandler.handleFullSyncTrain(payload);
 		});
 
 		ConfigLoader.load();

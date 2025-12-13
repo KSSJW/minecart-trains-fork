@@ -23,7 +23,7 @@ public class CartRemoveMixin {
             World world = ((Entity)(Object)this).getEntityWorld();
             if (!world.isClient()) {
                 ServerWorld serverWorld = (ServerWorld)world;
-                UnLinkUtil.unlinkHandle(icu, serverWorld);
+                UnLinkUtil.unlinkHandle(icu, serverWorld, null);
             }
         }
     }

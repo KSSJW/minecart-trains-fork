@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import com.kssjw.minecarttrainsfork.util.IChainableUtil;
 import com.kssjw.minecarttrainsfork.util.ModIdUtil;
+import com.kssjw.minecarttrainsfork.util.ResendUtil;
 import com.kssjw.minecarttrainsfork.util.UnLinkUtil;
 
 import net.minecraft.component.ComponentType;
@@ -15,7 +16,6 @@ import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -79,9 +79,9 @@ public class EventManager {
             IChainableUtil icu = (IChainableUtil)(Object)cart;
             if (!world.isClient()) {
                 ServerWorld serverWorld = (ServerWorld)world;
-                ServerPlayerEntity serverPlayer = (ServerPlayerEntity)player;
-                UnLinkUtil.unlinkHandle(icu, serverWorld);
-                NetWorkManager.sendUnlinkData(cart, serverPlayer);  // TODO ShouldFix: 斧头交互，部分情况下粒子不能自动修正
+                UnLinkUtil.unlinkHandle(icu, serverWorld, player);
+                NetWorkManager.sendUnlinkData(cart);
+                ResendUtil.forceResendUnlinkedMinecarts(serverWorld);
             }
 
             return ActionResult.SUCCESS;
