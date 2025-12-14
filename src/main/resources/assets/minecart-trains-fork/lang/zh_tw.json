@@ -1,0 +1,15 @@
+{
+    "toast.minecart-trains-fork.apinotfound.title": "Cloth Config API 未被找到",
+    "toast.minecart-trains-fork.apinotfound.desc": "您需要安裝 §6Cloth Config API。",
+
+    "message.minecart-trains-fork.chainingstarted": "連線開始",
+    "message.minecart-trains-fork.chainingcleared": "連線清除",
+    "message.minecart-trains-fork.invalidchaining": "連線無效",
+
+    "text.autoconfig.minecart-trains-fork.title": "Minecart Trains Fork 設定",
+
+    "text.autoconfig.minecart-trains-fork.category.general": "一般設定",
+
+    "text.autoconfig.minecart-trains-fork.option.enabledLinkParticle": "顯示連線粒子",
+    "text.autoconfig.minecart-trains-fork.option.enabledHeadParticle": "顯示頭車粒子"
+}
