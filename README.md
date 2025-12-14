@@ -21,10 +21,11 @@ This mod was forked from [Minecart Trains Mod](https://github.com/Larsens-Mods/m
 ![Two Minecarts chained together](https://raw.githubusercontent.com/KSSJW/minecart-trains-fork/refs/heads/dev/images/Big.png)
 
 ## Features
+> [!TIP]
+> In short, connect with **Iron Chain** and untie with an **Axe**.
 - Currently the mod only allow you to chain Minecarts together. This is done by sneak-clicking the first cart of your train with a **iron chain** in your hand and then on the next one down. This process can be repeated as often as desired to construct your train.
 > [!NOTE]
-> For example, if I need to connect from car A to car D, the order of clicking while stealthed is:
-> **A, B, B, C, C, D**
+> For example, if I need to connect from car A to car D, the order of clicking while stealthed is: **A, B, B, C, C, D**
 - When you hold the iron chain, you enter grouping mode; switching to other items will exit grouping.
 - You can use any **axe** to ungroup a Minecart while sneaking by right-clicking.
 > [!NOTE]
