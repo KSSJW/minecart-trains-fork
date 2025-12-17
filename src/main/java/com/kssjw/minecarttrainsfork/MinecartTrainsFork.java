@@ -1,8 +1,8 @@
 package com.kssjw.minecarttrainsfork;
 
 import com.kssjw.minecarttrainsfork.manager.EventManager;
-import com.kssjw.minecarttrainsfork.manager.NetWorkManager.ClientboundFullSyncTrainPacket;
-import com.kssjw.minecarttrainsfork.manager.NetWorkManager.ClientboundSyncMinecartTrainPacket;
+import com.kssjw.minecarttrainsfork.manager.NetworkManager.ClientboundFullSyncTrainPacket;
+import com.kssjw.minecarttrainsfork.manager.NetworkManager.ClientboundSyncMinecartTrainPacket;
 import com.kssjw.minecarttrainsfork.util.ComponentUtil;
 import com.kssjw.minecarttrainsfork.util.ModIdUtil;
 
@@ -27,5 +27,8 @@ public class MinecartTrainsFork implements ModInitializer {
 		UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
 			return EventManager.init(entity, player, hand, world, ComponentUtil.PARENT_ID);
 		});
+
+		// For Development
+		// ParticleEnumGenerator.generateEnum();
 	}
 }

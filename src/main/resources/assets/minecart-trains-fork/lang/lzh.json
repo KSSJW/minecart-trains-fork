@@ -9,7 +9,17 @@
     "text.autoconfig.minecart-trains-fork.title": "Minecart Trains Fork 之設",
 
     "text.autoconfig.minecart-trains-fork.category.general": "凡設",
+    "text.autoconfig.minecart-trains-fork.category.advanced": "高設",
 
     "text.autoconfig.minecart-trains-fork.option.enabledLinkParticle": "示連之粒",
-    "text.autoconfig.minecart-trains-fork.option.enabledHeadParticle": "示首車之粒"
+    "text.autoconfig.minecart-trains-fork.option.enabledHeadParticle": "示首車之粒",
+    "text.autoconfig.minecart-trains-fork.option.enabledNotice": "示連鎖之告",
+
+    "text.autoconfig.minecart-trains-fork.option.enabledDefaultLinkParticle": "示常連之粒",
+    "text.autoconfig.minecart-trains-fork.option.enabledDefaultHeadParticle": "示常首車之粒",
+
+    "text.autoconfig.minecart-trains-fork.option.enabledCustomLinkParticle": "示自連之粒",
+    "text.autoconfig.minecart-trains-fork.option.selectedLinkParticle": "所選自連之粒",
+    "text.autoconfig.minecart-trains-fork.option.enabledCustomHeadParticle": "示自首車之粒",
+    "text.autoconfig.minecart-trains-fork.option.selectedHeadParticle": "所選自首車之粒"
 }
