@@ -16,7 +16,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 
-public class NetWorkManager {
+public class NetworkManager {
     
     public static void sendLinkingInitData(Entity entity) {
         if(entity instanceof AbstractMinecartEntity minecart) {

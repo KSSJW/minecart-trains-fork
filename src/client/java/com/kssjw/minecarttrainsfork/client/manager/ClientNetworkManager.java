@@ -1,14 +1,13 @@
-package com.kssjw.minecarttrainsfork.client.networking;
+package com.kssjw.minecarttrainsfork.client.manager;
 
-import com.kssjw.minecarttrainsfork.manager.NetWorkManager.ClientboundFullSyncTrainPacket;
-import com.kssjw.minecarttrainsfork.manager.NetWorkManager.ClientboundSyncMinecartTrainPacket;
+import com.kssjw.minecarttrainsfork.manager.NetworkManager.ClientboundFullSyncTrainPacket;
+import com.kssjw.minecarttrainsfork.manager.NetworkManager.ClientboundSyncMinecartTrainPacket;
 import com.kssjw.minecarttrainsfork.util.IChainableUtil;
-
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 
-public class ClientPacketHandler {
+public class ClientNetworkManager {
 
     public static void handleSyncMinecartTrain(ClientboundSyncMinecartTrainPacket payload) {
         ClientWorld clientWorld = MinecraftClient.getInstance().world;

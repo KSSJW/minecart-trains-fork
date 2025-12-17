@@ -1,6 +1,6 @@
 package com.kssjw.minecarttrainsfork.mixin;
 
-import com.kssjw.minecarttrainsfork.manager.NetWorkManager;
+import com.kssjw.minecarttrainsfork.manager.NetworkManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.network.EntityTrackerEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -20,7 +20,7 @@ public abstract class EntityTrackerEntryMixin {
 
     @Inject(method = "startTracking(Lnet/minecraft/server/network/ServerPlayerEntity;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;onStartedTrackingBy(Lnet/minecraft/server/network/ServerPlayerEntity;)V"))
     public void minecarttweaks$sendLinkingInitData(ServerPlayerEntity player, CallbackInfo ci) {
-        NetWorkManager.sendLinkingInitData(entity);
+        NetworkManager.sendLinkingInitData(entity);
     }
 
 }

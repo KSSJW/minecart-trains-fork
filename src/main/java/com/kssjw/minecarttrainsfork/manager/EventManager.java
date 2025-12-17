@@ -82,7 +82,7 @@ public class EventManager {
             if (!world.isClient()) {
                 ServerWorld serverWorld = (ServerWorld)world;
                 UnLinkUtil.unlinkHandle(icu, serverWorld, player);
-                NetWorkManager.sendUnlinkData(cart);
+                NetworkManager.sendUnlinkData(cart);
                 ResendUtil.forceResendUnlinkedMinecarts(serverWorld);
             }
 

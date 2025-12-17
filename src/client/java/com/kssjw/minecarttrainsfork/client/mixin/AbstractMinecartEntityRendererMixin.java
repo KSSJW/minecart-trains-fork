@@ -7,7 +7,6 @@ import net.minecraft.client.render.entity.state.MinecartEntityRenderState;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -18,15 +17,7 @@ import com.kssjw.minecarttrainsfork.util.LogUtil;
 @Mixin(AbstractMinecartEntityRenderer.class)
 public abstract class AbstractMinecartEntityRendererMixin<T extends AbstractMinecartEntity, S extends MinecartEntityRenderState> extends EntityRenderer<T, S> {
 
-    @Unique
-    private AbstractMinecartEntity childCart = null;
-
     protected AbstractMinecartEntityRendererMixin(EntityRendererFactory.Context context) {super(context);}
-
-    @Inject(method = "Lnet/minecraft/client/render/entity/AbstractMinecartEntityRenderer;updateRenderState(Lnet/minecraft/entity/vehicle/AbstractMinecartEntity;Lnet/minecraft/client/render/entity/state/MinecartEntityRenderState;F)V", at= @At("TAIL"))
-    public void mctrains(T abstractMinecartEntity, S minecartEntityRenderState, float f, CallbackInfo ci){
-        childCart = abstractMinecartEntity;
-    }
 
     // 此方法放在已验证可命中的 updateRenderState 注入，矿车之间的粒子渲染
     @Inject(method = "Lnet/minecraft/client/render/entity/AbstractMinecartEntityRenderer;updateRenderState(Lnet/minecraft/entity/vehicle/AbstractMinecartEntity;Lnet/minecraft/client/render/entity/state/MinecartEntityRenderState;F)V", at = @At("TAIL"))

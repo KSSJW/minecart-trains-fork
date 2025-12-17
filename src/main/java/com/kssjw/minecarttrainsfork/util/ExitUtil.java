@@ -4,6 +4,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
@@ -16,6 +17,7 @@ public class ExitUtil {
         if (!lastMainHand.isOf(Items.IRON_CHAIN) && current.isOf(Items.IRON_CHAIN)) {
             player.sendMessage(Text.translatable(ModIdUtil.MOD_ID + " ")
                 .append(Text.translatable("message.minecart-trains-fork.chainingstarted"))
+                .setStyle(Style.EMPTY.withInsertion("MINECARTTRAINSFORK_OPTIONAL"))
                 .formatted(Formatting.GREEN), true);
         }
 
@@ -32,6 +34,7 @@ public class ExitUtil {
 
             player.sendMessage(Text.translatable(ModIdUtil.MOD_ID + " ")
                 .append(Text.translatable("message.minecart-trains-fork.chainingcleared"))
+                .setStyle(Style.EMPTY.withInsertion("MINECARTTRAINSFORK_OPTIONAL"))
                 .formatted(Formatting.YELLOW), true);
         }
     }
