@@ -5,6 +5,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.kssjw.minecarttrainsfork.client.manager.ConfigManager;
+import com.kssjw.minecarttrainsfork.client.manager.LoadManager;
 
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -20,7 +21,10 @@ public abstract class InGameHudMixin {
         // 判断是否带有隐藏标记
         String insertion = message.getStyle().getInsertion();
 
-        if (ConfigManager.isEnabledNotice() == false && "MINECARTTRAINSFORK_OPTIONAL".equals(insertion)) {
+        if (LoadManager.isAPIFound() == true
+            && ConfigManager.isEnabledNotice() == false
+            && "MINECARTTRAINSFORK_OPTIONAL".equals(insertion)
+        ) {
             ci.cancel();    // 拦截，不显示在 Action Bar
         }
     }
