@@ -1,0 +1,15 @@
+{
+    "toast.minecart-trains-fork.apinotfound.title": "Cloth Config API 未得",
+    "toast.minecart-trains-fork.apinotfound.desc": "須裝 §6Cloth Config API",
+
+    "message.minecart-trains-fork.chainingstarted": "連始",
+    "message.minecart-trains-fork.chainingcleared": "連清",
+    "message.minecart-trains-fork.invalidchaining": "連不可",
+
+    "text.autoconfig.minecart-trains-fork.title": "Minecart Trains Fork 之設",
+
+    "text.autoconfig.minecart-trains-fork.category.general": "凡設",
+
+    "text.autoconfig.minecart-trains-fork.option.enabledLinkParticle": "示連之粒",
+    "text.autoconfig.minecart-trains-fork.option.enabledHeadParticle": "示首車之粒"
+}
