@@ -15,8 +15,16 @@ public class ConfigManager {
         return config.enabledDefaultLinkParticle;
     }
 
+    public static int getDefaultLinkParticleCycle() {
+        return config.defaultLinkParticleCycle;
+    }
+
     public static boolean isEnabledDefaultHeadParticle() {
         return config.enabledDefaultHeadParticle;
+    }
+
+    public static int getDefaultHeadParticleCycle() {
+        return config.defaultHeadParticleCycle;
     }
 
     public static boolean isEnabledNotice() {
@@ -33,11 +41,19 @@ public class ConfigManager {
         return config.selectedLinkParticle.getType();
     }
 
+    public static int getCustomLinkParticleCycle() {
+        return config.customLinkParticleCycle;
+    }
+
     public static boolean isEnabledCustomHeadParticle() {
         return config.enabledCustomHeadParticle;
     }
 
     public static SimpleParticleType getSelectedHeadParticle() {
         return config.selectedHeadParticle.getType();
+    }
+
+    public static int getCustomHeadParticleCycle() {
+        return config.customHeadParticleCycle;
     }
 }

@@ -18,6 +18,9 @@ This mod was forked from [Minecart Trains Mod](https://github.com/Larsens-Mods/m
 - Cloth Config API (Recommended)
 - Mod Menu (Recommended)
 
+## Progress
+Check out the latest development progress here. [Development Progress](https://windysky.gitbook.io/main/minecraft/minecart-trains-fork/version)
+
 ![Two Minecarts chained together](https://raw.githubusercontent.com/KSSJW/minecart-trains-fork/refs/heads/dev/images/Big.png)
 
 ## Features
