@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.kssjw.minecarttrainsfork.manager.NetWorkManager.ClientboundSyncMinecartTrainPacket;
+import com.kssjw.minecarttrainsfork.manager.NetworkManager.ClientboundSyncMinecartTrainPacket;
 
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;

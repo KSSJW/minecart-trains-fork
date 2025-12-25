@@ -6,10 +6,15 @@ import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.particle.ParticleTypes;
 
 public class ParticleManager {
-    
-    public static void linkParticle(AbstractMinecartEntity entity) {
 
-        if (ConfigManager.isEnabledLinkParticle() == false) return;
+    private static boolean apiFound = LoadManager.isAPIFound();
+    
+    // 连接粒子
+    public static void linkParticle(AbstractMinecartEntity entity) {
+        if (apiFound == true
+            && ConfigManager.isEnabledDefaultLinkParticle() == false
+            && ConfigManager.isEnabledCustomLinkParticle() == false
+        ) return;
 
         if (entity == null) return;
         AbstractMinecartEntity child = entity;
@@ -40,15 +45,26 @@ public class ParticleManager {
         double spacing = Math.max(0.25, dist / MAX_STEPS);
         int steps = Math.min(MAX_STEPS, Math.max(1, (int)Math.ceil(dist / spacing)));
 
-        // 使用 MC 自带的 粒子
         for (int i = 0; i <= steps; i++) {
             double t = (double)i / (double)steps;
             double px = sx + dx * t;
             double py = sy + dy * t;
             double pz = sz + dz * t;
             try {
-                world.addParticleClient(ParticleTypes.SOUL_FIRE_FLAME, px, py, pz, 0.0, 0.0, 0.0);
+
+                // 默认连接粒子,默认开启
+                if (apiFound == true && ConfigManager.isEnabledDefaultLinkParticle() == false) {
+                } else {
+                    world.addParticleClient(ParticleTypes.SOUL_FIRE_FLAME, px, py, pz, 0.0, 0.0, 0.0);
+                }
+
+                // 自定义连接粒子，可选开启
+                if (apiFound == true && ConfigManager.isEnabledCustomLinkParticle() == true) {
+                    world.addParticleClient(ConfigManager.getSelectedLinkParticle(), px, py, pz, 0.0, 0.0, 0.0);
+                }
+                
             } catch (Throwable e) {
+
                 // 退回到 FLAME 以防某些 mappings 签名不匹配
                 try { world.addParticleClient(ParticleTypes.FLAME, px, py, pz, 0.0, 0.0, 0.0); }
                 catch (Throwable ignored) { break; }
@@ -56,9 +72,12 @@ public class ParticleManager {
         }
     }
 
+    // 头车粒子
     public static void headParticle(AbstractMinecartEntity entity) {
-
-        if (ConfigManager.isEnabledHeadParticle() == false) return;
+        if (apiFound == true
+            && ConfigManager.isEnabledDefaultHeadParticle() == false
+            && ConfigManager.isEnabledCustomHeadParticle() == false
+        ) return;
 
         if (entity == null || entity.getChainedParent() != null) return;
         if (!(entity.getEntityWorld() instanceof ClientWorld)) return;
@@ -83,8 +102,21 @@ public class ParticleManager {
             double pz = baseZ + offsetZ;
 
             try {
-                world.addParticleClient(ParticleTypes.COMPOSTER, px, py, pz, 0.0, 0.0, 0.0);
+
+                // 默认头车粒子,默认开启
+                if (apiFound == true && ConfigManager.isEnabledDefaultHeadParticle() == false) {
+                } else {
+                    world.addParticleClient(ParticleTypes.COMPOSTER, px, py, pz, 0.0, 0.0, 0.0);
+                }
+
+                // 自定义头车粒子，可选开启
+                if (apiFound == true && ConfigManager.isEnabledCustomHeadParticle() == true) {
+                    world.addParticleClient(ConfigManager.getSelectedHeadParticle(), px, py, pz, 0.0, 0.0, 0.0);
+                }
+                
             } catch (Throwable e) {
+
+                // 退回到 FLAME 以防某些 mappings 签名不匹配
                 try { world.addParticleClient(ParticleTypes.FLAME, px, py, pz, 0.0, 0.0, 0.0); }
                 catch (Throwable ignored) {}
             }
