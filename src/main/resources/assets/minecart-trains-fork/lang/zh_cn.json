@@ -1,0 +1,22 @@
+{
+    "toast.minecart-trains-fork.apinotfound.title": "Cloth Config API 未被找到",
+    "toast.minecart-trains-fork.apinotfound.desc": "您需要安装 §6Cloth Config API。",
+
+    "message.minecart-trains-fork.chainingstarted": "连接开始",
+    "message.minecart-trains-fork.chainingcleared": "连接清理",
+    "message.minecart-trains-fork.invalidchaining": "连接无效",
+
+    "text.autoconfig.minecart-trains-fork.title": "Minecart Trains Fork 配置",
+
+    "text.autoconfig.minecart-trains-fork.category.general": "通用设置",
+    "text.autoconfig.minecart-trains-fork.category.advanced": "高级设置",
+
+    "text.autoconfig.minecart-trains-fork.option.enabledDefaultLinkParticle": "显示默认连接粒子",
+    "text.autoconfig.minecart-trains-fork.option.enabledDefaultHeadParticle": "显示默认头车粒子",
+    "text.autoconfig.minecart-trains-fork.option.enabledNotice": "显示链条提示",
+
+    "text.autoconfig.minecart-trains-fork.option.enabledCustomLinkParticle": "显示自定义连接粒子",
+    "text.autoconfig.minecart-trains-fork.option.selectedLinkParticle": "选择的自定义连接粒子",
+    "text.autoconfig.minecart-trains-fork.option.enabledCustomHeadParticle": "显示自定义头车粒子",
+    "text.autoconfig.minecart-trains-fork.option.selectedHeadParticle": "选择的自定义头车粒子"
+}

@@ -1,0 +1,22 @@
+{
+    "toast.minecart-trains-fork.apinotfound.title": "Cloth Config API not found",
+    "toast.minecart-trains-fork.apinotfound.desc": "You need to install the §6Cloth Config API.",
+
+    "message.minecart-trains-fork.chainingstarted": "Chaining Started",
+    "message.minecart-trains-fork.chainingcleared": "Chaining Cleared",
+    "message.minecart-trains-fork.invalidchaining": "Invalid Chaining",
+
+    "text.autoconfig.minecart-trains-fork.title": "Minecart Trains Fork Configuration",
+
+    "text.autoconfig.minecart-trains-fork.category.general": "General Settings",
+    "text.autoconfig.minecart-trains-fork.category.advanced": "Advanced Settings",
+
+    "text.autoconfig.minecart-trains-fork.option.enabledDefaultLinkParticle": "Show Default Link Particle",
+    "text.autoconfig.minecart-trains-fork.option.enabledDefaultHeadParticle": "Show Default Head Cart Particle",
+    "text.autoconfig.minecart-trains-fork.option.enabledNotice": "Show Chaining Notice",
+
+    "text.autoconfig.minecart-trains-fork.option.enabledCustomLinkParticle": "Show Custom Link Particle",
+    "text.autoconfig.minecart-trains-fork.option.selectedLinkParticle": "Selected Custom Link Particle",
+    "text.autoconfig.minecart-trains-fork.option.enabledCustomHeadParticle": "Show Custom Head Cart Particle",
+    "text.autoconfig.minecart-trains-fork.option.selectedHeadParticle": "Selected Custom Head Cart Particle"
+}
