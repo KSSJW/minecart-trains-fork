@@ -14,15 +14,15 @@ public class ComponentUtil {
     private ComponentUtil() {}
     
     public static final ComponentType<UUID> PARENT_ID = ComponentType.<UUID>builder().codec(
-			RecordCodecBuilder.create(uuidInstance -> uuidInstance.group(
-					Codec.LONG.fieldOf("most_sig_bits").forGetter(UUID::getMostSignificantBits),
-					Codec.LONG.fieldOf("least_sig_bits").forGetter(UUID::getLeastSignificantBits)
-			).apply(uuidInstance, UUID::new))
+		RecordCodecBuilder.create(uuidInstance -> uuidInstance.group(
+			Codec.LONG.fieldOf("most_sig_bits").forGetter(UUID::getMostSignificantBits),
+			Codec.LONG.fieldOf("least_sig_bits").forGetter(UUID::getLeastSignificantBits)
+		).apply(uuidInstance, UUID::new))
 	).packetCodec(
-			PacketCodec.tuple(
-					PacketCodecs.VAR_LONG, UUID::getMostSignificantBits,
-					PacketCodecs.VAR_LONG, UUID::getLeastSignificantBits,
-					UUID::new
-			)
+		PacketCodec.tuple(
+			PacketCodecs.VAR_LONG, UUID::getMostSignificantBits,
+			PacketCodecs.VAR_LONG, UUID::getLeastSignificantBits,
+			UUID::new
+		)
 	).build();
 }

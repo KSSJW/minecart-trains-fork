@@ -1,13 +1,13 @@
-package com.kssjw.minecarttrainsfork.client.config;
+package com.kssjw.minecarttrainsfork.client.extension.config;
 
-import com.kssjw.minecarttrainsfork.client.util.ListUtil.ParticleOption;
+import com.kssjw.minecarttrainsfork.client.extension.config.ConfigEnum.ParticleOption;
 
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
 @Config(name = "minecart-trains-fork")
-public class ValueConfig implements ConfigData {
+public class ConfigValue implements ConfigData {
 
     @ConfigEntry.Category("general")
     public boolean enabledDefaultLinkParticle = true;

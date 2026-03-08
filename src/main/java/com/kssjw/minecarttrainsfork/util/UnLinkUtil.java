@@ -18,7 +18,6 @@ public class UnLinkUtil {
             Entity parentEntity = world.getEntity(icu.getParentUUID());
             if (parentEntity instanceof IChainableUtil parent) {
                 parent.setChildUUID(null);
-                parent.setChildClientID(0);
             }
         }
 
@@ -27,7 +26,6 @@ public class UnLinkUtil {
             Entity childEntity = world.getEntity(icu.getChildUUID());
             if (childEntity instanceof IChainableUtil child) {
                 child.setParentUUID(null);
-                child.setParentClientID(0);
             }
         }
 
@@ -39,8 +37,6 @@ public class UnLinkUtil {
         // 最后清理自己
         icu.setParentUUID(null);
         icu.setChildUUID(null);
-        icu.setParentClientID(0);
-        icu.setChildClientID(0);
 
         // 根据情况掉落铁链
         if (wasLinked && icu instanceof Entity entity) {

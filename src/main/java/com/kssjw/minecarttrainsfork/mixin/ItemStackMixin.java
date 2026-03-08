@@ -11,21 +11,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
 @Mixin(ItemStack.class)
-public abstract class ItemStackMixin {
+public class ItemStackMixin {
     
     @Inject(method = "split", at = @At("RETURN"))
     private void onSplit(int amount, CallbackInfoReturnable<ItemStack> cir) {
         ItemStack result = cir.getReturnValue();
-        if (result.isOf(Items.IRON_CHAIN)) {
-            result.remove(ComponentUtil.PARENT_ID);
-        }
+
+        if (result.isOf(Items.IRON_CHAIN)) result.remove(ComponentUtil.PARENT_ID);
     }
 
     @Inject(method = "copyWithCount", at = @At("RETURN"))
     private void onCopyWithCount(int count, CallbackInfoReturnable<ItemStack> cir) {
         ItemStack result = cir.getReturnValue();
-        if (result.isOf(Items.IRON_CHAIN)) {
-            result.remove(ComponentUtil.PARENT_ID);
-        }
+
+        if (result.isOf(Items.IRON_CHAIN)) result.remove(ComponentUtil.PARENT_ID);
     }
 }

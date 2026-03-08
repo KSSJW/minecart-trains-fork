@@ -17,9 +17,6 @@ public class DataUtil {
 
         view.putLong("ChildUUIDMost", icu.getChildUUID() != null ? icu.getChildUUID().getMostSignificantBits() : 0L);
         view.putLong("ChildUUIDLeast", icu.getChildUUID() != null ? icu.getChildUUID().getLeastSignificantBits() : 0L);
-
-        view.putInt("ParentClientID", icu.getParentClientID());
-        view.putInt("ChildClientID", icu.getChildClientID());
     }
 
 
@@ -33,11 +30,5 @@ public class DataUtil {
         long childLeast = view.getLong("ChildUUIDLeast", 0L);
         @Nullable UUID childUUID = (childMost != 0L || childLeast != 0L) ? new UUID(childMost, childLeast) : null;
         icu.setChildUUID(childUUID);
-
-        int parentClientID = view.getInt("ParentClientID", -1);
-        icu.setParentClientID(parentClientID);
-
-        int childClientID = view.getInt("ChildClientID", -1);
-        icu.setChildClientID(childClientID);
     }
 }

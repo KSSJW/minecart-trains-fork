@@ -1,5 +1,7 @@
 package com.kssjw.minecarttrainsfork.util;
 
+import com.kssjw.minecarttrainsfork.MinecartTrainsFork;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -15,7 +17,7 @@ public class ExitUtil {
     public static void exit(ItemStack current, ItemStack lastMainHand, PlayerEntity player) {
 
         if (!lastMainHand.isOf(Items.IRON_CHAIN) && current.isOf(Items.IRON_CHAIN)) {
-            player.sendMessage(Text.translatable(ModIdUtil.MOD_ID + " ")
+            player.sendMessage(Text.translatable(MinecartTrainsFork.MOD_ID + " ")
                 .append(Text.translatable("message.minecart-trains-fork.chainingstarted"))
                 .setStyle(Style.EMPTY.withInsertion("MINECARTTRAINSFORK_OPTIONAL"))
                 .formatted(Formatting.GREEN), true);
@@ -27,12 +29,11 @@ public class ExitUtil {
 
             for (int i = 0; i < inv.size(); i++) {
                 ItemStack stack = inv.getStack(i);
-                if (stack.isOf(Items.IRON_CHAIN)) {
-                    stack.remove(ComponentUtil.PARENT_ID);
-                }
+
+                if (stack.isOf(Items.IRON_CHAIN)) stack.remove(ComponentUtil.PARENT_ID);
             }
 
-            player.sendMessage(Text.translatable(ModIdUtil.MOD_ID + " ")
+            player.sendMessage(Text.translatable(MinecartTrainsFork.MOD_ID + " ")
                 .append(Text.translatable("message.minecart-trains-fork.chainingcleared"))
                 .setStyle(Style.EMPTY.withInsertion("MINECARTTRAINSFORK_OPTIONAL"))
                 .formatted(Formatting.YELLOW), true);

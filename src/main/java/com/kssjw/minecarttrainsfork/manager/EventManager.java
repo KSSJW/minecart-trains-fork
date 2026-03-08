@@ -4,9 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import com.kssjw.minecarttrainsfork.MinecartTrainsFork;
 import com.kssjw.minecarttrainsfork.util.IChainableUtil;
-import com.kssjw.minecarttrainsfork.util.ModIdUtil;
-import com.kssjw.minecarttrainsfork.util.ResendUtil;
 import com.kssjw.minecarttrainsfork.util.UnLinkUtil;
 
 import net.minecraft.component.ComponentType;
@@ -28,47 +27,53 @@ import net.minecraft.world.World;
 public class EventManager {
 
     private static ActionResult link(ItemStack stack, AbstractMinecartEntity cart, PlayerEntity player, Hand hand, World world, ComponentType<UUID> PARENT_ID) {
-        if(player.isSneaking() && stack.isOf(Items.IRON_CHAIN)) {
-            if(world instanceof ServerWorld server) {
-                UUID uuid = stack.get(PARENT_ID);
+        if(
+            player.isSneaking()
+            && stack.isOf(Items.IRON_CHAIN)
+            && world instanceof ServerWorld server
+        ) {
+            UUID uuid = stack.get(PARENT_ID);
 
-                if(uuid != null && !cart.getUuid().equals(uuid)) {
-                    if(server.getEntity(uuid) instanceof AbstractMinecartEntity parent) {
-                        Set<IChainableUtil> train = new HashSet<>();
-                        train.add(parent);
+            if(uuid != null && !cart.getUuid().equals(uuid)) {
+                if(server.getEntity(uuid) instanceof AbstractMinecartEntity parent) {
 
-                        AbstractMinecartEntity nextChainedParent;
-                        while((nextChainedParent = parent.getChainedParent()) != null && !train.contains(nextChainedParent)) {
-                            train.add(nextChainedParent);
-                        }
+                    IChainableUtil parentIChainable = (IChainableUtil)parent;
+                    IChainableUtil cartIChainable = (IChainableUtil)cart;
 
-                        if(train.contains(cart) || parent.getChainedChild() != null) {
-                            player.sendMessage(Text.translatable(ModIdUtil.MOD_ID + " ")
-                                .append(Text.translatable("message.minecart-trains-fork.invalidchaining"))
-                                .formatted(Formatting.RED), true);
-                        } else {
-                            if(cart.getChainedParent() != null) {
-                                IChainableUtil.unsetChainedParentChild(cart, cart.getChainedParent());
-                            }
-                            IChainableUtil.setChainedParentChild(parent, cart);
-                        }
+                    Set<IChainableUtil> train = new HashSet<>();
+                    train.add(parentIChainable);
+
+                    AbstractMinecartEntity nextChainedParent;
+                    while((nextChainedParent = (parentIChainable).getChainedParent()) != null && !train.contains((IChainableUtil)nextChainedParent)) {
+                        train.add((IChainableUtil)nextChainedParent);
+                    }
+
+                    if(train.contains(cartIChainable) || (parentIChainable).getChainedChild() != null) {
+                        player.sendMessage(Text.translatable(MinecartTrainsFork.MOD_ID + " ")
+                            .append(Text.translatable("message.minecart-trains-fork.invalidchaining"))
+                            .formatted(Formatting.RED), true);
                     } else {
-                        stack.remove(PARENT_ID);
+                        if((cartIChainable).getChainedParent() != null) {
+                            IChainableUtil.unsetChainedParentChild(cartIChainable, (IChainableUtil)((cartIChainable).getChainedParent()));
+                        }
+                        IChainableUtil.setChainedParentChild(parentIChainable, cartIChainable);
                     }
-
-                    world.playSound(null, cart.getX(), cart.getY(), cart.getZ(), SoundEvents.BLOCK_CHAIN_PLACE, SoundCategory.NEUTRAL, 1f, 1.1f);
-
-                    if(!player.isCreative()) {
-                        stack.decrement(1);
-                    }
-
-                    stack.remove(PARENT_ID);
                 } else {
-                    stack.set(PARENT_ID, cart.getUuid());
-                    world.playSound(null, cart.getX(), cart.getY(), cart.getZ(), SoundEvents.BLOCK_CHAIN_HIT, SoundCategory.NEUTRAL, 1f, 1.1f);
+                    stack.remove(PARENT_ID);
                 }
-            }
 
+                world.playSound(null, cart.getX(), cart.getY(), cart.getZ(), SoundEvents.BLOCK_CHAIN_PLACE, SoundCategory.NEUTRAL, 1f, 1.1f);
+
+                if(!player.isCreative()) {
+                    stack.decrement(1);
+                }
+
+                stack.remove(PARENT_ID);
+            } else {
+                stack.set(PARENT_ID, cart.getUuid());
+                world.playSound(null, cart.getX(), cart.getY(), cart.getZ(), SoundEvents.BLOCK_CHAIN_HIT, SoundCategory.NEUTRAL, 1f, 1.1f);
+            }
+            
             return ActionResult.SUCCESS;
 
         } else {
@@ -82,8 +87,6 @@ public class EventManager {
             if (!world.isClient()) {
                 ServerWorld serverWorld = (ServerWorld)world;
                 UnLinkUtil.unlinkHandle(icu, serverWorld, player);
-                NetworkManager.sendUnlinkData(cart);
-                ResendUtil.forceResendUnlinkedMinecarts(serverWorld);
             }
 
             return ActionResult.SUCCESS;
@@ -99,12 +102,14 @@ public class EventManager {
 
             // 链接逻辑
             ActionResult linkResult = link(stack, cart, player, hand, world, PARENT_ID);
+            
             if (linkResult == ActionResult.SUCCESS) {
                 return ActionResult.SUCCESS;
             }
 
             // 解编逻辑
             ActionResult unlinkResult = unlink(player, stack, cart, world);
+
             if (unlinkResult == ActionResult.SUCCESS) {
                 return ActionResult.SUCCESS;
             }

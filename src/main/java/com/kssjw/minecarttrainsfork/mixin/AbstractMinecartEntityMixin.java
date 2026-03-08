@@ -4,12 +4,14 @@ import com.kssjw.minecarttrainsfork.manager.TrainManager;
 import com.kssjw.minecarttrainsfork.util.LinkUtil;
 import com.kssjw.minecarttrainsfork.util.DataUtil;
 import com.kssjw.minecarttrainsfork.util.IChainableUtil;
-import net.minecraft.entity.EntityType;
+
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.entity.vehicle.VehicleEntity;
 import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
-import net.minecraft.world.World;
+
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -20,12 +22,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.UUID;
 
 @Mixin(AbstractMinecartEntity.class)
-public abstract class AbstractMinecartEntityMixin extends VehicleEntity implements IChainableUtil {
+public class AbstractMinecartEntityMixin implements IChainableUtil {
 
     @Unique private @Nullable UUID parentUUID;
     @Unique private @Nullable UUID childUUID;
-    @Unique private int parentClientID;
-    @Unique private int childClientID;
+    @Unique private static final TrackedData<Integer> PARENT_ID = DataTracker.registerData(AbstractMinecartEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
     @Override
     public UUID getParentUUID() {
@@ -47,36 +48,19 @@ public abstract class AbstractMinecartEntityMixin extends VehicleEntity implemen
         this.childUUID = uuid;
     }
 
-    @Override
-    public int getParentClientID() {
-        return parentClientID;
-    }
-
-    @Override
-    public void setParentClientID(int id) {
-        this.parentClientID = id;
-    }
-
-    @Override
-    public int getChildClientID() {
-        return childClientID;
-    }
-
-    @Override
-    public void setChildClientID(int id) {
-        this.childClientID = id;
-    }
-
-    public AbstractMinecartEntityMixin(EntityType<?> entityType, World world) {super(entityType, world);}
-
     @Inject(method = "tick", at = @At("HEAD"))
     private void mctrains$tick(CallbackInfo ci) {
         TrainManager.tick((AbstractMinecartEntity)(Object)this);
     }
 
+    @Inject(method = "initDataTracker", at = @At("TAIL"))
+    private void initTracker(DataTracker.Builder builder, CallbackInfo ci) {
+        builder.add(PARENT_ID, -1);
+    }
+
     @Override
     public @Nullable AbstractMinecartEntity getChainedParent() {
-        return LinkUtil.getChainedParent((AbstractMinecartEntity)(Object)this, (IChainableUtil)(Object)this);
+        return (AbstractMinecartEntity)((AbstractMinecartEntity)(Object)this).getEntityWorld().getEntity(this.getParentUUID());
     }
 
     @Override
@@ -84,24 +68,15 @@ public abstract class AbstractMinecartEntityMixin extends VehicleEntity implemen
         LinkUtil.setChainedParent(newParent, (IChainableUtil)(Object)this, (AbstractMinecartEntity)(Object)this);
     }
 
-    @Override
-    public void setClientChainedParent(int entityId) {
-        LinkUtil.setClientChainedParent(entityId, (IChainableUtil)(Object)this);
-    }
 
     @Override
     public @Nullable AbstractMinecartEntity getChainedChild() {
-        return LinkUtil.getChainedChild((AbstractMinecartEntity)(Object)this, (IChainableUtil)(Object)this);
+        return (AbstractMinecartEntity)((AbstractMinecartEntity)(Object)this).getEntityWorld().getEntity(this.getChildUUID());
     }
 
     @Override
     public void setChainedChild(@Nullable AbstractMinecartEntity newChild) {
         LinkUtil.setChainedChild(newChild, (IChainableUtil)(Object)this);
-    }
-
-    @Override
-    public void setClientChainedChild(int entityId) {
-        LinkUtil.setClientChainedChild(entityId, (IChainableUtil)(Object)this);
     }
 
     // 数据存储与读取

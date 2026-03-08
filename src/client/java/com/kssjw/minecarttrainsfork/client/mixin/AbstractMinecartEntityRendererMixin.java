@@ -19,9 +19,8 @@ public abstract class AbstractMinecartEntityRendererMixin<T extends AbstractMine
 
     protected AbstractMinecartEntityRendererMixin(EntityRendererFactory.Context context) {super(context);}
 
-    // 此方法放在已验证可命中的 updateRenderState 注入，矿车之间的粒子渲染
     @Inject(method = "Lnet/minecraft/client/render/entity/AbstractMinecartEntityRenderer;updateRenderState(Lnet/minecraft/entity/vehicle/AbstractMinecartEntity;Lnet/minecraft/client/render/entity/state/MinecartEntityRenderState;F)V", at = @At("TAIL"))
-    public void mctrains$updateRenderState(
+    private void mctrains$updateRenderState(
         AbstractMinecartEntity entity,
         MinecartEntityRenderState state,
         float tickDelta,
@@ -32,16 +31,7 @@ public abstract class AbstractMinecartEntityRendererMixin<T extends AbstractMine
         } catch (Throwable ex) {
             LogUtil.print("UpdateRenderState particle error: " + ex);
         }
-    }
 
-    // 头车渲染粒子
-    @Inject(method = "Lnet/minecraft/client/render/entity/AbstractMinecartEntityRenderer;updateRenderState(Lnet/minecraft/entity/vehicle/AbstractMinecartEntity;Lnet/minecraft/client/render/entity/state/MinecartEntityRenderState;F)V", at = @At("TAIL"))
-    public void mctrains$renderHeadParticles(
-        AbstractMinecartEntity entity,
-        MinecartEntityRenderState state,
-        float tickDelta,
-        CallbackInfo ci
-    ) {
         try {
             ParticleManager.headParticle(entity);
         } catch (Throwable ex) {

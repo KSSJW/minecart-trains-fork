@@ -6,7 +6,7 @@ public class LogUtil {
 
     private static final String HEAD = "[Minecart Trains Fork] ";
 
-    public static void print(String str) {
-        System.out.println(HEAD + str);
+    public static void print(Object obj) {
+        System.out.println(HEAD + String.valueOf(obj));
     }
 }
