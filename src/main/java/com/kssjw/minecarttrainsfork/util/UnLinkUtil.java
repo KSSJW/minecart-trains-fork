@@ -16,17 +16,15 @@ public class UnLinkUtil {
         // 清理父节点
         if (icu.getParentUUID() != null) {
             Entity parentEntity = world.getEntity(icu.getParentUUID());
-            if (parentEntity instanceof IChainableUtil parent) {
-                parent.setChildUUID(null);
-            }
+
+            if (parentEntity instanceof IChainableUtil parent) parent.setChildUUID(null);
         }
 
         // 清理子节点
         if (icu.getChildUUID() != null) {
             Entity childEntity = world.getEntity(icu.getChildUUID());
-            if (childEntity instanceof IChainableUtil child) {
-                child.setParentUUID(null);
-            }
+
+            if (childEntity instanceof IChainableUtil child) child.setParentUUID(null);
         }
 
         // 保存连接状态
@@ -71,6 +69,7 @@ public class UnLinkUtil {
                 ItemEntity itemEntity = new ItemEntity(world, x, y, z, new ItemStack(Items.IRON_CHAIN));
                 world.spawnEntity(itemEntity);
             }
+            
             if (hadChild) {
                 ItemEntity itemEntity = new ItemEntity(world, x, y, z, new ItemStack(Items.IRON_CHAIN));
                 world.spawnEntity(itemEntity);

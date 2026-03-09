@@ -49,9 +49,7 @@ public class TrainManager {
                 if (entityIChainable.getChainedParent().isRemoved()) IChainableUtil.unsetChainedParentChild((IChainableUtil)entityIChainable.getChainedParent(), entityIChainable);
             }
 
-            if (entityIChainable.getChainedChild() != null && entityIChainable.getChainedChild().isRemoved()) {
-                IChainableUtil.unsetChainedParentChild(entityIChainable, (IChainableUtil)entityIChainable.getChainedChild());
-            }
+            if (entityIChainable.getChainedChild() != null && entityIChainable.getChainedChild().isRemoved()) IChainableUtil.unsetChainedParentChild(entityIChainable, (IChainableUtil)entityIChainable.getChainedChild());
 
             for (Entity otherEntity : entity.getEntityWorld().getOtherEntities(entity, entity.getBoundingBox().expand(0.1), entity::collidesWith)) {
 

@@ -9,26 +9,31 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 @Config(name = "minecart-trains-fork")
 public class ConfigValue implements ConfigData {
 
+    //  Link Particle
     @ConfigEntry.Category("general")
+    @ConfigEntry.Gui.PrefixText
     public boolean enabledDefaultLinkParticle = true;
-    
-    @ConfigEntry.Category("general")
-    @ConfigEntry.BoundedDiscrete(min = 1, max = 100)
-    public int defaultLinkParticleCycle = 40;
 
+    //  Head Particle
     @ConfigEntry.Category("general")
+    @ConfigEntry.Gui.PrefixText
     public boolean enabledDefaultHeadParticle = true;
 
+    // Link Line
     @ConfigEntry.Category("general")
-    @ConfigEntry.BoundedDiscrete(min = 1, max = 100)
-    public int defaultHeadParticleCycle = 40;
+    @ConfigEntry.Gui.PrefixText
+    public boolean enabledLinkLine = false;
 
+    // Notice
     @ConfigEntry.Category("general")
+    @ConfigEntry.Gui.PrefixText
     public boolean enabledNotice = true;
 
     /* ------ */
 
+    //  Link Particle
     @ConfigEntry.Category("advanced")
+    @ConfigEntry.Gui.PrefixText
     public boolean enabledCustomLinkParticle = false;
 
     @ConfigEntry.Category("advanced")
@@ -39,7 +44,9 @@ public class ConfigValue implements ConfigData {
     @ConfigEntry.BoundedDiscrete(min = 1, max = 100)
     public int customLinkParticleCycle = 40;
 
+    //  Head Particle
     @ConfigEntry.Category("advanced")
+    @ConfigEntry.Gui.PrefixText
     public boolean enabledCustomHeadParticle = false;
 
     @ConfigEntry.Category("advanced")

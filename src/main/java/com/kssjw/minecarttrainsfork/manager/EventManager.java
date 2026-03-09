@@ -27,15 +27,15 @@ import net.minecraft.world.World;
 public class EventManager {
 
     private static ActionResult link(ItemStack stack, AbstractMinecartEntity cart, PlayerEntity player, Hand hand, World world, ComponentType<UUID> PARENT_ID) {
-        if(
+        if (
             player.isSneaking()
             && stack.isOf(Items.IRON_CHAIN)
             && world instanceof ServerWorld server
         ) {
             UUID uuid = stack.get(PARENT_ID);
 
-            if(uuid != null && !cart.getUuid().equals(uuid)) {
-                if(server.getEntity(uuid) instanceof AbstractMinecartEntity parent) {
+            if (uuid != null && !cart.getUuid().equals(uuid)) {
+                if (server.getEntity(uuid) instanceof AbstractMinecartEntity parent) {
 
                     IChainableUtil parentIChainable = (IChainableUtil)parent;
                     IChainableUtil cartIChainable = (IChainableUtil)cart;
@@ -44,18 +44,19 @@ public class EventManager {
                     train.add(parentIChainable);
 
                     AbstractMinecartEntity nextChainedParent;
-                    while((nextChainedParent = (parentIChainable).getChainedParent()) != null && !train.contains((IChainableUtil)nextChainedParent)) {
+
+                    while ((nextChainedParent = (parentIChainable).getChainedParent()) != null && !train.contains((IChainableUtil)nextChainedParent)) {
                         train.add((IChainableUtil)nextChainedParent);
                     }
 
-                    if(train.contains(cartIChainable) || (parentIChainable).getChainedChild() != null) {
+                    if (train.contains(cartIChainable) || (parentIChainable).getChainedChild() != null) {
                         player.sendMessage(Text.translatable(MinecartTrainsFork.MOD_ID + " ")
                             .append(Text.translatable("message.minecart-trains-fork.invalidchaining"))
                             .formatted(Formatting.RED), true);
                     } else {
-                        if((cartIChainable).getChainedParent() != null) {
-                            IChainableUtil.unsetChainedParentChild(cartIChainable, (IChainableUtil)((cartIChainable).getChainedParent()));
-                        }
+
+                        if ((cartIChainable).getChainedParent() != null) IChainableUtil.unsetChainedParentChild(cartIChainable, (IChainableUtil)((cartIChainable).getChainedParent()));
+
                         IChainableUtil.setChainedParentChild(parentIChainable, cartIChainable);
                     }
                 } else {
@@ -64,9 +65,7 @@ public class EventManager {
 
                 world.playSound(null, cart.getX(), cart.getY(), cart.getZ(), SoundEvents.BLOCK_CHAIN_PLACE, SoundCategory.NEUTRAL, 1f, 1.1f);
 
-                if(!player.isCreative()) {
-                    stack.decrement(1);
-                }
+                if (!player.isCreative()) stack.decrement(1);
 
                 stack.remove(PARENT_ID);
             } else {
@@ -84,6 +83,7 @@ public class EventManager {
     private static ActionResult unlink(PlayerEntity player, ItemStack stack, AbstractMinecartEntity cart, World world) {
         if (player.isSneaking() && stack.getItem() instanceof AxeItem) {
             IChainableUtil icu = (IChainableUtil)(Object)cart;
+            
             if (!world.isClient()) {
                 ServerWorld serverWorld = (ServerWorld)world;
                 UnLinkUtil.unlinkHandle(icu, serverWorld, player);

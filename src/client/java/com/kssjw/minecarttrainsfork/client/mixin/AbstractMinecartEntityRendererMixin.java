@@ -5,7 +5,6 @@ import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.state.MinecartEntityRenderState;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -29,13 +28,19 @@ public abstract class AbstractMinecartEntityRendererMixin<T extends AbstractMine
         try {
             ParticleManager.linkParticle(entity);
         } catch (Throwable ex) {
-            LogUtil.print("UpdateRenderState particle error: " + ex);
+            LogUtil.print("Link particle error: " + ex);
         }
 
         try {
             ParticleManager.headParticle(entity);
         } catch (Throwable ex) {
             LogUtil.print("Head particle error: " + ex);
+        }
+
+        try {
+            ParticleManager.linkLine(entity);
+        } catch (Throwable ex) {
+            LogUtil.print("Link line error: " + ex);
         }
     }
 }

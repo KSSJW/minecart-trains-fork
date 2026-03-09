@@ -11,23 +11,19 @@ public class ConfigManager {
     private static ConfigValue config = AutoConfig.getConfigHolder(ConfigValue.class).getConfig();
 
     public static boolean isEnabledDefaultLinkParticle() {
-        return config.enabledDefaultLinkParticle;
-    }
-
-    public static int getDefaultLinkParticleCycle() {
-        return config.defaultLinkParticleCycle;
+        return LoadManager.isAPIFound() ? config.enabledDefaultLinkParticle : true;
     }
 
     public static boolean isEnabledDefaultHeadParticle() {
-        return config.enabledDefaultHeadParticle;
+        return LoadManager.isAPIFound() ? config.enabledDefaultHeadParticle : true;
     }
 
-    public static int getDefaultHeadParticleCycle() {
-        return config.defaultHeadParticleCycle;
+    public static boolean isEnabledLinkLine() {
+        return LoadManager.isAPIFound() ? config.enabledLinkLine : false;
     }
 
     public static boolean isEnabledNotice() {
-        return config.enabledNotice;
+        return LoadManager.isAPIFound() ? config.enabledNotice : true;
     }
 
     /* ------ */

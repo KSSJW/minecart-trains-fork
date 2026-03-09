@@ -11,16 +11,25 @@
     "text.autoconfig.minecart-trains-fork.category.general": "General Settings",
     "text.autoconfig.minecart-trains-fork.category.advanced": "Advanced Settings",
 
-    "text.autoconfig.minecart-trains-fork.option.enabledDefaultLinkParticle": "Show Default Link Particle",
-    "text.autoconfig.minecart-trains-fork.option.defaultLinkParticleCycle": "Default Link Particle Interval",
-    "text.autoconfig.minecart-trains-fork.option.enabledDefaultHeadParticle": "Show Default Head Cart Particle",
-    "text.autoconfig.minecart-trains-fork.option.defaultHeadParticleCycle": "Default Head Particle Interval",
-    "text.autoconfig.minecart-trains-fork.option.enabledNotice": "Show Chaining Notice",
+    "text.autoconfig.minecart-trains-fork.option.enabledDefaultLinkParticle.@PrefixText": "Link Particle",
+    "text.autoconfig.minecart-trains-fork.option.enabledDefaultLinkParticle": "    Show Default Link Particle",
 
-    "text.autoconfig.minecart-trains-fork.option.enabledCustomLinkParticle": "Show Custom Link Particle",
-    "text.autoconfig.minecart-trains-fork.option.selectedLinkParticle": "Selected Custom Link Particle",
-    "text.autoconfig.minecart-trains-fork.option.customLinkParticleCycle": "Custom Link Particle Interval",
-    "text.autoconfig.minecart-trains-fork.option.enabledCustomHeadParticle": "Show Custom Head Cart Particle",
-    "text.autoconfig.minecart-trains-fork.option.selectedHeadParticle": "Selected Custom Head Cart Particle",
-    "text.autoconfig.minecart-trains-fork.option.customHeadParticleCycle": "Custom Head Particle Interval"
+    "text.autoconfig.minecart-trains-fork.option.enabledDefaultHeadParticle.@PrefixText": "Head Particle",
+    "text.autoconfig.minecart-trains-fork.option.enabledDefaultHeadParticle": "    Show Default Head Cart Particle",
+
+    "text.autoconfig.minecart-trains-fork.option.enabledLinkLine.@PrefixText": "Link Line",
+    "text.autoconfig.minecart-trains-fork.option.enabledLinkLine": "    Show Link Line ( Beta )",
+
+    "text.autoconfig.minecart-trains-fork.option.enabledNotice.@PrefixText": "Notice",
+    "text.autoconfig.minecart-trains-fork.option.enabledNotice": "    Show Chaining Notice",
+
+    "text.autoconfig.minecart-trains-fork.option.enabledCustomLinkParticle.@PrefixText": "Link Particle",
+    "text.autoconfig.minecart-trains-fork.option.enabledCustomLinkParticle": "    Show Custom Link Particle",
+    "text.autoconfig.minecart-trains-fork.option.selectedLinkParticle": "    Selected Custom Link Particle",
+    "text.autoconfig.minecart-trains-fork.option.customLinkParticleCycle": "    Custom Link Particle Interval",
+    
+    "text.autoconfig.minecart-trains-fork.option.enabledCustomHeadParticle.@PrefixText": "Head Particle",
+    "text.autoconfig.minecart-trains-fork.option.enabledCustomHeadParticle": "    Show Custom Head Cart Particle",
+    "text.autoconfig.minecart-trains-fork.option.selectedHeadParticle": "    Selected Custom Head Cart Particle",
+    "text.autoconfig.minecart-trains-fork.option.customHeadParticleCycle": "    Custom Head Particle Interval"
 }
