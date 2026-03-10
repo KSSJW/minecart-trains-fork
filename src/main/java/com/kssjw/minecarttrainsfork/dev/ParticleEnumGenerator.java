@@ -24,13 +24,12 @@ public class ParticleEnumGenerator {
             Collections.sort(names);
 
             try (FileWriter writer = new FileWriter("ParticleList.txt")) {
-                writer.write("public enum ParticleOption {\n");
 
                 for (int i = 0; i < names.size(); i++) {
                     String name = names.get(i).toLowerCase();   // 枚举常量名小写
                     String type = names.get(i); // 对应 ParticleTypes 常量
                     boolean isLast = (i == names.size() - 1);
-                    writer.write("    " + name + "(ParticleTypes." + type + ")" + (isLast ? ";" : ",") + "\n");
+                    writer.write(name + "(ParticleTypes." + type + ")" + (isLast ? ";" : ",") + "\n");
                 }
             }
 

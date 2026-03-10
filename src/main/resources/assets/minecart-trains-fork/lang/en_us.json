@@ -18,7 +18,7 @@
     "text.autoconfig.minecart-trains-fork.option.enabledDefaultHeadParticle": "    Show Default Head Cart Particle",
 
     "text.autoconfig.minecart-trains-fork.option.enabledLinkLine.@PrefixText": "Link Line",
-    "text.autoconfig.minecart-trains-fork.option.enabledLinkLine": "    Show Link Line ( Beta )",
+    "text.autoconfig.minecart-trains-fork.option.enabledLinkLine": "    Show Link Line",
 
     "text.autoconfig.minecart-trains-fork.option.enabledNotice.@PrefixText": "Notice",
     "text.autoconfig.minecart-trains-fork.option.enabledNotice": "    Show Chaining Notice",
