@@ -1,26 +1,29 @@
 package com.kssjw.minecarttrainsfork.client.manager;
 
-import com.kssjw.minecarttrainsfork.client.config.ValueConfig;
-
 import net.minecraft.particle.SimpleParticleType;
+
+import com.kssjw.minecarttrainsfork.client.extension.config.ConfigValue;
 
 import me.shedaniel.autoconfig.AutoConfig;
 
 public class ConfigManager {
     
-    // 获取配置实例
-    private static ValueConfig config = AutoConfig.getConfigHolder(ValueConfig.class).getConfig();
+    private static ConfigValue config = AutoConfig.getConfigHolder(ConfigValue.class).getConfig();
 
     public static boolean isEnabledDefaultLinkParticle() {
-        return config.enabledDefaultLinkParticle;
+        return LoadManager.isAPIFound() ? config.enabledDefaultLinkParticle : true;
     }
 
     public static boolean isEnabledDefaultHeadParticle() {
-        return config.enabledDefaultHeadParticle;
+        return LoadManager.isAPIFound() ? config.enabledDefaultHeadParticle : true;
+    }
+
+    public static boolean isEnabledLinkLine() {
+        return LoadManager.isAPIFound() ? config.enabledLinkLine : false;
     }
 
     public static boolean isEnabledNotice() {
-        return config.enabledNotice;
+        return LoadManager.isAPIFound() ? config.enabledNotice : true;
     }
 
     /* ------ */
@@ -33,11 +36,19 @@ public class ConfigManager {
         return config.selectedLinkParticle.getType();
     }
 
+    public static int getCustomLinkParticleCycle() {
+        return config.customLinkParticleCycle;
+    }
+
     public static boolean isEnabledCustomHeadParticle() {
         return config.enabledCustomHeadParticle;
     }
 
     public static SimpleParticleType getSelectedHeadParticle() {
         return config.selectedHeadParticle.getType();
+    }
+
+    public static int getCustomHeadParticleCycle() {
+        return config.customHeadParticleCycle;
     }
 }
