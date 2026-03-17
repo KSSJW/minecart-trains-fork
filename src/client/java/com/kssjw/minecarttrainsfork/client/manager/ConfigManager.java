@@ -19,7 +19,7 @@ public class ConfigManager {
     }
 
     public static boolean isEnabledLinkLine() {
-        return LoadManager.isAPIFound() ? config.enabledLinkLine : false;
+        return LoadManager.isAPIFound() ? config.enabledLinkLine : true;
     }
 
     public static boolean isEnabledNotice() {

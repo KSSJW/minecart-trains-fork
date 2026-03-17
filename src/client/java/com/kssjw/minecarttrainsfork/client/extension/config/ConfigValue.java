@@ -22,7 +22,7 @@ public class ConfigValue implements ConfigData {
     // Link Line
     @ConfigEntry.Category("general")
     @ConfigEntry.Gui.PrefixText
-    public boolean enabledLinkLine = false;
+    public boolean enabledLinkLine = true;
 
     // Notice
     @ConfigEntry.Category("general")

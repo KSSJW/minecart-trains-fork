@@ -223,7 +223,7 @@ public class ParticleManager {
     }
 
     private static void line(AbstractMinecartEntity entity) {
-        if (ConfigManager.isEnabledLinkLine() == false) return;
+        if (LoadManager.isAPIFound() && ConfigManager.isEnabledLinkLine() == false) return;
 
         Vec3d parentPos = PositionUitl.getParentPos(entity.getUuid());
 
