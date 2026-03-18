@@ -1,11 +1,11 @@
-package com.kssjw.minecarttrainsfork.client.util;
+package com.kssjw.minecarttrainsfork.client.extension.config;
 
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.particle.SimpleParticleType;
 
-public class ListUtil {
+public class ConfigEnum {
 
-    private ListUtil() {}
+    private ConfigEnum() {}
 
     public enum ParticleOption {
         angry_villager(ParticleTypes.ANGRY_VILLAGER),

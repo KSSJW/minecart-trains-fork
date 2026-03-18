@@ -16,19 +16,15 @@ public class UnLinkUtil {
         // 清理父节点
         if (icu.getParentUUID() != null) {
             Entity parentEntity = world.getEntity(icu.getParentUUID());
-            if (parentEntity instanceof IChainableUtil parent) {
-                parent.setChildUUID(null);
-                parent.setChildClientID(0);
-            }
+
+            if (parentEntity instanceof IChainableUtil parent) parent.setChildUUID(null);
         }
 
         // 清理子节点
         if (icu.getChildUUID() != null) {
             Entity childEntity = world.getEntity(icu.getChildUUID());
-            if (childEntity instanceof IChainableUtil child) {
-                child.setParentUUID(null);
-                child.setParentClientID(0);
-            }
+
+            if (childEntity instanceof IChainableUtil child) child.setParentUUID(null);
         }
 
         // 保存连接状态
@@ -39,8 +35,6 @@ public class UnLinkUtil {
         // 最后清理自己
         icu.setParentUUID(null);
         icu.setChildUUID(null);
-        icu.setParentClientID(0);
-        icu.setChildClientID(0);
 
         // 根据情况掉落铁链
         if (wasLinked && icu instanceof Entity entity) {
@@ -75,6 +69,7 @@ public class UnLinkUtil {
                 ItemEntity itemEntity = new ItemEntity(world, x, y, z, new ItemStack(Items.CHAIN));
                 world.spawnEntity(itemEntity);
             }
+            
             if (hadChild) {
                 ItemEntity itemEntity = new ItemEntity(world, x, y, z, new ItemStack(Items.CHAIN));
                 world.spawnEntity(itemEntity);
