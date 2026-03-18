@@ -16,9 +16,6 @@ public class DataUtil {
 
         nbt.putLong("ChildUUIDMost", icu.getChildUUID() != null ? icu.getChildUUID().getMostSignificantBits() : 0L);
         nbt.putLong("ChildUUIDLeast", icu.getChildUUID() != null ? icu.getChildUUID().getLeastSignificantBits() : 0L);
-
-        nbt.putInt("ParentClientID", icu.getParentClientID());
-        nbt.putInt("ChildClientID", icu.getChildClientID());
     }
 
 
@@ -32,11 +29,5 @@ public class DataUtil {
         long childLeast = nbt.getLong("ChildUUIDLeast", 0L);
         @Nullable UUID childUUID = (childMost != 0L || childLeast != 0L) ? new UUID(childMost, childLeast) : null;
         icu.setChildUUID(childUUID);
-
-        int parentClientID = nbt.getInt("ParentClientID", -1);
-        icu.setParentClientID(parentClientID);
-
-        int childClientID = nbt.getInt("ChildClientID", -1);
-        icu.setChildClientID(childClientID);
     }
 }

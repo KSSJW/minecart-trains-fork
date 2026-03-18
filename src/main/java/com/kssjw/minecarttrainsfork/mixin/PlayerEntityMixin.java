@@ -10,10 +10,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
 @Mixin(PlayerEntity.class)
-public abstract class PlayerEntityMixin {
+public class PlayerEntityMixin {
     
-    @Unique
-    private ItemStack lastMainHand = ItemStack.EMPTY;
+    @Unique private ItemStack lastMainHand = ItemStack.EMPTY;
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void onTick(CallbackInfo ci) {
@@ -22,9 +21,7 @@ public abstract class PlayerEntityMixin {
 
         // 检查是否发生变化
         if (!ItemStack.areEqual(current, lastMainHand)) {
-
             ExitUtil.exit(current, lastMainHand, player);
-
             lastMainHand = current.copy();  // 更新缓存
         }
     }

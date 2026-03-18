@@ -11,12 +11,25 @@
     "text.autoconfig.minecart-trains-fork.category.general": "一般設定",
     "text.autoconfig.minecart-trains-fork.category.advanced": "進階設定",
 
-    "text.autoconfig.minecart-trains-fork.option.enabledDefaultLinkParticle": "顯示預設連接粒子",
-    "text.autoconfig.minecart-trains-fork.option.enabledDefaultHeadParticle": "顯示預設頭車粒子",
-    "text.autoconfig.minecart-trains-fork.option.enabledNotice": "顯示鏈接提示",
+    "text.autoconfig.minecart-trains-fork.option.enabledDefaultLinkParticle.@PrefixText": "連接粒子",
+    "text.autoconfig.minecart-trains-fork.option.enabledDefaultLinkParticle": "    顯示預設連接粒子",
 
-    "text.autoconfig.minecart-trains-fork.option.enabledCustomLinkParticle": "顯示自訂連接粒子",
-    "text.autoconfig.minecart-trains-fork.option.selectedLinkParticle": "選擇的自訂連接粒子",
-    "text.autoconfig.minecart-trains-fork.option.enabledCustomHeadParticle": "顯示自訂頭車粒子",
-    "text.autoconfig.minecart-trains-fork.option.selectedHeadParticle": "選擇的自訂頭車粒子"
+    "text.autoconfig.minecart-trains-fork.option.enabledDefaultHeadParticle.@PrefixText": "頭車粒子",
+    "text.autoconfig.minecart-trains-fork.option.enabledDefaultHeadParticle": "    顯示預設頭車粒子",
+
+    "text.autoconfig.minecart-trains-fork.option.enabledLinkLine.@PrefixText": "連接線條",
+    "text.autoconfig.minecart-trains-fork.option.enabledLinkLine": "    顯示連接線條",
+
+    "text.autoconfig.minecart-trains-fork.option.enabledNotice.@PrefixText": "提示",
+    "text.autoconfig.minecart-trains-fork.option.enabledNotice": "    顯示鏈接提示",
+
+    "text.autoconfig.minecart-trains-fork.option.enabledCustomLinkParticle.@PrefixText": "連接粒子",
+    "text.autoconfig.minecart-trains-fork.option.enabledCustomLinkParticle": "    顯示自訂連接粒子",
+    "text.autoconfig.minecart-trains-fork.option.selectedLinkParticle": "    選擇的自訂連接粒子",
+    "text.autoconfig.minecart-trains-fork.option.customLinkParticleCycle": "    自訂連接粒子週期",
+
+    "text.autoconfig.minecart-trains-fork.option.enabledCustomHeadParticle.@PrefixText": "頭車粒子",
+    "text.autoconfig.minecart-trains-fork.option.enabledCustomHeadParticle": "    顯示自訂頭車粒子",
+    "text.autoconfig.minecart-trains-fork.option.selectedHeadParticle": "    選擇的自訂頭車粒子",
+    "text.autoconfig.minecart-trains-fork.option.customHeadParticleCycle": "    自訂頭車粒子週期"
 }
