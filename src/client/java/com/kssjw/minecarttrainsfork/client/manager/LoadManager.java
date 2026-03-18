@@ -1,6 +1,6 @@
 package com.kssjw.minecarttrainsfork.client.manager;
 
-import com.kssjw.minecarttrainsfork.client.config.ValueConfig;
+import com.kssjw.minecarttrainsfork.client.extension.config.ConfigValue;
 
 public class LoadManager {
 
@@ -14,11 +14,8 @@ public class LoadManager {
             apiFound = false;
         }
 
-        if (apiFound == true) {
-
-            // 替代 AutoConfig.register(ValueConfig.class, GsonConfigSerializer::new);
-            me.shedaniel.autoconfig.AutoConfig.register(ValueConfig.class, me.shedaniel.autoconfig.serializer.GsonConfigSerializer::new);
-        }
+        if (apiFound == true) me.shedaniel.autoconfig.AutoConfig.register(ConfigValue.class, me.shedaniel.autoconfig.serializer.GsonConfigSerializer::new); // 替代 AutoConfig.register(ValueConfig.class, GsonConfigSerializer::new);
+        
     }
 
     public static boolean isAPIFound() {

@@ -4,8 +4,7 @@
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
 		"AbstractMinecartEntityMixin",
-		"CartRemoveMixin",
-		"EntityTrackerEntryMixin",
+		"EntityMixin",
 		"ItemEntityMixin",
 		"ItemStackMixin",
 		"PlayerEntityMixin"
