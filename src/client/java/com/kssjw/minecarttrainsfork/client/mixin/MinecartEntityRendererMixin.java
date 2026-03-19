@@ -20,7 +20,6 @@ public abstract class MinecartEntityRendererMixin<T extends AbstractMinecartEnti
 
     protected MinecartEntityRendererMixin(EntityRendererFactory.Context context) {super(context);}
 
-    // 矿车之间的粒子渲染
     @Inject(method = "render(Lnet/minecraft/entity/vehicle/AbstractMinecartEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("TAIL"))
     public void mctrains$updateRenderState(
         T entity,
@@ -34,25 +33,19 @@ public abstract class MinecartEntityRendererMixin<T extends AbstractMinecartEnti
         try {
             ParticleManager.linkParticle(entity);
         } catch (Throwable ex) {
-            LogUtil.print("UpdateRenderState particle error: " + ex);
+            LogUtil.print("Link particle error: " + ex);
         }
-    }
 
-    // 头车渲染粒子
-    @Inject(method = "render(Lnet/minecraft/entity/vehicle/AbstractMinecartEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("TAIL"))
-    public void mctrains$renderHeadParticles(
-        T entity,
-        float yaw,
-        float tickDelta,
-        MatrixStack matrices,
-        VertexConsumerProvider vertexConsumers,
-        int light,
-        CallbackInfo ci
-    ) {
         try {
             ParticleManager.headParticle(entity);
         } catch (Throwable ex) {
             LogUtil.print("Head particle error: " + ex);
+        }
+
+        try {
+            ParticleManager.linkLine(entity);
+        } catch (Throwable ex) {
+            LogUtil.print("Link line error: " + ex);
         }
     }
 }

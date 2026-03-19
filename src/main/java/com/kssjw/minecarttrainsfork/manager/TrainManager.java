@@ -1,6 +1,7 @@
 package com.kssjw.minecarttrainsfork.manager;
 
 import com.kssjw.minecarttrainsfork.util.IChainableUtil;
+import com.kssjw.minecarttrainsfork.util.PositionUitl;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
@@ -11,17 +12,22 @@ import net.minecraft.util.math.Vec3d;
 public class TrainManager {
     
     public static void tick(AbstractMinecartEntity entity) {
-        if (!entity.getEntityWorld().isClient()) {
-            if(entity.getChainedParent() != null) {
-                double distance = entity.getChainedParent().distanceTo(entity) - 1;
+        if (!entity.getWorld().isClient()) {
 
-                if(distance <= 4) {
-                    Vec3d directionToParent = entity.getChainedParent().getPos().subtract(entity.getPos()).normalize();
+            if (!PositionUitl.isWorldInitiated(entity.getWorld())) PositionUitl.setWorld(entity.getWorld());
 
-                    if(distance > 1) {
-                        Vec3d parentVelocity = entity.getChainedParent().getVelocity();
+            IChainableUtil entityIChainable = (IChainableUtil)entity;
 
-                        if(parentVelocity.length() == 0) {
+            if (entityIChainable.getChainedParent() != null) {
+                double distance = entityIChainable.getChainedParent().distanceTo(entity) - 1;
+
+                if (distance <= 4) {
+                    Vec3d directionToParent = entityIChainable.getChainedParent().getPos().subtract(entity.getPos()).normalize();
+
+                    if (distance > 1) {
+                        Vec3d parentVelocity = entityIChainable.getChainedParent().getVelocity();
+
+                        if (parentVelocity.length() == 0) {
                             entity.setVelocity(directionToParent.multiply(0.05));
                         } else {
                             entity.setVelocity(directionToParent.multiply(parentVelocity.length()));
@@ -29,26 +35,28 @@ public class TrainManager {
                         }
                     } else if(distance < 0.8) {
                         entity.setVelocity(directionToParent.multiply(-0.05));
-                    }else {
+                    } else {
                         entity.setVelocity(Vec3d.ZERO);
                     }
                 } else {
-                    IChainableUtil.unsetChainedParentChild(entity.getChainedParent(), entity);
+                    IChainableUtil.unsetChainedParentChild((IChainableUtil)entityIChainable.getChainedParent(), entityIChainable);
                     entity.dropStack(new ItemStack(Items.CHAIN));
+
                     return;
                 }
 
-                if(entity.getChainedParent().isRemoved()) {
-                    IChainableUtil.unsetChainedParentChild(entity.getChainedParent(), entity);
-                }
+                if (entityIChainable.getChainedParent().isRemoved()) IChainableUtil.unsetChainedParentChild((IChainableUtil)entityIChainable.getChainedParent(), entityIChainable);
             }
 
-            if(entity.getChainedChild() != null && entity.getChainedChild().isRemoved()) {
-                IChainableUtil.unsetChainedParentChild(entity, entity.getChainedChild());
-            }
+            if (entityIChainable.getChainedChild() != null && entityIChainable.getChainedChild().isRemoved()) IChainableUtil.unsetChainedParentChild(entityIChainable, (IChainableUtil)entityIChainable.getChainedChild());
 
-            for(Entity otherEntity : entity.getEntityWorld().getOtherEntities(entity, entity.getBoundingBox().expand(0.1), entity::collidesWith)) {
-                if(otherEntity instanceof AbstractMinecartEntity otherCart && entity.getChainedParent() != null && !otherCart.equals(entity.getChainedChild())) {
+            for (Entity otherEntity : entity.getWorld().getOtherEntities(entity, entity.getBoundingBox().expand(0.1), entity::collidesWith)) {
+
+                if (
+                    otherEntity instanceof AbstractMinecartEntity otherCart
+                    && entityIChainable.getChainedParent() != null
+                    && !otherCart.equals(entityIChainable.getChainedChild())
+                ) {
                     otherCart.setVelocity(entity.getVelocity());
                 }
             }

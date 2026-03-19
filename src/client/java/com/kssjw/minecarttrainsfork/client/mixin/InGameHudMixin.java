@@ -13,12 +13,10 @@ import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.text.Text;
 
 @Mixin(InGameHud.class)
-public abstract class InGameHudMixin {
+public class InGameHudMixin {
 
     @Inject(method = "setOverlayMessage", at = @At("HEAD"), cancellable = true)
     private void interceptOverlayMessage(Text message, boolean tinted, CallbackInfo ci) {
-
-        // 判断是否带有隐藏标记
         String insertion = message.getStyle().getInsertion();
 
         if (LoadManager.isAPIFound() == true

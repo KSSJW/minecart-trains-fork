@@ -16,27 +16,18 @@ public class DataUtil {
 
         nbt.putLong("ChildUUIDMost", icu.getChildUUID() != null ? icu.getChildUUID().getMostSignificantBits() : 0L);
         nbt.putLong("ChildUUIDLeast", icu.getChildUUID() != null ? icu.getChildUUID().getLeastSignificantBits() : 0L);
-
-        nbt.putInt("ParentClientID", icu.getParentClientID());
-        nbt.putInt("ChildClientID", icu.getChildClientID());
     }
 
 
     public static void readData(NbtCompound nbt, IChainableUtil icu) {
-        long parentMost = CompatUtil.getLongCompat(nbt, "ParentUUIDMost", 0L);
-        long parentLeast = CompatUtil.getLongCompat(nbt, "ParentUUIDLeast", 0L);
+        long parentMost = nbt.contains("ParentUUIDMost") ? nbt.getLong("ParentUUIDMost") : 0L;
+        long parentLeast = nbt.contains("ParentUUIDLeast") ? nbt.getLong("ParentUUIDLeast") : 0L;
         @Nullable UUID parentUUID = (parentMost != 0L || parentLeast != 0L) ? new UUID(parentMost, parentLeast) : null;
         icu.setParentUUID(parentUUID);
 
-        long childMost = CompatUtil.getLongCompat(nbt, "ChildUUIDMost", 0L);
-        long childLeast = CompatUtil.getLongCompat(nbt, "ChildUUIDLeast", 0L);
+        long childMost = nbt.contains("ChildUUIDMost") ? nbt.getLong("ChildUUIDMost") : 0L;
+        long childLeast = nbt.contains("ChildUUIDLeast") ? nbt.getLong("ChildUUIDLeast") : 0L;
         @Nullable UUID childUUID = (childMost != 0L || childLeast != 0L) ? new UUID(childMost, childLeast) : null;
         icu.setChildUUID(childUUID);
-
-        int parentClientID = CompatUtil.getIntCompat(nbt, "ParentClientID", -1);
-        icu.setParentClientID(parentClientID);
-
-        int childClientID = CompatUtil.getIntCompat(nbt, "ChildClientID", -1);
-        icu.setChildClientID(childClientID);
     }
 }

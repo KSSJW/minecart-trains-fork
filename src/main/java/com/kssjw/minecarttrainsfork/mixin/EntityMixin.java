@@ -14,13 +14,15 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 
 @Mixin(Entity.class)
-public class CartRemoveMixin {
+public class EntityMixin {
+    
     @Inject(method = "remove", at = @At("TAIL"))
     private void onRemove(Entity.RemovalReason reason, CallbackInfo ci) {
         Entity self = (Entity)(Object)this;
+
         if (self instanceof AbstractMinecartEntity) {
             IChainableUtil icu = (IChainableUtil)(Object)this;
-            World world = ((Entity)(Object)this).getEntityWorld();
+            World world = ((Entity)(Object)this).getWorld();
             if (!world.isClient()) {
                 ServerWorld serverWorld = (ServerWorld)world;
                 UnLinkUtil.unlinkHandle(icu, serverWorld, null);
