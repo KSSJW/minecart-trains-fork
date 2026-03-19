@@ -13,14 +13,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
 @Mixin(ItemEntity.class)
-public abstract class ItemEntityMixin {
+public class ItemEntityMixin {
 
     @Inject(method = "onPlayerCollision", at = @At("HEAD"))
     private void onPickup(PlayerEntity player, CallbackInfo ci) {
         ItemEntity self = (ItemEntity)(Object)this;
         ItemStack stack = self.getStack();
-        if (stack.isOf(Items.CHAIN)) {
-            stack.remove(ComponentUtil.PARENT_ID);
-        }
+        
+        if (stack.isOf(Items.CHAIN)) stack.remove(ComponentUtil.PARENT_ID);
     }
 }
