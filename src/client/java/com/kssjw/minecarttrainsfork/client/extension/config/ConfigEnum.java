@@ -1,13 +1,14 @@
 package com.kssjw.minecarttrainsfork.client.extension.config;
 
+import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.particle.SimpleParticleType;
 
 public class ConfigEnum {
 
     private ConfigEnum() {}
 
     public enum ParticleOption {
+        ambient_entity_effect(ParticleTypes.AMBIENT_ENTITY_EFFECT),
         angry_villager(ParticleTypes.ANGRY_VILLAGER),
         ash(ParticleTypes.ASH),
         bubble(ParticleTypes.BUBBLE),
@@ -18,12 +19,12 @@ public class ConfigEnum {
         cherry_leaves(ParticleTypes.CHERRY_LEAVES),
         cloud(ParticleTypes.CLOUD),
         composter(ParticleTypes.COMPOSTER),
-        copper_fire_flame(ParticleTypes.COPPER_FIRE_FLAME),
         crimson_spore(ParticleTypes.CRIMSON_SPORE),
         crit(ParticleTypes.CRIT),
         current_down(ParticleTypes.CURRENT_DOWN),
         damage_indicator(ParticleTypes.DAMAGE_INDICATOR),
         dolphin(ParticleTypes.DOLPHIN),
+        dragon_breath(ParticleTypes.DRAGON_BREATH),
         dripping_dripstone_lava(ParticleTypes.DRIPPING_DRIPSTONE_LAVA),
         dripping_dripstone_water(ParticleTypes.DRIPPING_DRIPSTONE_WATER),
         dripping_honey(ParticleTypes.DRIPPING_HONEY),
@@ -31,12 +32,14 @@ public class ConfigEnum {
         dripping_obsidian_tear(ParticleTypes.DRIPPING_OBSIDIAN_TEAR),
         dripping_water(ParticleTypes.DRIPPING_WATER),
         dust_plume(ParticleTypes.DUST_PLUME),
+        effect(ParticleTypes.EFFECT),
         egg_crack(ParticleTypes.EGG_CRACK),
         elder_guardian(ParticleTypes.ELDER_GUARDIAN),
         electric_spark(ParticleTypes.ELECTRIC_SPARK),
         enchant(ParticleTypes.ENCHANT),
         enchanted_hit(ParticleTypes.ENCHANTED_HIT),
         end_rod(ParticleTypes.END_ROD),
+        entity_effect(ParticleTypes.ENTITY_EFFECT),
         explosion(ParticleTypes.EXPLOSION),
         explosion_emitter(ParticleTypes.EXPLOSION_EMITTER),
         falling_dripstone_lava(ParticleTypes.FALLING_DRIPSTONE_LAVA),
@@ -47,19 +50,18 @@ public class ConfigEnum {
         falling_obsidian_tear(ParticleTypes.FALLING_OBSIDIAN_TEAR),
         falling_spore_blossom(ParticleTypes.FALLING_SPORE_BLOSSOM),
         falling_water(ParticleTypes.FALLING_WATER),
-        firefly(ParticleTypes.FIREFLY),
         firework(ParticleTypes.FIREWORK),
         fishing(ParticleTypes.FISHING),
         flame(ParticleTypes.FLAME),
+        flash(ParticleTypes.FLASH),
         glow(ParticleTypes.GLOW),
         glow_squid_ink(ParticleTypes.GLOW_SQUID_INK),
         gust(ParticleTypes.GUST),
-        gust_emitter_large(ParticleTypes.GUST_EMITTER_LARGE),
-        gust_emitter_small(ParticleTypes.GUST_EMITTER_SMALL),
+        gust_dust(ParticleTypes.GUST_DUST),
+        gust_emitter(ParticleTypes.GUST_EMITTER),
         happy_villager(ParticleTypes.HAPPY_VILLAGER),
         heart(ParticleTypes.HEART),
-        infested(ParticleTypes.INFESTED),
-        item_cobweb(ParticleTypes.ITEM_COBWEB),
+        instant_effect(ParticleTypes.INSTANT_EFFECT),
         item_slime(ParticleTypes.ITEM_SLIME),
         item_snowball(ParticleTypes.ITEM_SNOWBALL),
         landing_honey(ParticleTypes.LANDING_HONEY),
@@ -70,18 +72,14 @@ public class ConfigEnum {
         mycelium(ParticleTypes.MYCELIUM),
         nautilus(ParticleTypes.NAUTILUS),
         note(ParticleTypes.NOTE),
-        ominous_spawning(ParticleTypes.OMINOUS_SPAWNING),
-        pale_oak_leaves(ParticleTypes.PALE_OAK_LEAVES),
         poof(ParticleTypes.POOF),
         portal(ParticleTypes.PORTAL),
-        raid_omen(ParticleTypes.RAID_OMEN),
         rain(ParticleTypes.RAIN),
         reverse_portal(ParticleTypes.REVERSE_PORTAL),
         scrape(ParticleTypes.SCRAPE),
         sculk_charge_pop(ParticleTypes.SCULK_CHARGE_POP),
         sculk_soul(ParticleTypes.SCULK_SOUL),
         small_flame(ParticleTypes.SMALL_FLAME),
-        small_gust(ParticleTypes.SMALL_GUST),
         smoke(ParticleTypes.SMOKE),
         sneeze(ParticleTypes.SNEEZE),
         snowflake(ParticleTypes.SNOWFLAKE),
@@ -94,11 +92,8 @@ public class ConfigEnum {
         squid_ink(ParticleTypes.SQUID_INK),
         sweep_attack(ParticleTypes.SWEEP_ATTACK),
         totem_of_undying(ParticleTypes.TOTEM_OF_UNDYING),
-        trial_omen(ParticleTypes.TRIAL_OMEN),
         trial_spawner_detection(ParticleTypes.TRIAL_SPAWNER_DETECTION),
-        trial_spawner_detection_ominous(ParticleTypes.TRIAL_SPAWNER_DETECTION_OMINOUS),
         underwater(ParticleTypes.UNDERWATER),
-        vault_connection(ParticleTypes.VAULT_CONNECTION),
         warped_spore(ParticleTypes.WARPED_SPORE),
         wax_off(ParticleTypes.WAX_OFF),
         wax_on(ParticleTypes.WAX_ON),
@@ -106,13 +101,13 @@ public class ConfigEnum {
         white_smoke(ParticleTypes.WHITE_SMOKE),
         witch(ParticleTypes.WITCH);
 
-        private final SimpleParticleType type;
+        private final DefaultParticleType type;
 
-        ParticleOption(SimpleParticleType type) {
+        ParticleOption(DefaultParticleType type) {
           this.type = type;
         }
 
-        public SimpleParticleType getType() {
+        public DefaultParticleType getType() {
           return type;
         }
     }

@@ -1,7 +1,7 @@
 package com.kssjw.minecarttrainsfork.dev;
 
+import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.particle.SimpleParticleType;
 import java.lang.reflect.Field;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,7 +18,7 @@ public class ParticleEnumGenerator {
 
             for (Field field : ParticleTypes.class.getFields()) {
 
-                if (java.lang.reflect.Modifier.isStatic(field.getModifiers()) && SimpleParticleType.class.isAssignableFrom(field.getType())) names.add(field.getName());
+                if (java.lang.reflect.Modifier.isStatic(field.getModifiers()) && field.getType() == DefaultParticleType.class) names.add(field.getName());
             }
 
             Collections.sort(names);

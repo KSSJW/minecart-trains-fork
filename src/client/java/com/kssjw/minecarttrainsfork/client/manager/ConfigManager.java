@@ -1,7 +1,6 @@
 package com.kssjw.minecarttrainsfork.client.manager;
 
-import net.minecraft.particle.SimpleParticleType;
-
+import net.minecraft.particle.DefaultParticleType;
 import com.kssjw.minecarttrainsfork.client.extension.config.ConfigValue;
 
 import me.shedaniel.autoconfig.AutoConfig;
@@ -32,7 +31,7 @@ public class ConfigManager {
         return config.enabledCustomLinkParticle;
     }
 
-    public static SimpleParticleType getSelectedLinkParticle() {
+    public static DefaultParticleType getSelectedLinkParticle() {
         return config.selectedLinkParticle.getType();
     }
 
@@ -44,7 +43,7 @@ public class ConfigManager {
         return config.enabledCustomHeadParticle;
     }
 
-    public static SimpleParticleType getSelectedHeadParticle() {
+    public static DefaultParticleType getSelectedHeadParticle() {
         return config.selectedHeadParticle.getType();
     }
 

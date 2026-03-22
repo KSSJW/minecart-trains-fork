@@ -5,7 +5,7 @@ import com.kssjw.minecarttrainsfork.client.util.ToastUtil;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 
-import me.shedaniel.autoconfig.AutoConfigClient;
+import me.shedaniel.autoconfig.AutoConfig;
 
 public class ConfigEntry implements ModMenuApi {
     
@@ -14,7 +14,7 @@ public class ConfigEntry implements ModMenuApi {
         return parent -> {
 
             if (LoadManager.isAPIFound()) {
-                return AutoConfigClient.getConfigScreen(ConfigValue.class, parent).get();
+                return AutoConfig.getConfigScreen(ConfigValue.class, parent).get();
             } else {
                 ToastUtil.toast("toast.minecart-trains-fork.apinotfound.title", "toast.minecart-trains-fork.apinotfound.desc");
                 return null;

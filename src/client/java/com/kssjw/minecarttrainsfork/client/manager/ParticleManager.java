@@ -6,7 +6,7 @@ import com.kssjw.minecarttrainsfork.util.PositionUitl;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayers;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -38,7 +38,7 @@ public class ParticleManager {
     private static void defaultLinkParticle(AbstractMinecartEntity cart) {
         if (LoadManager.isAPIFound() && ConfigManager.isEnabledDefaultLinkParticle() == false) return;
         if (cart == null) return;                
-        if (!(cart.getEntityWorld() instanceof ClientWorld world)) return;
+        if (!(cart.getWorld() instanceof ClientWorld world)) return;
         
         // 速度与最大数量
         final int FRAME_SKIP = 40;  // 每 X 时间刻染一次
@@ -76,11 +76,11 @@ public class ParticleManager {
             double pz = sz + dz * t;
 
             try {
-                world.addParticleClient(ParticleTypes.SOUL_FIRE_FLAME, px, py, pz, 0.0, 0.0, 0.0);
+                world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, px, py, pz, 0.0, 0.0, 0.0);
             } catch (Throwable e) {
 
                 try {
-                    world.addParticleClient(ParticleTypes.FLAME, px, py, pz, 0.0, 0.0, 0.0);    // Fallback
+                    world.addParticle(ParticleTypes.FLAME, px, py, pz, 0.0, 0.0, 0.0);    // Fallback
                 } catch (Throwable ignored) {
                     break;
                 }
@@ -92,7 +92,7 @@ public class ParticleManager {
     private static void customLinkParticle(AbstractMinecartEntity cart) {
         if (ConfigManager.isEnabledCustomLinkParticle() == false) return;
         if (cart == null) return;
-        if (!(cart.getEntityWorld() instanceof ClientWorld world)) return;
+        if (!(cart.getWorld() instanceof ClientWorld world)) return;
         
         // 速度与最大数量
         final int FRAME_SKIP = ConfigManager.getCustomLinkParticleCycle();
@@ -130,11 +130,11 @@ public class ParticleManager {
             double pz = sz + dz * t;
 
             try {
-                world.addParticleClient(ConfigManager.getSelectedLinkParticle(), px, py, pz, 0.0, 0.0, 0.0);
+                world.addParticle(ConfigManager.getSelectedLinkParticle(), px, py, pz, 0.0, 0.0, 0.0);
             } catch (Throwable e) {
 
                 try {
-                    world.addParticleClient(ParticleTypes.FLAME, px, py, pz, 0.0, 0.0, 0.0);    // Fallback
+                    world.addParticle(ParticleTypes.FLAME, px, py, pz, 0.0, 0.0, 0.0);    // Fallback
                 } catch (Throwable ignored) {
                     break;
                 }
@@ -145,7 +145,7 @@ public class ParticleManager {
     // 默认头车粒子
     private static void defaultHeadParticle(AbstractMinecartEntity entity) {
         if (LoadManager.isAPIFound() && ConfigManager.isEnabledDefaultHeadParticle() == false) return;
-        if (!(entity.getEntityWorld() instanceof ClientWorld world)) return;
+        if (!(entity.getWorld() instanceof ClientWorld world)) return;
         if (PositionUitl.getParentPos(entity.getUuid()) != null) return;
 
         // 速度与最大数量
@@ -169,11 +169,11 @@ public class ParticleManager {
             double pz = baseZ + offsetZ;
 
             try {
-                world.addParticleClient(ParticleTypes.COMPOSTER, px, py, pz, 0.0, 0.0, 0.0);
+                world.addParticle(ParticleTypes.COMPOSTER, px, py, pz, 0.0, 0.0, 0.0);
             } catch (Throwable e) {
 
                 try {
-                    world.addParticleClient(ParticleTypes.FLAME, px, py, pz, 0.0, 0.0, 0.0);    // Fallback
+                    world.addParticle(ParticleTypes.FLAME, px, py, pz, 0.0, 0.0, 0.0);    // Fallback
                 } catch (Throwable ignored) {
                     break;
                 }
@@ -184,10 +184,10 @@ public class ParticleManager {
     // 自定义头车粒子
     private static void customHeadParticle(AbstractMinecartEntity entity) {
         if (ConfigManager.isEnabledCustomHeadParticle() == false) return;
-        if (!(entity.getEntityWorld() instanceof ClientWorld)) return;
+        if (!(entity.getWorld() instanceof ClientWorld)) return;
         if (PositionUitl.getParentPos(entity.getUuid()) != null) return;
 
-        ClientWorld world = (ClientWorld) entity.getEntityWorld();
+        ClientWorld world = (ClientWorld) entity.getWorld();
 
         // 速度与最大数量
         final int FRAME_SKIP_HEAD = ConfigManager.getCustomHeadParticleCycle();
@@ -210,11 +210,11 @@ public class ParticleManager {
             double pz = baseZ + offsetZ;
 
             try {
-                world.addParticleClient(ConfigManager.getSelectedHeadParticle(), px, py, pz, 0.0, 0.0, 0.0);
+                world.addParticle(ConfigManager.getSelectedHeadParticle(), px, py, pz, 0.0, 0.0, 0.0);
             } catch (Throwable e) {
 
                 try {
-                    world.addParticleClient(ParticleTypes.FLAME, px, py, pz, 0.0, 0.0, 0.0);    // Fallback
+                    world.addParticle(ParticleTypes.FLAME, px, py, pz, 0.0, 0.0, 0.0);    // Fallback
                 } catch (Throwable ignored) {
                     break;
                 }
@@ -229,9 +229,15 @@ public class ParticleManager {
 
         if (parentPos == null) return;
 
-        Vec3d camPos = MinecraftClient.getInstance().gameRenderer.getCamera().getCameraPos();
-        Vec3d pos1 = entity.getEntityPos().subtract(camPos);
-        Vec3d pos2 = parentPos.subtract(camPos);
+        Vec3d camPos = MinecraftClient.getInstance().gameRenderer.getCamera().getPos();
+        // Vec3d pos1 = entity.getPos().subtract(camPos);
+        // Vec3d pos2 = parentPos.subtract(camPos);
+
+        // Vec3d pos1 = new Vec3d(entity.getPos().x - camPos.x, entity.getPos().y, entity.getPos().z - camPos.z);
+        // Vec3d pos2 = new Vec3d(parentPos.x - camPos.x, parentPos.y, parentPos.z - camPos.z);
+
+        Vec3d pos1 = entity.getPos();
+        Vec3d pos2 = PositionUitl.getParentPos(entity.getUuid());
 
         // 方向向量
         Vec3d dir = pos2.subtract(pos1).normalize();
@@ -251,7 +257,7 @@ public class ParticleManager {
         MatrixStack matrices = new MatrixStack();
         MatrixStack.Entry entry = matrices.peek();
         Matrix4f matrix = entry.getPositionMatrix();
-        VertexConsumer consumer = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers().getBuffer(RenderLayers.solid());
+        VertexConsumer consumer = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers().getBuffer(RenderLayer.getSolid());
 
         int segments = 12; // 圆截面分段数
         float radius = 0.04F; // 半径
@@ -269,13 +275,13 @@ public class ParticleManager {
             Vec3d v3 = pos2Edge.add(offset2);
             Vec3d v4 = pos2Edge.add(offset1);
 
-            int light = WorldRenderer.getLightmapCoordinates(entity.getEntityWorld(), BlockPos.ofFloored(pos1Edge));
+            int light = WorldRenderer.getLightmapCoordinates(entity.getWorld(), BlockPos.ofFloored(pos1Edge));
 
             // 渲染四边形 v1-v2-v3-v4
-            consumer.vertex(matrix, (float)v1.x, (float)(v1.y + 0.3), (float)v1.z).color(0xFF252c3d).texture(0.0F, 0.0F).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(0.0F, 1.0F, 0.0F);
-            consumer.vertex(matrix, (float)v2.x, (float)(v2.y + 0.3), (float)v2.z).color(0xFF252c3d).texture(1.0F, 0.0F).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(0.0F, 1.0F, 0.0F);
-            consumer.vertex(matrix, (float)v3.x, (float)(v3.y + 0.3), (float)v3.z).color(0xFF252c3d).texture(1.0F, 1.0F).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(0.0F, 1.0F, 0.0F);
-            consumer.vertex(matrix, (float)v4.x, (float)(v4.y + 0.3), (float)v4.z).color(0xFF252c3d).texture(0.0F, 1.0F).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(0.0F, 1.0F, 0.0F);
+            consumer.vertex(matrix, (float)v1.x, (float)(v1.y + 0.3), (float)v1.z).color(0xFF252c3d).texture(0.0F, 0.0F).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(0.0F, 1.0F, 0.0F).next();
+            consumer.vertex(matrix, (float)v2.x, (float)(v2.y + 0.3), (float)v2.z).color(0xFF252c3d).texture(1.0F, 0.0F).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(0.0F, 1.0F, 0.0F).next();
+            consumer.vertex(matrix, (float)v3.x, (float)(v3.y + 0.3), (float)v3.z).color(0xFF252c3d).texture(1.0F, 1.0F).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(0.0F, 1.0F, 0.0F).next();
+            consumer.vertex(matrix, (float)v4.x, (float)(v4.y + 0.3), (float)v4.z).color(0xFF252c3d).texture(0.0F, 1.0F).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(0.0F, 1.0F, 0.0F).next();
         }
     }
 }

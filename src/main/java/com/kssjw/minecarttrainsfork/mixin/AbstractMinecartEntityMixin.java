@@ -9,8 +9,8 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.world.ServerWorld;
 
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -53,14 +53,17 @@ public class AbstractMinecartEntityMixin implements IChainableUtil {
         TrainManager.tick((AbstractMinecartEntity)(Object)this);
     }
 
-    @Inject(method = "initDataTracker", at = @At("TAIL"))
-    private void initTracker(DataTracker.Builder builder, CallbackInfo ci) {
-        builder.add(PARENT_ID, -1);
-    }
-
     @Override
     public @Nullable AbstractMinecartEntity getChainedParent() {
-        return (AbstractMinecartEntity)((AbstractMinecartEntity)(Object)this).getEntityWorld().getEntity(this.getParentUUID());
+        return (AbstractMinecartEntity)(
+            (
+                (ServerWorld)(
+                    (
+                        (AbstractMinecartEntity)(Object)this
+                    ).getWorld()
+                )
+            ).getEntity(this.getParentUUID())
+        );
     }
 
     @Override
@@ -71,7 +74,13 @@ public class AbstractMinecartEntityMixin implements IChainableUtil {
 
     @Override
     public @Nullable AbstractMinecartEntity getChainedChild() {
-        return (AbstractMinecartEntity)((AbstractMinecartEntity)(Object)this).getEntityWorld().getEntity(this.getChildUUID());
+        return (AbstractMinecartEntity)(
+            (ServerWorld)(
+                (
+                    (AbstractMinecartEntity)(Object)this
+                ).getWorld()
+            )
+        ).getEntity(this.getChildUUID());
     }
 
     @Override
@@ -80,13 +89,13 @@ public class AbstractMinecartEntityMixin implements IChainableUtil {
     }
 
     // 数据存储与读取
-    @Inject(method = "writeCustomData", at = @At("TAIL"))
-    public void mctrains$writeData(WriteView writeView, CallbackInfo ci) {
-        DataUtil.writeData(writeView, (IChainableUtil)(Object)this);
+    @Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
+    public void mctrains$writeData(NbtCompound nbt, CallbackInfo ci) {
+        DataUtil.writeData(nbt, (IChainableUtil)(Object)this);
     }
 
-    @Inject(method="readCustomData", at = @At("TAIL"))
-    public void mctrains$readData(ReadView readView, CallbackInfo ci) {
-        DataUtil.readData(readView, (IChainableUtil)(Object)this);
+    @Inject(method="readCustomDataFromNbt", at = @At("TAIL"))
+    public void mctrains$readData(NbtCompound nbt, CallbackInfo ci) {
+        DataUtil.readData(nbt, (IChainableUtil)(Object)this);
     }
 }

@@ -2,6 +2,7 @@ package com.kssjw.minecarttrainsfork.util;
 
 import java.util.UUID;
 
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -24,12 +25,12 @@ public class PositionUitl {
     }
 
     public static Vec3d getParentPos(UUID uuid) {
-        IChainableUtil iChainable = (IChainableUtil)(world.getEntity(uuid));
+        IChainableUtil iChainable = (IChainableUtil)(((ServerWorld)world).getEntity(uuid));
         
         if (iChainable == null || iChainable.getParentUUID() == null) {
             return null;
         } else {
-            return world.getEntity(iChainable.getParentUUID()).getEntityPos();
+            return ((ServerWorld)world).getEntity(iChainable.getParentUUID()).getPos();
         }
     }
 }

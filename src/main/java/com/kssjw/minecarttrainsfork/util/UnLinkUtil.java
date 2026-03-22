@@ -66,12 +66,12 @@ public class UnLinkUtil {
             double z = entity.getZ() + dz;
 
             if (hadParent) {
-                ItemEntity itemEntity = new ItemEntity(world, x, y, z, new ItemStack(Items.IRON_CHAIN));
+                ItemEntity itemEntity = new ItemEntity(world, x, y, z, new ItemStack(Items.CHAIN));
                 world.spawnEntity(itemEntity);
             }
             
             if (hadChild) {
-                ItemEntity itemEntity = new ItemEntity(world, x, y, z, new ItemStack(Items.IRON_CHAIN));
+                ItemEntity itemEntity = new ItemEntity(world, x, y, z, new ItemStack(Items.CHAIN));
                 world.spawnEntity(itemEntity);
             }
         }

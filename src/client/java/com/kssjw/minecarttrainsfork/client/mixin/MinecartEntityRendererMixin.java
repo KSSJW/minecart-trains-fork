@@ -1,10 +1,12 @@
 package com.kssjw.minecarttrainsfork.client.mixin;
 
-import net.minecraft.client.render.entity.AbstractMinecartEntityRenderer;
+import net.minecraft.client.render.entity.MinecartEntityRenderer;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.state.MinecartEntityRenderState;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -13,16 +15,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.kssjw.minecarttrainsfork.client.manager.ParticleManager;
 import com.kssjw.minecarttrainsfork.util.LogUtil;
 
-@Mixin(AbstractMinecartEntityRenderer.class)
-public abstract class AbstractMinecartEntityRendererMixin<T extends AbstractMinecartEntity, S extends MinecartEntityRenderState> extends EntityRenderer<T, S> {
+@Mixin(MinecartEntityRenderer.class)
+public abstract class MinecartEntityRendererMixin<T extends AbstractMinecartEntity, S extends AbstractMinecartEntity> extends EntityRenderer<T> {
 
-    protected AbstractMinecartEntityRendererMixin(EntityRendererFactory.Context context) {super(context);}
+    protected MinecartEntityRendererMixin(EntityRendererFactory.Context context) {super(context);}
 
-    @Inject(method = "Lnet/minecraft/client/render/entity/AbstractMinecartEntityRenderer;updateRenderState(Lnet/minecraft/entity/vehicle/AbstractMinecartEntity;Lnet/minecraft/client/render/entity/state/MinecartEntityRenderState;F)V", at = @At("TAIL"))
-    private void mctrains$updateRenderState(
-        AbstractMinecartEntity entity,
-        MinecartEntityRenderState state,
+    @Inject(method = "render(Lnet/minecraft/entity/vehicle/AbstractMinecartEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("TAIL"))
+    public void mctrains$updateRenderState(
+        T entity,
+        float yaw,
         float tickDelta,
+        MatrixStack matrices,
+        VertexConsumerProvider vertexConsumers,
+        int light,
         CallbackInfo ci
     ) {
         try {

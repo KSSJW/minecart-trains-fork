@@ -5,16 +5,17 @@ import java.util.Set;
 import java.util.UUID;
 
 import com.kssjw.minecarttrainsfork.MinecartTrainsFork;
+import com.kssjw.minecarttrainsfork.util.ComponentUtil;
 import com.kssjw.minecarttrainsfork.util.IChainableUtil;
 import com.kssjw.minecarttrainsfork.util.UnLinkUtil;
 
-import net.minecraft.component.ComponentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -26,13 +27,15 @@ import net.minecraft.world.World;
 
 public class EventManager {
 
-    private static ActionResult link(ItemStack stack, AbstractMinecartEntity cart, PlayerEntity player, Hand hand, World world, ComponentType<UUID> PARENT_ID) {
+    private static ActionResult link(ItemStack stack, AbstractMinecartEntity cart, PlayerEntity player, Hand hand, World world) {
+        NbtCompound nbt = stack.getOrCreateNbt();
+
         if (
             player.isSneaking()
-            && stack.isOf(Items.IRON_CHAIN)
+            && stack.isOf(Items.CHAIN)
             && world instanceof ServerWorld server
         ) {
-            UUID uuid = stack.get(PARENT_ID);
+            UUID uuid = stack.hasNbt() && nbt != null ? stack.getNbt().getUuid(ComponentUtil.PARENT_ID) : null;
 
             if (uuid != null && !cart.getUuid().equals(uuid)) {
                 if (server.getEntity(uuid) instanceof AbstractMinecartEntity parent) {
@@ -60,16 +63,16 @@ public class EventManager {
                         IChainableUtil.setChainedParentChild(parentIChainable, cartIChainable);
                     }
                 } else {
-                    stack.remove(PARENT_ID);
+                    nbt.remove(ComponentUtil.PARENT_ID);
                 }
 
                 world.playSound(null, cart.getX(), cart.getY(), cart.getZ(), SoundEvents.BLOCK_CHAIN_PLACE, SoundCategory.NEUTRAL, 1f, 1.1f);
 
                 if (!player.isCreative()) stack.decrement(1);
 
-                stack.remove(PARENT_ID);
+                nbt.remove(ComponentUtil.PARENT_ID);
             } else {
-                stack.set(PARENT_ID, cart.getUuid());
+                nbt.putUuid(ComponentUtil.PARENT_ID, cart.getUuid());
                 world.playSound(null, cart.getX(), cart.getY(), cart.getZ(), SoundEvents.BLOCK_CHAIN_HIT, SoundCategory.NEUTRAL, 1f, 1.1f);
             }
             
@@ -96,12 +99,12 @@ public class EventManager {
         }
     }
 
-    public static ActionResult init(Entity entity, PlayerEntity player, Hand hand, World world, ComponentType<UUID> PARENT_ID) {
+    public static ActionResult init(Entity entity, PlayerEntity player, Hand hand, World world) {
         if (entity instanceof AbstractMinecartEntity cart) {
             ItemStack stack = player.getStackInHand(hand);
 
             // 链接逻辑
-            ActionResult linkResult = link(stack, cart, player, hand, world, PARENT_ID);
+            ActionResult linkResult = link(stack, cart, player, hand, world);
             
             if (linkResult == ActionResult.SUCCESS) {
                 return ActionResult.SUCCESS;
