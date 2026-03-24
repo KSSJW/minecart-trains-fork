@@ -2,6 +2,7 @@ package com.kssjw.minecarttrainsfork.util;
 
 import java.util.UUID;
 
+import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -31,6 +32,26 @@ public class PositionUitl {
             return null;
         } else {
             return ((ServerWorld)world).getEntity(iChainable.getParentUUID()).getPos();
+        }
+    }
+
+    public static UUID getParentUUID(UUID uuid) {
+        IChainableUtil iChainable = (IChainableUtil)(((ServerWorld)world).getEntity(uuid));
+
+        if (iChainable == null || iChainable.getParentUUID() == null) {
+            return null;
+        } else {
+            return iChainable.getParentUUID();
+        }
+    }
+
+    public static AbstractMinecartEntity getParentCart(UUID uuid) {
+        IChainableUtil iChainable = (IChainableUtil)(((ServerWorld)world).getEntity(uuid));
+
+        if (iChainable == null || iChainable.getParentUUID() == null) {
+            return null;
+        } else {
+            return (AbstractMinecartEntity)((ServerWorld)world).getEntity(iChainable.getParentUUID());
         }
     }
 }

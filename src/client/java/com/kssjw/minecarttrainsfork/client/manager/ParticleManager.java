@@ -8,6 +8,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
@@ -30,8 +31,8 @@ public class ParticleManager {
         if (LoadManager.isAPIFound()) customHeadParticle(entity);
     }
 
-    public static void linkLine(AbstractMinecartEntity entity) {
-        line(entity);
+    public static void linkLine(AbstractMinecartEntity entity, MatrixStack matrices, VertexConsumerProvider vertexConsumers) {
+        line(entity, matrices, vertexConsumers);
     }
     
     // 默认连接粒子
@@ -222,45 +223,26 @@ public class ParticleManager {
         }
     }
 
-    private static void line(AbstractMinecartEntity entity) {
-        if (LoadManager.isAPIFound() && ConfigManager.isEnabledLinkLine() == false) return;
+    private static void line(AbstractMinecartEntity entity, MatrixStack matrices, VertexConsumerProvider vertexConsumers) {
+        AbstractMinecartEntity parentCart = PositionUitl.getParentCart(entity.getUuid());
+        if (parentCart == null) return;
 
-        Vec3d parentPos = PositionUitl.getParentPos(entity.getUuid());
+        // 父车相对本车的局部坐标
+        Vec3d dir = parentCart.getPos().subtract(entity.getPos());
+        double length = dir.length();
+        if (length < 0.001) return;
 
-        if (parentPos == null) return;
+        // 基础向量
+        Vec3d forward = dir.normalize();
+        Vec3d up = Math.abs(forward.y) > 0.9 ? new Vec3d(1,0,0) : new Vec3d(0,1,0);
+        Vec3d side = forward.crossProduct(up).normalize();
+        up = side.crossProduct(forward).normalize();
 
-        Vec3d camPos = MinecraftClient.getInstance().gameRenderer.getCamera().getPos();
-        // Vec3d pos1 = entity.getPos().subtract(camPos);
-        // Vec3d pos2 = parentPos.subtract(camPos);
+        float radius = 0.04f; // 链条半径
+        int segments = 12;    // 圆柱分段
 
-        // Vec3d pos1 = new Vec3d(entity.getPos().x - camPos.x, entity.getPos().y, entity.getPos().z - camPos.z);
-        // Vec3d pos2 = new Vec3d(parentPos.x - camPos.x, parentPos.y, parentPos.z - camPos.z);
-
-        Vec3d pos1 = entity.getPos();
-        Vec3d pos2 = PositionUitl.getParentPos(entity.getUuid());
-
-        // 方向向量
-        Vec3d dir = pos2.subtract(pos1).normalize();
-        double dirX = dir.x;
-        double dirZ = dir.z;
-
-        // 边缘点，保证线条在两车之间
-        double offset = entity.getWidth() / 2.0;
-        Vec3d pos1Edge = pos1.add(offset * dirX, 0, offset * dirZ);
-        Vec3d pos2Edge = pos2.add(-offset * dirX, 0, -offset * dirZ);
-
-        // 构造圆截面基向量
-        Vec3d up = Math.abs(dir.y) > 0.9 ? new Vec3d(1,0,0) : new Vec3d(0,1,0);
-        Vec3d side = dir.crossProduct(up).normalize();
-        up = side.crossProduct(dir).normalize();
-
-        MatrixStack matrices = new MatrixStack();
-        MatrixStack.Entry entry = matrices.peek();
-        Matrix4f matrix = entry.getPositionMatrix();
-        VertexConsumer consumer = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers().getBuffer(RenderLayer.getSolid());
-
-        int segments = 12; // 圆截面分段数
-        float radius = 0.04F; // 半径
+        Matrix4f matrix = matrices.peek().getPositionMatrix();
+        VertexConsumer consumer = vertexConsumers.getBuffer(RenderLayer.getSolid());
 
         for (int i = 0; i < segments; i++) {
             double angle1 = 2 * Math.PI * i / segments;
@@ -269,13 +251,20 @@ public class ParticleManager {
             Vec3d offset1 = side.multiply(Math.cos(angle1) * radius).add(up.multiply(Math.sin(angle1) * radius));
             Vec3d offset2 = side.multiply(Math.cos(angle2) * radius).add(up.multiply(Math.sin(angle2) * radius));
 
-            // 在 pos1Edge 和 pos2Edge 两端生成圆环顶点
-            Vec3d v1 = pos1Edge.add(offset1);
-            Vec3d v2 = pos1Edge.add(offset2);
-            Vec3d v3 = pos2Edge.add(offset2);
-            Vec3d v4 = pos2Edge.add(offset1);
+            // 两端顶点
+            Vec3d v1 = offset1;
+            Vec3d v2 = offset2;
+            Vec3d v3 = offset2.add(forward.multiply(length));
+            Vec3d v4 = offset1.add(forward.multiply(length));
 
-            int light = WorldRenderer.getLightmapCoordinates(entity.getWorld(), BlockPos.ofFloored(pos1Edge));
+            // 边缘偏移
+            double edgeOffset = entity.getWidth() / 2.0;
+            v1 = v1.add(forward.multiply(edgeOffset));
+            v2 = v2.add(forward.multiply(edgeOffset));
+            v3 = v3.add(forward.multiply(-edgeOffset));
+            v4 = v4.add(forward.multiply(-edgeOffset));
+
+            int light = WorldRenderer.getLightmapCoordinates(entity.getEntityWorld(), BlockPos.ofFloored(entity.getPos()));
 
             // 渲染四边形 v1-v2-v3-v4
             consumer.vertex(matrix, (float)v1.x, (float)(v1.y + 0.3), (float)v1.z).color(0xFF252c3d).texture(0.0F, 0.0F).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(0.0F, 1.0F, 0.0F).next();

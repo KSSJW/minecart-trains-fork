@@ -43,7 +43,7 @@ public abstract class MinecartEntityRendererMixin<T extends AbstractMinecartEnti
         }
 
         try {
-            ParticleManager.linkLine(entity);
+            ParticleManager.linkLine(entity, matrices, vertexConsumers);
         } catch (Throwable ex) {
             LogUtil.print("Link line error: " + ex);
         }
