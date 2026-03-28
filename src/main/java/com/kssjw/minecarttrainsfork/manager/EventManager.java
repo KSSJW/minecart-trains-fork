@@ -3,39 +3,37 @@ package com.kssjw.minecarttrainsfork.manager;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import com.kssjw.minecarttrainsfork.MinecartTrainsFork;
 import com.kssjw.minecarttrainsfork.util.IChainableUtil;
 import com.kssjw.minecarttrainsfork.util.UnLinkUtil;
 
-import net.minecraft.component.ComponentType;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
-
 public class EventManager {
 
-    private static ActionResult link(ItemStack stack, AbstractMinecartEntity cart, PlayerEntity player, Hand hand, World world, ComponentType<UUID> PARENT_ID) {
+    private static InteractionResult link(ItemStack stack, AbstractMinecart cart, Player player, InteractionHand hand, Level world, DataComponentType<UUID> PARENT_ID) {
         if (
-            player.isSneaking()
-            && stack.isOf(Items.IRON_CHAIN)
-            && world instanceof ServerWorld server
+            player.isShiftKeyDown()
+            && stack.is(Items.IRON_CHAIN)
+            && world instanceof ServerLevel server
         ) {
             UUID uuid = stack.get(PARENT_ID);
 
-            if (uuid != null && !cart.getUuid().equals(uuid)) {
-                if (server.getEntity(uuid) instanceof AbstractMinecartEntity parent) {
+            if (uuid != null && !cart.getUUID().equals(uuid)) {
+                if (server.getEntity(uuid) instanceof AbstractMinecart parent) {
 
                     IChainableUtil parentIChainable = (IChainableUtil)parent;
                     IChainableUtil cartIChainable = (IChainableUtil)cart;
@@ -43,16 +41,16 @@ public class EventManager {
                     Set<IChainableUtil> train = new HashSet<>();
                     train.add(parentIChainable);
 
-                    AbstractMinecartEntity nextChainedParent;
+                    AbstractMinecart nextChainedParent;
 
                     while ((nextChainedParent = (parentIChainable).getChainedParent()) != null && !train.contains((IChainableUtil)nextChainedParent)) {
                         train.add((IChainableUtil)nextChainedParent);
                     }
 
                     if (train.contains(cartIChainable) || (parentIChainable).getChainedChild() != null) {
-                        player.sendMessage(Text.translatable(MinecartTrainsFork.MOD_ID + " ")
-                            .append(Text.translatable("message.minecart-trains-fork.invalidchaining"))
-                            .formatted(Formatting.RED), true);
+                        player.sendOverlayMessage(Component.translatable(MinecartTrainsFork.MOD_ID + " ")
+                            .append(Component.translatable("message.minecart-trains-fork.invalidchaining"))
+                            .withStyle(ChatFormatting.RED));
                     } else {
 
                         if ((cartIChainable).getChainedParent() != null) IChainableUtil.unsetChainedParentChild(cartIChainable, (IChainableUtil)((cartIChainable).getChainedParent()));
@@ -63,58 +61,58 @@ public class EventManager {
                     stack.remove(PARENT_ID);
                 }
 
-                world.playSound(null, cart.getX(), cart.getY(), cart.getZ(), SoundEvents.BLOCK_CHAIN_PLACE, SoundCategory.NEUTRAL, 1f, 1.1f);
+                world.playSound(null, cart.getX(), cart.getY(), cart.getZ(), SoundEvents.CHAIN_PLACE, SoundSource.NEUTRAL, 1f, 1.1f);
 
-                if (!player.isCreative()) stack.decrement(1);
+                if (!player.isCreative()) stack.shrink(1);
 
                 stack.remove(PARENT_ID);
             } else {
-                stack.set(PARENT_ID, cart.getUuid());
-                world.playSound(null, cart.getX(), cart.getY(), cart.getZ(), SoundEvents.BLOCK_CHAIN_HIT, SoundCategory.NEUTRAL, 1f, 1.1f);
+                stack.set(PARENT_ID, cart.getUUID());
+                world.playSound(null, cart.getX(), cart.getY(), cart.getZ(), SoundEvents.CHAIN_HIT, SoundSource.NEUTRAL, 1f, 1.1f);
             }
             
-            return ActionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
 
         } else {
-            return ActionResult.PASS;
+            return InteractionResult.PASS;
         }
     }
 
-    private static ActionResult unlink(PlayerEntity player, ItemStack stack, AbstractMinecartEntity cart, World world) {
-        if (player.isSneaking() && stack.getItem() instanceof AxeItem) {
+    private static InteractionResult unlink(Player player, ItemStack stack, AbstractMinecart cart, Level world) {
+        if (player.isShiftKeyDown() && stack.getItem() instanceof AxeItem) {
             IChainableUtil icu = (IChainableUtil)(Object)cart;
             
-            if (!world.isClient()) {
-                ServerWorld serverWorld = (ServerWorld)world;
+            if (!world.isClientSide()) {
+                ServerLevel serverWorld = (ServerLevel)world;
                 UnLinkUtil.unlinkHandle(icu, serverWorld, player);
             }
 
-            return ActionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
 
         } else {
-            return ActionResult.PASS;
+            return InteractionResult.PASS;
         }
     }
 
-    public static ActionResult init(Entity entity, PlayerEntity player, Hand hand, World world, ComponentType<UUID> PARENT_ID) {
-        if (entity instanceof AbstractMinecartEntity cart) {
-            ItemStack stack = player.getStackInHand(hand);
+    public static InteractionResult init(Entity entity, Player player, InteractionHand hand, Level world, DataComponentType<UUID> PARENT_ID) {
+        if (entity instanceof AbstractMinecart cart) {
+            ItemStack stack = player.getItemInHand(hand);
 
             // 链接逻辑
-            ActionResult linkResult = link(stack, cart, player, hand, world, PARENT_ID);
+            InteractionResult linkResult = link(stack, cart, player, hand, world, PARENT_ID);
             
-            if (linkResult == ActionResult.SUCCESS) {
-                return ActionResult.SUCCESS;
+            if (linkResult == InteractionResult.SUCCESS) {
+                return InteractionResult.SUCCESS;
             }
 
             // 解编逻辑
-            ActionResult unlinkResult = unlink(player, stack, cart, world);
+            InteractionResult unlinkResult = unlink(player, stack, cart, world);
 
-            if (unlinkResult == ActionResult.SUCCESS) {
-                return ActionResult.SUCCESS;
+            if (unlinkResult == InteractionResult.SUCCESS) {
+                return InteractionResult.SUCCESS;
             }
         }
 
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 }

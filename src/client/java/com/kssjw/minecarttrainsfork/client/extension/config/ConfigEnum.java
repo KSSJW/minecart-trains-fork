@@ -1,7 +1,7 @@
 package com.kssjw.minecarttrainsfork.client.extension.config;
 
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.particle.SimpleParticleType;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
 
 public class ConfigEnum {
 
@@ -95,8 +95,8 @@ public class ConfigEnum {
         sweep_attack(ParticleTypes.SWEEP_ATTACK),
         totem_of_undying(ParticleTypes.TOTEM_OF_UNDYING),
         trial_omen(ParticleTypes.TRIAL_OMEN),
-        trial_spawner_detection(ParticleTypes.TRIAL_SPAWNER_DETECTION),
-        trial_spawner_detection_ominous(ParticleTypes.TRIAL_SPAWNER_DETECTION_OMINOUS),
+        trial_spawner_detected_player(ParticleTypes.TRIAL_SPAWNER_DETECTED_PLAYER),
+        trial_spawner_detected_player_ominous(ParticleTypes.TRIAL_SPAWNER_DETECTED_PLAYER_OMINOUS),
         underwater(ParticleTypes.UNDERWATER),
         vault_connection(ParticleTypes.VAULT_CONNECTION),
         warped_spore(ParticleTypes.WARPED_SPORE),

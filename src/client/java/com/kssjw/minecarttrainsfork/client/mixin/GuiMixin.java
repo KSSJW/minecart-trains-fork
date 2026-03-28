@@ -9,14 +9,14 @@ import com.kssjw.minecarttrainsfork.client.manager.LoadManager;
 
 import org.spongepowered.asm.mixin.injection.At;
 
-import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.network.chat.Component;
 
-@Mixin(InGameHud.class)
-public class InGameHudMixin {
+@Mixin(Gui.class)
+public class GuiMixin {
 
     @Inject(method = "setOverlayMessage", at = @At("HEAD"), cancellable = true)
-    private void interceptOverlayMessage(Text message, boolean tinted, CallbackInfo ci) {
+    private void interceptOverlayMessage(Component message, boolean tinted, CallbackInfo ci) {
         String insertion = message.getStyle().getInsertion();
 
         if (LoadManager.isAPIFound() == true

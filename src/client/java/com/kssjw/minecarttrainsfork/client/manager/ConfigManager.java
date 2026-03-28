@@ -1,6 +1,6 @@
 package com.kssjw.minecarttrainsfork.client.manager;
 
-import net.minecraft.particle.SimpleParticleType;
+import net.minecraft.core.particles.SimpleParticleType;
 
 import com.kssjw.minecarttrainsfork.client.extension.config.ConfigValue;
 

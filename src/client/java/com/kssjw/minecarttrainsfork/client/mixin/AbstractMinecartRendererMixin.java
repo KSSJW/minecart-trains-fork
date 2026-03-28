@@ -1,8 +1,8 @@
 package com.kssjw.minecarttrainsfork.client.mixin;
 
-import net.minecraft.client.render.entity.AbstractMinecartEntityRenderer;
-import net.minecraft.client.render.entity.state.MinecartEntityRenderState;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+import net.minecraft.client.renderer.entity.AbstractMinecartRenderer;
+import net.minecraft.client.renderer.entity.state.MinecartRenderState;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -12,13 +12,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.kssjw.minecarttrainsfork.client.manager.ParticleManager;
 import com.kssjw.minecarttrainsfork.util.LogUtil;
 
-@Mixin(AbstractMinecartEntityRenderer.class)
-public class AbstractMinecartEntityRendererMixin {
+@Mixin(AbstractMinecartRenderer.class)
+public class AbstractMinecartRendererMixin {
 
-    @Inject(method = "updateRenderState", at = @At("TAIL"))
+    @Inject(method = "extractRenderState", at = @At("TAIL"))
     private void injectUpdateRenderState(
-        AbstractMinecartEntity entity,
-        MinecartEntityRenderState state,
+        AbstractMinecart entity,
+        MinecartRenderState state,
         float tickDelta,
         CallbackInfo ci
     ) {
