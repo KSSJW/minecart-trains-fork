@@ -29,7 +29,7 @@ public class EventManager {
     private static ActionResult link(ItemStack stack, AbstractMinecartEntity cart, PlayerEntity player, Hand hand, World world, ComponentType<UUID> PARENT_ID) {
         if (
             player.isSneaking()
-            && stack.isOf(Items.IRON_CHAIN)
+            && stack.isOf(Items.CHAIN)
             && world instanceof ServerWorld server
         ) {
             UUID uuid = stack.get(PARENT_ID);

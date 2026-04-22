@@ -37,7 +37,7 @@ public class ParticleManager {
     private static void defaultLinkParticle(AbstractMinecartEntity cart) {
         if (LoadManager.isAPIFound() && ConfigManager.isEnabledDefaultLinkParticle() == false) return;
         if (cart == null) return;                
-        if (!(cart.getEntityWorld() instanceof ClientWorld world)) return;
+        if (!(cart.getWorld() instanceof ClientWorld world)) return;
         
         // 速度与最大数量
         final int FRAME_SKIP = 40;  // 每 X 时间刻染一次
@@ -48,7 +48,7 @@ public class ParticleManager {
 
         AbstractMinecartEntity parentCart = (AbstractMinecartEntity)(
             cart
-                .getEntityWorld()
+                .getWorld()
                     .getEntity(
                         PositionUitl.getParentUUID(cart.getUuid())
                     )
@@ -56,7 +56,7 @@ public class ParticleManager {
 
         if (parentCart == null) return;
 
-        Vec3d parentPos = parentCart.getEntityPos();
+        Vec3d parentPos = parentCart.getPos();
 
         if (parentPos == null) return;
 
@@ -101,7 +101,7 @@ public class ParticleManager {
     private static void customLinkParticle(AbstractMinecartEntity cart) {
         if (ConfigManager.isEnabledCustomLinkParticle() == false) return;
         if (cart == null) return;
-        if (!(cart.getEntityWorld() instanceof ClientWorld world)) return;
+        if (!(cart.getWorld() instanceof ClientWorld world)) return;
         
         // 速度与最大数量
         final int FRAME_SKIP = ConfigManager.getCustomLinkParticleCycle();
@@ -112,7 +112,7 @@ public class ParticleManager {
 
         AbstractMinecartEntity parentCart = (AbstractMinecartEntity)(
             cart
-                .getEntityWorld()
+                .getWorld()
                     .getEntity(
                         PositionUitl.getParentUUID(cart.getUuid())
                     )
@@ -120,7 +120,7 @@ public class ParticleManager {
 
         if (parentCart == null) return;
 
-        Vec3d parentPos = parentCart.getEntityPos();
+        Vec3d parentPos = parentCart.getPos();
 
         if (parentPos == null) return;
 
@@ -164,11 +164,11 @@ public class ParticleManager {
     // 默认头车粒子
     private static void defaultHeadParticle(AbstractMinecartEntity cart) {
         if (LoadManager.isAPIFound() && ConfigManager.isEnabledDefaultHeadParticle() == false) return;
-        if (!(cart.getEntityWorld() instanceof ClientWorld world)) return;
+        if (!(cart.getWorld() instanceof ClientWorld world)) return;
 
         AbstractMinecartEntity parentCart = (AbstractMinecartEntity)(
             cart
-                .getEntityWorld()
+                .getWorld()
                     .getEntity(
                         PositionUitl.getParentUUID(cart.getUuid())
                     )
@@ -212,11 +212,11 @@ public class ParticleManager {
     // 自定义头车粒子
     private static void customHeadParticle(AbstractMinecartEntity cart) {
         if (ConfigManager.isEnabledCustomHeadParticle() == false) return;
-        if (!(cart.getEntityWorld() instanceof ClientWorld world)) return;
+        if (!(cart.getWorld() instanceof ClientWorld world)) return;
 
         AbstractMinecartEntity parentCart = (AbstractMinecartEntity)(
             cart
-                .getEntityWorld()
+                .getWorld()
                     .getEntity(
                         PositionUitl.getParentUUID(cart.getUuid())
                     )
@@ -262,7 +262,7 @@ public class ParticleManager {
 
         AbstractMinecartEntity parentCart = (AbstractMinecartEntity)(
             cart
-                .getEntityWorld()
+                .getWorld()
                     .getEntity(
                         PositionUitl.getParentUUID(cart.getUuid())
                     )
@@ -270,8 +270,8 @@ public class ParticleManager {
 
         if (cart== null || parentCart == null) return;
         
-        Vec3d cartPos = cart.getEntityPos();
-        Vec3d parentPos = parentCart.getEntityPos();
+        Vec3d cartPos = cart.getPos();
+        Vec3d parentPos = parentCart.getPos();
 
         // >= 1.20.5
         Vec3d camPos = MinecraftClient.getInstance().gameRenderer.getCamera().getCameraPos();
@@ -311,7 +311,7 @@ public class ParticleManager {
             Vec3d v3 = pos2Edge.add(offset2);
             Vec3d v4 = pos2Edge.add(offset1);
 
-            int light = WorldRenderer.getLightmapCoordinates(cart.getEntityWorld(), BlockPos.ofFloored(pos1Edge));
+            int light = WorldRenderer.getLightmapCoordinates(cart.getWorld(), BlockPos.ofFloored(pos1Edge));
 
             // 渲染四边形 v1-v2-v3-v4
             consumer.vertex(matrix, (float)v1.x, (float)(v1.y + 0.3), (float)v1.z).color(0xFF252c3d).texture(0.0F, 0.0F).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(0.0F, 1.0F, 0.0F);

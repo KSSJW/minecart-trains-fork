@@ -17,13 +17,13 @@ public class ItemStackMixin {
     private void onSplit(int amount, CallbackInfoReturnable<ItemStack> cir) {
         ItemStack result = cir.getReturnValue();
 
-        if (result.isOf(Items.IRON_CHAIN)) result.remove(ComponentUtil.PARENT_ID);
+        if (result.isOf(Items.CHAIN)) result.remove(ComponentUtil.PARENT_ID);
     }
 
     @Inject(method = "copyWithCount", at = @At("RETURN"))
     private void onCopyWithCount(int count, CallbackInfoReturnable<ItemStack> cir) {
         ItemStack result = cir.getReturnValue();
 
-        if (result.isOf(Items.IRON_CHAIN)) result.remove(ComponentUtil.PARENT_ID);
+        if (result.isOf(Items.CHAIN)) result.remove(ComponentUtil.PARENT_ID);
     }
 }

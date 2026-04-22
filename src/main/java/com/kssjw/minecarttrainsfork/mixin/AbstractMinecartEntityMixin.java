@@ -60,7 +60,7 @@ public class AbstractMinecartEntityMixin implements IChainableUtil {
 
     @Override
     public @Nullable AbstractMinecartEntity getChainedParent() {
-        return (AbstractMinecartEntity)((AbstractMinecartEntity)(Object)this).getEntityWorld().getEntity(this.getParentUUID());
+        return (AbstractMinecartEntity)((AbstractMinecartEntity)(Object)this).getWorld().getEntity(this.getParentUUID());
     }
 
     @Override
@@ -71,7 +71,7 @@ public class AbstractMinecartEntityMixin implements IChainableUtil {
 
     @Override
     public @Nullable AbstractMinecartEntity getChainedChild() {
-        return (AbstractMinecartEntity)((AbstractMinecartEntity)(Object)this).getEntityWorld().getEntity(this.getChildUUID());
+        return (AbstractMinecartEntity)((AbstractMinecartEntity)(Object)this).getWorld().getEntity(this.getChildUUID());
     }
 
     @Override

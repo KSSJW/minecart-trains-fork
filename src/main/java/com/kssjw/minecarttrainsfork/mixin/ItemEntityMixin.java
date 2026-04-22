@@ -20,6 +20,6 @@ public class ItemEntityMixin {
         ItemEntity self = (ItemEntity)(Object)this;
         ItemStack stack = self.getStack();
         
-        if (stack.isOf(Items.IRON_CHAIN)) stack.remove(ComponentUtil.PARENT_ID);
+        if (stack.isOf(Items.CHAIN)) stack.remove(ComponentUtil.PARENT_ID);
     }
 }

@@ -22,8 +22,7 @@ public class EntityMixin {
 
         if (self instanceof AbstractMinecartEntity) {
             IChainableUtil icu = (IChainableUtil)(Object)this;
-            World world = ((Entity)(Object)this).getEntityWorld();
-            
+            World world = ((Entity)(Object)this).getWorld();
             if (!world.isClient()) {
                 ServerWorld serverWorld = (ServerWorld)world;
                 UnLinkUtil.unlinkHandle(icu, serverWorld, null);

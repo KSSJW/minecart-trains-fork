@@ -13,9 +13,9 @@ import net.minecraft.util.math.Vec3d;
 public class TrainManager {
     
     public static void tick(AbstractMinecartEntity entity) {
-        if (!entity.getEntityWorld().isClient()) {
+        if (!entity.getWorld().isClient()) {
 
-            if (!PositionUitl.isWorldInitiated(entity.getEntityWorld())) PositionUitl.setWorld(entity.getEntityWorld());
+            if (!PositionUitl.isWorldInitiated(entity.getWorld())) PositionUitl.setWorld(entity.getWorld());
 
             IChainableUtil entityIChainable = (IChainableUtil)entity;
 
@@ -23,7 +23,7 @@ public class TrainManager {
                 double distance = entityIChainable.getChainedParent().distanceTo(entity) - 1;
 
                 if (distance <= 4) {
-                    Vec3d directionToParent = entityIChainable.getChainedParent().getEntityPos().subtract(entity.getEntityPos()).normalize();
+                    Vec3d directionToParent = entityIChainable.getChainedParent().getPos().subtract(entity.getPos()).normalize();
 
                     if (distance > 1) {
                         Vec3d parentVelocity = entityIChainable.getChainedParent().getVelocity();
@@ -41,7 +41,7 @@ public class TrainManager {
                     }
                 } else {
                     IChainableUtil.unsetChainedParentChild((IChainableUtil)entityIChainable.getChainedParent(), entityIChainable);
-                    entity.dropStack((ServerWorld) entity.getEntityWorld(), new ItemStack(Items.IRON_CHAIN));
+                    entity.dropStack((ServerWorld) entity.getWorld(), new ItemStack(Items.CHAIN));
 
                     return;
                 }
@@ -51,7 +51,7 @@ public class TrainManager {
 
             if (entityIChainable.getChainedChild() != null && entityIChainable.getChainedChild().isRemoved()) IChainableUtil.unsetChainedParentChild(entityIChainable, (IChainableUtil)entityIChainable.getChainedChild());
 
-            for (Entity otherEntity : entity.getEntityWorld().getOtherEntities(entity, entity.getBoundingBox().expand(0.1), entity::collidesWith)) {
+            for (Entity otherEntity : entity.getWorld().getOtherEntities(entity, entity.getBoundingBox().expand(0.1), entity::collidesWith)) {
 
                 if (
                     otherEntity instanceof AbstractMinecartEntity otherCart
