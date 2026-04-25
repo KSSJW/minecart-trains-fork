@@ -2,7 +2,7 @@ package com.kssjw.minecarttrainsfork.client.manager;
 
 import org.joml.Matrix4f;
 
-import com.kssjw.minecarttrainsfork.util.PositionUitl;
+import com.kssjw.minecarttrainsfork.util.IChainableUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -47,19 +47,11 @@ public class ParticleManager {
 
         if (ticks % FRAME_SKIP != 0) return;
 
-        AbstractMinecart parentCart = (AbstractMinecart)(
-            cart
-                .level()
-                    .getEntity(
-                        PositionUitl.getParentUUID(cart.getUUID())
-                    )
-        );
+        AbstractMinecart parentCart = (AbstractMinecart) world.getEntity(((IChainableUtil) cart).getParentUUID());
 
         if (parentCart == null) return;
 
         Vec3 parentPos = parentCart.position();
-
-        if (parentPos == null) return;
 
         // 粒子位置
         double sx = parentPos.x;
@@ -111,19 +103,11 @@ public class ParticleManager {
 
         if (ticks % FRAME_SKIP != 0) return;
 
-        AbstractMinecart parentCart = (AbstractMinecart)(
-            cart
-                .level()
-                    .getEntity(
-                        PositionUitl.getParentUUID(cart.getUUID())
-                    )
-        );
+        AbstractMinecart parentCart = (AbstractMinecart) world.getEntity(((IChainableUtil) cart).getParentUUID());
 
         if (parentCart == null) return;
 
         Vec3 parentPos = parentCart.position();
-
-        if (parentPos == null) return;
 
         // 粒子位置
         double sx = parentPos.x;
@@ -167,13 +151,7 @@ public class ParticleManager {
         if (LoadManager.isAPIFound() && ConfigManager.isEnabledDefaultHeadParticle() == false) return;
         if (!(cart.level() instanceof ClientLevel world)) return;
 
-        AbstractMinecart parentCart = (AbstractMinecart)(
-            cart
-                .level()
-                    .getEntity(
-                        PositionUitl.getParentUUID(cart.getUUID())
-                    )
-        );
+        AbstractMinecart parentCart = (AbstractMinecart) world.getEntity(((IChainableUtil) cart).getParentUUID());
 
         if (parentCart != null) return;
 
@@ -215,13 +193,7 @@ public class ParticleManager {
         if (ConfigManager.isEnabledCustomHeadParticle() == false) return;
         if (!(cart.level() instanceof ClientLevel world)) return;
 
-        AbstractMinecart parentCart = (AbstractMinecart)(
-            cart
-                .level()
-                    .getEntity(
-                        PositionUitl.getParentUUID(cart.getUUID())
-                    )
-        );
+        AbstractMinecart parentCart = (AbstractMinecart) world.getEntity(((IChainableUtil) cart).getParentUUID());
 
         if (parentCart != null) return;
 
@@ -260,17 +232,13 @@ public class ParticleManager {
 
     private static void line(AbstractMinecart cart) {
         if (LoadManager.isAPIFound() && ConfigManager.isEnabledLinkLine() == false) return;
+        if (cart == null) return;
+        if (!(cart.level() instanceof ClientLevel world)) return;
 
-        AbstractMinecart parentCart = (AbstractMinecart)(
-            cart
-                .level()
-                    .getEntity(
-                        PositionUitl.getParentUUID(cart.getUUID())
-                    )
-        );
+        AbstractMinecart parentCart = (AbstractMinecart) world.getEntity(((IChainableUtil) cart).getParentUUID());
 
-        if (cart== null || parentCart == null) return;
-        
+        if (parentCart == null) return;
+
         Vec3 cartPos = cart.position();
         Vec3 parentPos = parentCart.position();
 

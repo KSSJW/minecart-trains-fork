@@ -1,9 +1,11 @@
 package com.kssjw.minecarttrainsfork.manager;
 
 import com.kssjw.minecarttrainsfork.util.IChainableUtil;
-import com.kssjw.minecarttrainsfork.util.PositionUitl;
+
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -13,8 +15,6 @@ public class TrainManager {
     
     public static void tick(AbstractMinecart entity) {
         if (!entity.level().isClientSide()) {
-
-            if (!PositionUitl.isWorldInitiated(entity.level())) PositionUitl.setWorld(entity.level());
 
             IChainableUtil entityIChainable = (IChainableUtil)entity;
 
@@ -39,16 +39,41 @@ public class TrainManager {
                         entity.setDeltaMovement(Vec3.ZERO);
                     }
                 } else {
-                    IChainableUtil.unsetChainedParentChild((IChainableUtil)entityIChainable.getChainedParent(), entityIChainable);
+                    AbstractMinecart parentCart = entityIChainable.getChainedParent();
+
+                    IChainableUtil.unsetChainedParentChild((IChainableUtil)parentCart, entityIChainable);
                     entity.spawnAtLocation((ServerLevel) entity.level(), new ItemStack(Items.IRON_CHAIN));
+
+                    for (Player p : entity.level().players()) {
+                        NetworkManager.sendRelationshipPayload(entity.getUUID(), null, (ServerPlayer) p);
+                        NetworkManager.sendRelationshipPayload(null, parentCart.getUUID(), (ServerPlayer) p);
+                    }
 
                     return;
                 }
 
-                if (entityIChainable.getChainedParent().isRemoved()) IChainableUtil.unsetChainedParentChild((IChainableUtil)entityIChainable.getChainedParent(), entityIChainable);
+                if (entityIChainable.getChainedParent().isRemoved()) {
+                    AbstractMinecart parentCart = entityIChainable.getChainedParent();
+
+                    IChainableUtil.unsetChainedParentChild((IChainableUtil)parentCart, entityIChainable);
+
+                    for (Player p : entity.level().players()) {
+                        NetworkManager.sendRelationshipPayload(entity.getUUID(), null, (ServerPlayer) p);
+                        NetworkManager.sendRelationshipPayload(null, parentCart.getUUID(), (ServerPlayer) p);
+                    }
+                }
             }
 
-            if (entityIChainable.getChainedChild() != null && entityIChainable.getChainedChild().isRemoved()) IChainableUtil.unsetChainedParentChild(entityIChainable, (IChainableUtil)entityIChainable.getChainedChild());
+            if (entityIChainable.getChainedChild() != null && entityIChainable.getChainedChild().isRemoved()) {
+                AbstractMinecart childCart = entityIChainable.getChainedChild();
+
+                IChainableUtil.unsetChainedParentChild(entityIChainable, (IChainableUtil)childCart);
+
+                for (Player p : entity.level().players()) {
+                        NetworkManager.sendRelationshipPayload(childCart.getUUID(), null, (ServerPlayer) p);
+                        NetworkManager.sendRelationshipPayload(null, childCart.getUUID(), (ServerPlayer) p);
+                }
+            }
 
             for (Entity otherEntity : entity.level().getEntities(entity, entity.getBoundingBox().inflate(0.1), entity::canCollideWith)) {
 

@@ -8,7 +8,7 @@ public class LinkUtil {
 
     private LinkUtil() {}
 
-    public static void setChainedParent(@Nullable AbstractMinecart newParent, IChainableUtil icu, AbstractMinecart entity) {
+    public static void setChainedParent(@Nullable AbstractMinecart newParent, IChainableUtil icu) {
         if(newParent != null) {
             @Nullable UUID parentUUID = newParent.getUUID();
             icu.setParentUUID(parentUUID);

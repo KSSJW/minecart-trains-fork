@@ -1,6 +1,7 @@
 package com.kssjw.minecarttrainsfork.util;
 
 import java.util.UUID;
+
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

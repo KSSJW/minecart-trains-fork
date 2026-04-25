@@ -21,7 +21,7 @@ public class AbstractMinecartRendererMixin {
         MinecartRenderState state,
         float tickDelta,
         CallbackInfo ci
-    ) {
+    ) { 
         try {
             ParticleManager.linkParticle(entity);
         } catch (Throwable ex) {

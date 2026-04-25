@@ -1,11 +1,12 @@
 package com.kssjw.minecarttrainsfork;
 
 import com.kssjw.minecarttrainsfork.manager.EventManager;
+import com.kssjw.minecarttrainsfork.manager.NetworkManager;
 import com.kssjw.minecarttrainsfork.util.ComponentUtil;
-
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -22,6 +23,8 @@ public class MinecartTrainsFork implements ModInitializer {
 		UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
 			return EventManager.init(entity, player, hand, world, ComponentUtil.PARENT_ID);
 		});
+
+		PayloadTypeRegistry.clientboundPlay().register(NetworkManager.RelationshipPayload.TYPE, NetworkManager.RelationshipPayload.CODEC);
 
 		// For Development
 		// ParticleEnumGenerator.generateEnum();

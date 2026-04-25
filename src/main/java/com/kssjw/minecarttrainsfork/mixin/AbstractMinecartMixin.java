@@ -63,7 +63,7 @@ public class AbstractMinecartMixin implements IChainableUtil {
 
     @Override
     public void setChainedParent(@Nullable AbstractMinecart newParent) {
-        LinkUtil.setChainedParent(newParent, (IChainableUtil)(Object)this, (AbstractMinecart)(Object)this);
+        LinkUtil.setChainedParent(newParent, (IChainableUtil)(Object)this);
     }
 
 
