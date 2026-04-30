@@ -1,5 +1,7 @@
 package com.kssjw.minecarttrainsfork.client.manager;
 
+import java.util.UUID;
+
 import org.joml.Matrix4f;
 
 import com.kssjw.minecarttrainsfork.util.IChainableUtil;
@@ -47,7 +49,11 @@ public class ParticleManager {
 
         if (ticks % FRAME_SKIP != 0) return;
 
-        AbstractMinecart parentCart = (AbstractMinecart) world.getEntity(((IChainableUtil) cart).getParentUUID());
+        UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
+
+        if (parentCartUuid == null) return;
+
+        AbstractMinecart parentCart = (AbstractMinecart) world.getEntity(parentCartUuid);
 
         if (parentCart == null) return;
 
@@ -103,7 +109,11 @@ public class ParticleManager {
 
         if (ticks % FRAME_SKIP != 0) return;
 
-        AbstractMinecart parentCart = (AbstractMinecart) world.getEntity(((IChainableUtil) cart).getParentUUID());
+        UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
+
+        if (parentCartUuid == null) return;
+
+        AbstractMinecart parentCart = (AbstractMinecart) world.getEntity(parentCartUuid);
 
         if (parentCart == null) return;
 
@@ -151,9 +161,9 @@ public class ParticleManager {
         if (LoadManager.isAPIFound() && ConfigManager.isEnabledDefaultHeadParticle() == false) return;
         if (!(cart.level() instanceof ClientLevel world)) return;
 
-        AbstractMinecart parentCart = (AbstractMinecart) world.getEntity(((IChainableUtil) cart).getParentUUID());
+        UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
 
-        if (parentCart != null) return;
+        if (parentCartUuid != null && world.getEntity(parentCartUuid) != null) return;
 
         // 速度与最大数量
         final int FRAME_SKIP_HEAD = 40; // 每 X 时间刻染一次
@@ -193,9 +203,9 @@ public class ParticleManager {
         if (ConfigManager.isEnabledCustomHeadParticle() == false) return;
         if (!(cart.level() instanceof ClientLevel world)) return;
 
-        AbstractMinecart parentCart = (AbstractMinecart) world.getEntity(((IChainableUtil) cart).getParentUUID());
+        UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
 
-        if (parentCart != null) return;
+        if (parentCartUuid != null && world.getEntity(parentCartUuid) != null) return;
 
         // 速度与最大数量
         final int FRAME_SKIP_HEAD = ConfigManager.getCustomHeadParticleCycle();
@@ -235,7 +245,11 @@ public class ParticleManager {
         if (cart == null) return;
         if (!(cart.level() instanceof ClientLevel world)) return;
 
-        AbstractMinecart parentCart = (AbstractMinecart) world.getEntity(((IChainableUtil) cart).getParentUUID());
+        UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
+
+        if (parentCartUuid == null) return;
+
+        AbstractMinecart parentCart = (AbstractMinecart) world.getEntity(parentCartUuid);
 
         if (parentCart == null) return;
 

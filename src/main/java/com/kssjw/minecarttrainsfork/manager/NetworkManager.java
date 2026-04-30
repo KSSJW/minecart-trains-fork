@@ -14,6 +14,8 @@ import net.minecraft.server.level.ServerPlayer;
 public class NetworkManager {
 
     public static void sendRelationshipPayload(UUID childUUID, UUID parentUUID, ServerPlayer player) {
+        if (player == null) return;
+
         RelationshipPayload relationship = new RelationshipPayload(childUUID, parentUUID);
         ServerPlayNetworking.send(player, relationship);
     }

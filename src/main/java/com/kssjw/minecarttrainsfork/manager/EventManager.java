@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
@@ -100,7 +99,7 @@ public class EventManager {
     }
 
     public static InteractionResult init(Entity entity, Player player, InteractionHand hand, Level world, DataComponentType<UUID> PARENT_ID) {
-        if (entity instanceof AbstractMinecart cart) {
+        if (entity instanceof AbstractMinecart cart && hand != null) {
             ItemStack stack = player.getItemInHand(hand);
 
             // 链接逻辑

@@ -1,5 +1,7 @@
 package com.kssjw.minecarttrainsfork.util;
 
+import java.util.UUID;
+
 import com.kssjw.minecarttrainsfork.manager.NetworkManager;
 
 import net.minecraft.server.level.ServerLevel;
@@ -16,10 +18,13 @@ public class UnLinkUtil {
     private UnLinkUtil() {};
 
     public static void unlinkHandle(IChainableUtil icu, ServerLevel world, Player player) {
+        UUID parentUUID = icu.getParentUUID();
+        UUID childUUID = icu.getChildUUID();
 
         // 清理父节点
-        if (icu.getParentUUID() != null) {
-            Entity parentEntity = world.getEntity(icu.getParentUUID());
+        if (parentUUID != null) {
+
+            Entity parentEntity = world.getEntity(parentUUID);
 
             if (parentEntity instanceof IChainableUtil parent) {
                 parent.setChildUUID(null);
@@ -29,8 +34,8 @@ public class UnLinkUtil {
         }
 
         // 清理子节点
-        if (icu.getChildUUID() != null) {
-            Entity childEntity = world.getEntity(icu.getChildUUID());
+        if (childUUID != null) {
+            Entity childEntity = world.getEntity(childUUID);
 
             if (childEntity instanceof IChainableUtil child) {
                 child.setParentUUID(null);
@@ -40,9 +45,9 @@ public class UnLinkUtil {
         }
 
         // 保存连接状态
-        boolean wasLinked = icu.getParentUUID() != null || icu.getChildUUID() != null;
-        boolean hadParent = icu.getParentUUID() != null;
-        boolean hadChild = icu.getChildUUID() != null;
+        boolean wasLinked = parentUUID != null || childUUID != null;
+        boolean hadParent = parentUUID != null;
+        boolean hadChild = childUUID != null;
 
         // 最后清理自己
         icu.setParentUUID(null);
@@ -79,6 +84,8 @@ public class UnLinkUtil {
             double x = entity.getX() + dx;
             double y = entity.getY() + dy;
             double z = entity.getZ() + dz;
+
+            if (world == null) return;
 
             if (hadParent) {
                 ItemEntity itemEntity = new ItemEntity(world, x, y, z, new ItemStack(Items.IRON_CHAIN));
