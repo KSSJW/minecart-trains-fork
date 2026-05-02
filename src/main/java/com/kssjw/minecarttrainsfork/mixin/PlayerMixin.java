@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 @Mixin(Player.class)
-public class PlayerEntityMixin {
+public class PlayerMixin {
     
     @Unique private ItemStack lastMainHand = ItemStack.EMPTY;
 
@@ -20,7 +20,7 @@ public class PlayerEntityMixin {
         ItemStack current = player.getMainHandItem();
 
         // 检查是否发生变化
-        if (!ItemStack.matches(current, lastMainHand)) {
+        if (lastMainHand != null && !ItemStack.matches(current, lastMainHand)) {
             ExitUtil.exit(current, lastMainHand, player);
             lastMainHand = current.copy();  // 更新缓存
         }

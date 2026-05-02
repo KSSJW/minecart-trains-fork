@@ -1,9 +1,15 @@
 package com.kssjw.minecarttrainsfork.util;
 
+import java.util.UUID;
+
+import com.kssjw.minecarttrainsfork.manager.NetworkManager;
+
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
@@ -12,30 +18,44 @@ public class UnLinkUtil {
     private UnLinkUtil() {};
 
     public static void unlinkHandle(IChainableUtil icu, ServerLevel world, Player player) {
+        UUID parentUUID = icu.getParentUUID();
+        UUID childUUID = icu.getChildUUID();
 
         // 清理父节点
-        if (icu.getParentUUID() != null) {
-            Entity parentEntity = world.getEntity(icu.getParentUUID());
+        if (parentUUID != null) {
 
-            if (parentEntity instanceof IChainableUtil parent) parent.setChildUUID(null);
+            Entity parentEntity = world.getEntity(parentUUID);
+
+            if (parentEntity instanceof IChainableUtil parent) {
+                parent.setChildUUID(null);
+
+                NetworkManager.sendRelationshipPayload(null, parentEntity.getUUID(), (ServerPlayer) player);
+            }
         }
 
         // 清理子节点
-        if (icu.getChildUUID() != null) {
-            Entity childEntity = world.getEntity(icu.getChildUUID());
+        if (childUUID != null) {
+            Entity childEntity = world.getEntity(childUUID);
 
-            if (childEntity instanceof IChainableUtil child) child.setParentUUID(null);
+            if (childEntity instanceof IChainableUtil child) {
+                child.setParentUUID(null);
+
+                NetworkManager.sendRelationshipPayload(childEntity.getUUID(), null, (ServerPlayer) player);
+            }
         }
 
         // 保存连接状态
-        boolean wasLinked = icu.getParentUUID() != null || icu.getChildUUID() != null;
-        boolean hadParent = icu.getParentUUID() != null;
-        boolean hadChild = icu.getChildUUID() != null;
+        boolean wasLinked = parentUUID != null || childUUID != null;
+        boolean hadParent = parentUUID != null;
+        boolean hadChild = childUUID != null;
 
         // 最后清理自己
         icu.setParentUUID(null);
         icu.setChildUUID(null);
 
+        NetworkManager.sendRelationshipPayload(((AbstractMinecart) icu).getUUID(), null, (ServerPlayer) player);
+        NetworkManager.sendRelationshipPayload(null, ((AbstractMinecart) icu).getUUID(), (ServerPlayer) player);
+        
         // 根据情况掉落铁链
         if (wasLinked && icu instanceof Entity entity) {
             double dx;
@@ -64,6 +84,8 @@ public class UnLinkUtil {
             double x = entity.getX() + dx;
             double y = entity.getY() + dy;
             double z = entity.getZ() + dz;
+
+            if (world == null) return;
 
             if (hadParent) {
                 ItemEntity itemEntity = new ItemEntity(world, x, y, z, new ItemStack(Items.IRON_CHAIN));

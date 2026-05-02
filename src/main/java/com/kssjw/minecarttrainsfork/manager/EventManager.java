@@ -3,10 +3,14 @@ package com.kssjw.minecarttrainsfork.manager;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+
+import org.jspecify.annotations.NonNull;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -56,6 +60,8 @@ public class EventManager {
                         if ((cartIChainable).getChainedParent() != null) IChainableUtil.unsetChainedParentChild(cartIChainable, (IChainableUtil)((cartIChainable).getChainedParent()));
 
                         IChainableUtil.setChainedParentChild(parentIChainable, cartIChainable);
+
+                        NetworkManager.sendRelationshipPayload(cart.getUUID(), parent.getUUID(), (ServerPlayer) player);
                     }
                 } else {
                     stack.remove(PARENT_ID);
@@ -94,8 +100,8 @@ public class EventManager {
         }
     }
 
-    public static InteractionResult init(Entity entity, Player player, InteractionHand hand, Level world, DataComponentType<UUID> PARENT_ID) {
-        if (entity instanceof AbstractMinecart cart) {
+    public static @NonNull InteractionResult init(Entity entity, Player player, InteractionHand hand, Level world, DataComponentType<UUID> PARENT_ID) {
+        if (entity instanceof AbstractMinecart cart && hand != null) {
             ItemStack stack = player.getItemInHand(hand);
 
             // 链接逻辑

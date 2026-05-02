@@ -8,10 +8,12 @@ import net.minecraft.network.chat.Component;
 public class ToastUtil {
 
     private ToastUtil() {}
-    
+
     public static void toast(String title, String description) {
+        if (title == null || description == null) return;
+
         ToastManager toastManager = Minecraft.getInstance().getToastManager();
-        SystemToast.addOrUpdate(
+        SystemToast.add(
             toastManager,
             SystemToast.SystemToastId.NARRATOR_TOGGLE,
             Component.translatable(title),

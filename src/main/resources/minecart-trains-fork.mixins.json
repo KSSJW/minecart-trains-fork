@@ -3,11 +3,11 @@
 	"package": "com.kssjw.minecarttrainsfork.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"AbstractMinecartEntityMixin",
+		"AbstractMinecartMixin",
 		"EntityMixin",
 		"ItemEntityMixin",
 		"ItemStackMixin",
-		"PlayerEntityMixin"
+		"PlayerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

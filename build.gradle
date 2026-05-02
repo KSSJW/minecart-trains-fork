@@ -24,7 +24,7 @@ loom {
 	splitEnvironmentSourceSets()
 
 	mods {
-		"minecart-trains" {
+		"minecart-trains-fork" {
 			sourceSet sourceSets.main
 			sourceSet sourceSets.client
 		}

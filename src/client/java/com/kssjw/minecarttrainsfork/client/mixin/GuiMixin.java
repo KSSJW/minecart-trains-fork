@@ -11,7 +11,7 @@ import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(Gui.class)
-public class InGameHudMixin {
+public class GuiMixin {
 
     @Inject(method = "setOverlayMessage", at = @At("HEAD"), cancellable = true)
     private void interceptOverlayMessage(Component message, boolean tinted, CallbackInfo ci) {

@@ -3,8 +3,8 @@
 	"package": "com.kssjw.minecarttrainsfork.client.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
-		"AbstractMinecartEntityRendererMixin",
-		"InGameHudMixin"
+		"AbstractMinecartRendererMixin",
+		"GuiMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
