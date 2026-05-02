@@ -25,7 +25,7 @@ This mod was forked from [Minecart Trains Mod](https://github.com/Larsens-Mods/m
 
 ## Progress
 
-Check out the latest development progress here. [Development Progress](https://windysky.gitbook.io/main/minecraft/minecart-trains-fork/version)
+Check out the latest development progress here. [Development Progress](https://www.windysky.top/docs/minecraft-java-edition/minecart-trains-fork/version)
 
 ![Two Minecarts chained together](./images/Big.png)
 

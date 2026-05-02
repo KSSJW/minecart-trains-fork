@@ -73,7 +73,7 @@ public class AbstractMinecartEntityMixin implements IChainableUtil {
 
     @Override
     public void setChainedParent(@Nullable AbstractMinecartEntity newParent) {
-        LinkUtil.setChainedParent(newParent, (IChainableUtil)(Object)this, (AbstractMinecartEntity)(Object)this);
+        LinkUtil.setChainedParent(newParent, (IChainableUtil)(Object)this);
     }
 
 

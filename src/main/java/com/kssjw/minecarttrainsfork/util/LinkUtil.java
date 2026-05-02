@@ -1,16 +1,14 @@
 package com.kssjw.minecarttrainsfork.util;
 
 import java.util.UUID;
-
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+import org.jetbrains.annotations.Nullable;
 
 public class LinkUtil {
 
     private LinkUtil() {}
 
-    public static void setChainedParent(@Nullable AbstractMinecartEntity newParent, IChainableUtil icu, AbstractMinecartEntity entity) {
+    public static void setChainedParent(@Nullable AbstractMinecartEntity newParent, IChainableUtil icu) {
         if(newParent != null) {
             @Nullable UUID parentUUID = newParent.getUuid();
             icu.setParentUUID(parentUUID);

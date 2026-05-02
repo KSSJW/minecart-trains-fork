@@ -29,7 +29,7 @@ public abstract class MinecartEntityRendererMixin<T extends AbstractMinecartEnti
         VertexConsumerProvider vertexConsumers,
         int light,
         CallbackInfo ci
-    ) {
+    ) { 
         try {
             ParticleManager.linkParticle(entity);
         } catch (Throwable ex) {

@@ -3,11 +3,6 @@ package com.kssjw.minecarttrainsfork.manager;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-
-import com.kssjw.minecarttrainsfork.MinecartTrainsFork;
-import com.kssjw.minecarttrainsfork.util.IChainableUtil;
-import com.kssjw.minecarttrainsfork.util.UnLinkUtil;
-
 import net.minecraft.component.ComponentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,6 +10,7 @@ import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -23,6 +19,9 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
+import com.kssjw.minecarttrainsfork.MinecartTrainsFork;
+import com.kssjw.minecarttrainsfork.util.IChainableUtil;
+import com.kssjw.minecarttrainsfork.util.UnLinkUtil;
 
 public class EventManager {
 
@@ -58,6 +57,8 @@ public class EventManager {
                         if ((cartIChainable).getChainedParent() != null) IChainableUtil.unsetChainedParentChild(cartIChainable, (IChainableUtil)((cartIChainable).getChainedParent()));
 
                         IChainableUtil.setChainedParentChild(parentIChainable, cartIChainable);
+
+                        NetworkManager.sendRelationshipPayload(cart.getUuid(), parent.getUuid(), (ServerPlayerEntity) player);
                     }
                 } else {
                     stack.remove(PARENT_ID);
@@ -97,7 +98,7 @@ public class EventManager {
     }
 
     public static ActionResult init(Entity entity, PlayerEntity player, Hand hand, World world, ComponentType<UUID> PARENT_ID) {
-        if (entity instanceof AbstractMinecartEntity cart) {
+        if (entity instanceof AbstractMinecartEntity cart && hand != null) {
             ItemStack stack = player.getStackInHand(hand);
 
             // 链接逻辑
