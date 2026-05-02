@@ -1,18 +1,16 @@
 package com.kssjw.minecarttrainsfork.util;
 
 import java.util.UUID;
-
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import org.jetbrains.annotations.Nullable;
-
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 
 public class LinkUtil {
 
     private LinkUtil() {}
 
-    public static void setChainedParent(@Nullable AbstractMinecartEntity newParent, IChainableUtil icu, AbstractMinecartEntity entity) {
+    public static void setChainedParent(@Nullable AbstractMinecart newParent, IChainableUtil icu, AbstractMinecart entity) {
         if(newParent != null) {
-            @Nullable UUID parentUUID = newParent.getUuid();
+            @Nullable UUID parentUUID = newParent.getUUID();
             icu.setParentUUID(parentUUID);
         } else {
             @Nullable UUID parentUUID = null;
@@ -20,9 +18,9 @@ public class LinkUtil {
         }
     }
 
-    public static void setChainedChild(@Nullable AbstractMinecartEntity newChild, IChainableUtil icu) {
+    public static void setChainedChild(@Nullable AbstractMinecart newChild, IChainableUtil icu) {
         if(newChild != null) {
-            @Nullable UUID childUUID = newChild.getUuid();
+            @Nullable UUID childUUID = newChild.getUUID();
             icu.setChildUUID(childUUID);
         } else {
             @Nullable UUID childUUID = null;

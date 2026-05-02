@@ -1,17 +1,17 @@
 package com.kssjw.minecarttrainsfork.util;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 public class UnLinkUtil {
 
     private UnLinkUtil() {};
 
-    public static void unlinkHandle(IChainableUtil icu, ServerWorld world, PlayerEntity player) {
+    public static void unlinkHandle(IChainableUtil icu, ServerLevel world, Player player) {
 
         // 清理父节点
         if (icu.getParentUUID() != null) {
@@ -43,7 +43,7 @@ public class UnLinkUtil {
             double dz;
 
             if (player == null) {
-                float yaw = entity.getYaw(); // 矿车朝向角度
+                float yaw = entity.getYRot(); // 矿车朝向角度
                 double offset = 0.6;         // 偏移距离，控制掉落在轨道两侧
 
                 dx = Math.cos(Math.toRadians(yaw + 90)) * offset;
@@ -67,12 +67,12 @@ public class UnLinkUtil {
 
             if (hadParent) {
                 ItemEntity itemEntity = new ItemEntity(world, x, y, z, new ItemStack(Items.IRON_CHAIN));
-                world.spawnEntity(itemEntity);
+                world.addFreshEntity(itemEntity);
             }
             
             if (hadChild) {
                 ItemEntity itemEntity = new ItemEntity(world, x, y, z, new ItemStack(Items.IRON_CHAIN));
-                world.spawnEntity(itemEntity);
+                world.addFreshEntity(itemEntity);
             }
         }
     }

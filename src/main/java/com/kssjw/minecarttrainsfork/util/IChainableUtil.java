@@ -1,7 +1,7 @@
 package com.kssjw.minecarttrainsfork.util;
 
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import java.util.UUID;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,14 +16,14 @@ public interface IChainableUtil {
     void setChildUUID(@Nullable UUID uuid);
 
     // 默认实现：客户端断开时清理引用和 ID
-    default @Nullable AbstractMinecartEntity getChainedParent() { return null; }
-    default void setChainedParent(@Nullable AbstractMinecartEntity newParent) {}
+    default @Nullable AbstractMinecart getChainedParent() { return null; }
+    default void setChainedParent(@Nullable AbstractMinecart newParent) {}
 
-    default @Nullable AbstractMinecartEntity getChainedChild() { return null; }
-    default void setChainedChild(@Nullable AbstractMinecartEntity newChild) {}
+    default @Nullable AbstractMinecart getChainedChild() { return null; }
+    default void setChainedChild(@Nullable AbstractMinecart newChild) {}
 
-    default AbstractMinecartEntity getAbstractMinecartEntity() {
-        return (AbstractMinecartEntity) this;
+    default AbstractMinecart getAbstractMinecartEntity() {
+        return (AbstractMinecart) this;
     }
 
     // 建立连接：先清理旧关系，再建立新关系

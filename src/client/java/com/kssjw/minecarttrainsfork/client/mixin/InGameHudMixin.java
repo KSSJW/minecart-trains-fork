@@ -6,17 +6,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.kssjw.minecarttrainsfork.client.manager.ConfigManager;
 import com.kssjw.minecarttrainsfork.client.manager.LoadManager;
-
+import net.minecraft.client.gui.Gui;
+import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.injection.At;
 
-import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.text.Text;
-
-@Mixin(InGameHud.class)
+@Mixin(Gui.class)
 public class InGameHudMixin {
 
     @Inject(method = "setOverlayMessage", at = @At("HEAD"), cancellable = true)
-    private void interceptOverlayMessage(Text message, boolean tinted, CallbackInfo ci) {
+    private void interceptOverlayMessage(Component message, boolean tinted, CallbackInfo ci) {
         String insertion = message.getStyle().getInsertion();
 
         if (LoadManager.isAPIFound() == true

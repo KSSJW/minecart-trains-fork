@@ -1,10 +1,9 @@
 package com.kssjw.minecarttrainsfork.client.manager;
 
-import net.minecraft.particle.SimpleParticleType;
-
 import com.kssjw.minecarttrainsfork.client.extension.config.ConfigValue;
 
 import me.shedaniel.autoconfig.AutoConfig;
+import net.minecraft.core.particles.SimpleParticleType;
 
 public class ConfigManager {
     

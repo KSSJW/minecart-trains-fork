@@ -2,20 +2,19 @@ package com.kssjw.minecarttrainsfork.manager;
 
 import com.kssjw.minecarttrainsfork.util.IChainableUtil;
 import com.kssjw.minecarttrainsfork.util.PositionUitl;
-
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.phys.Vec3;
 
 public class TrainManager {
     
-    public static void tick(AbstractMinecartEntity entity) {
-        if (!entity.getEntityWorld().isClient()) {
+    public static void tick(AbstractMinecart entity) {
+        if (!entity.level().isClientSide()) {
 
-            if (!PositionUitl.isWorldInitiated(entity.getEntityWorld())) PositionUitl.setWorld(entity.getEntityWorld());
+            if (!PositionUitl.isWorldInitiated(entity.level())) PositionUitl.setWorld(entity.level());
 
             IChainableUtil entityIChainable = (IChainableUtil)entity;
 
@@ -23,25 +22,25 @@ public class TrainManager {
                 double distance = entityIChainable.getChainedParent().distanceTo(entity) - 1;
 
                 if (distance <= 4) {
-                    Vec3d directionToParent = entityIChainable.getChainedParent().getEntityPos().subtract(entity.getEntityPos()).normalize();
+                    Vec3 directionToParent = entityIChainable.getChainedParent().position().subtract(entity.position()).normalize();
 
                     if (distance > 1) {
-                        Vec3d parentVelocity = entityIChainable.getChainedParent().getVelocity();
+                        Vec3 parentVelocity = entityIChainable.getChainedParent().getDeltaMovement();
 
                         if (parentVelocity.length() == 0) {
-                            entity.setVelocity(directionToParent.multiply(0.05));
+                            entity.setDeltaMovement(directionToParent.scale(0.05));
                         } else {
-                            entity.setVelocity(directionToParent.multiply(parentVelocity.length()));
-                            entity.setVelocity(entity.getVelocity().multiply(distance));
+                            entity.setDeltaMovement(directionToParent.scale(parentVelocity.length()));
+                            entity.setDeltaMovement(entity.getDeltaMovement().scale(distance));
                         }
                     } else if(distance < 0.8) {
-                        entity.setVelocity(directionToParent.multiply(-0.05));
+                        entity.setDeltaMovement(directionToParent.scale(-0.05));
                     } else {
-                        entity.setVelocity(Vec3d.ZERO);
+                        entity.setDeltaMovement(Vec3.ZERO);
                     }
                 } else {
                     IChainableUtil.unsetChainedParentChild((IChainableUtil)entityIChainable.getChainedParent(), entityIChainable);
-                    entity.dropStack((ServerWorld) entity.getEntityWorld(), new ItemStack(Items.IRON_CHAIN));
+                    entity.spawnAtLocation((ServerLevel) entity.level(), new ItemStack(Items.IRON_CHAIN));
 
                     return;
                 }
@@ -51,14 +50,14 @@ public class TrainManager {
 
             if (entityIChainable.getChainedChild() != null && entityIChainable.getChainedChild().isRemoved()) IChainableUtil.unsetChainedParentChild(entityIChainable, (IChainableUtil)entityIChainable.getChainedChild());
 
-            for (Entity otherEntity : entity.getEntityWorld().getOtherEntities(entity, entity.getBoundingBox().expand(0.1), entity::collidesWith)) {
+            for (Entity otherEntity : entity.level().getEntities(entity, entity.getBoundingBox().inflate(0.1), entity::canCollideWith)) {
 
                 if (
-                    otherEntity instanceof AbstractMinecartEntity otherCart
+                    otherEntity instanceof AbstractMinecart otherCart
                     && entityIChainable.getChainedParent() != null
                     && !otherCart.equals(entityIChainable.getChainedChild())
                 ) {
-                    otherCart.setVelocity(entity.getVelocity());
+                    otherCart.setDeltaMovement(entity.getDeltaMovement());
                 }
             }
         }

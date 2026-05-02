@@ -1,21 +1,21 @@
 package com.kssjw.minecarttrainsfork.client.util;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.toast.SystemToast;
-import net.minecraft.client.toast.ToastManager;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.toasts.SystemToast;
+import net.minecraft.client.gui.components.toasts.ToastManager;
+import net.minecraft.network.chat.Component;
 
 public class ToastUtil {
 
     private ToastUtil() {}
     
     public static void toast(String title, String description) {
-        ToastManager toastManager = MinecraftClient.getInstance().getToastManager();
-        SystemToast.show(
+        ToastManager toastManager = Minecraft.getInstance().getToastManager();
+        SystemToast.addOrUpdate(
             toastManager,
-            SystemToast.Type.NARRATOR_TOGGLE,
-            Text.translatable(title),
-            Text.translatable(description)
+            SystemToast.SystemToastId.NARRATOR_TOGGLE,
+            Component.translatable(title),
+            Component.translatable(description)
         );
     }
 }

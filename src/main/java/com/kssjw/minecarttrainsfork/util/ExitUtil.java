@@ -1,42 +1,41 @@
 package com.kssjw.minecarttrainsfork.util;
 
 import com.kssjw.minecarttrainsfork.MinecartTrainsFork;
-
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 public class ExitUtil {
     
     private ExitUtil() {}
 
-    public static void exit(ItemStack current, ItemStack lastMainHand, PlayerEntity player) {
+    public static void exit(ItemStack current, ItemStack lastMainHand, Player player) {
 
-        if (!lastMainHand.isOf(Items.IRON_CHAIN) && current.isOf(Items.IRON_CHAIN)) {
-            player.sendMessage(Text.translatable(MinecartTrainsFork.MOD_ID + " ")
-                .append(Text.translatable("message.minecart-trains-fork.chainingstarted"))
+        if (!lastMainHand.is(Items.IRON_CHAIN) && current.is(Items.IRON_CHAIN)) {
+            player.displayClientMessage(Component.translatable(MinecartTrainsFork.MOD_ID + " ")
+                .append(Component.translatable("message.minecart-trains-fork.chainingstarted"))
                 .setStyle(Style.EMPTY.withInsertion("MINECARTTRAINSFORK_OPTIONAL"))
-                .formatted(Formatting.GREEN), true);
+                .withStyle(ChatFormatting.GREEN), true);
         }
 
         // 如果之前是铁链，现在不是 → 清除 PARENT_ID
-        if (lastMainHand.isOf(Items.IRON_CHAIN) && !current.isOf(Items.IRON_CHAIN)) {
-            PlayerInventory inv = player.getInventory();
+        if (lastMainHand.is(Items.IRON_CHAIN) && !current.is(Items.IRON_CHAIN)) {
+            Inventory inv = player.getInventory();
 
-            for (int i = 0; i < inv.size(); i++) {
-                ItemStack stack = inv.getStack(i);
+            for (int i = 0; i < inv.getContainerSize(); i++) {
+                ItemStack stack = inv.getItem(i);
 
-                if (stack.isOf(Items.IRON_CHAIN)) stack.remove(ComponentUtil.PARENT_ID);
+                if (stack.is(Items.IRON_CHAIN)) stack.remove(ComponentUtil.PARENT_ID);
             }
 
-            player.sendMessage(Text.translatable(MinecartTrainsFork.MOD_ID + " ")
-                .append(Text.translatable("message.minecart-trains-fork.chainingcleared"))
+            player.displayClientMessage(Component.translatable(MinecartTrainsFork.MOD_ID + " ")
+                .append(Component.translatable("message.minecart-trains-fork.chainingcleared"))
                 .setStyle(Style.EMPTY.withInsertion("MINECARTTRAINSFORK_OPTIONAL"))
-                .formatted(Formatting.YELLOW), true);
+                .withStyle(ChatFormatting.YELLOW), true);
         }
     }
 }
