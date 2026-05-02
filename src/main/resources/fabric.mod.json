@@ -1,11 +1,14 @@
 {
 	"schemaVersion": 1,
 	"id": "minecart-trains-fork",
-	"version": "1.20-release.1",
+	"version": "2.3.0+1.20",
 	"name": "Minecart Trains Fork",
 	"description": "Forked from Minecart Trains, This mod adds additional mechanics to make minecart transportation more fun and useful as a train system!",
 	"authors": [
-		"LarsenR KSSJW"
+		"KSSJW"
+	],
+	"contributors": [
+		"LarsenR"
 	],
 	"contact": {
 		"homepage": "https://github.com/KSSJW/minecart-trains-fork",
@@ -13,39 +16,43 @@
 		"sources": "https://github.com/KSSJW/minecart-trains-fork"
 	},
 	"license": "GPL-3.0",
-	"icon": "assets/minecart-trains/icon.png",
+	"icon": "assets/minecart-trains-fork/logo/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"de.larsensmods.mctrains.MinecartTrains"
+			"com.kssjw.minecarttrainsfork.MinecartTrainsFork"
 		],
 		"client": [
-			"de.larsensmods.mctrains.MinecartTrainsClient"
+			"com.kssjw.minecarttrainsfork.client.MinecartTrainsForkClient"
 		],
-		"fabric-datagen": [
-			"de.larsensmods.mctrains.MinecartTrainsDataGenerator"
+		"modmenu": [
+			"com.kssjw.minecarttrainsfork.client.extension.config.ConfigEntry"
 		]
 	},
 	"custom": {
-		"loom:injected_interfaces": {
-			"net/minecraft/class_1688": [
-				"de/larsensmods/mctrains/interfaces/IChainable"
-			]
+		"modmenu": {
+			"links": {
+				"modmenu.modrinth": "https://modrinth.com/mod/minecart-trains-fork",
+				"modmenu.discord": "https://discord.gg/4PSurrp6Ve",
+				"modmenu.curseforge": "https://www.curseforge.com/minecraft/mc-mods/minecart-trains-fork"
+			}
 		}
 	},
 	"mixins": [
-		"minecart-trains.mixins.json",
+		"minecart-trains-fork.mixins.json",
 		{
-			"config": "minecart-trains.client.mixins.json",
+			"config": "minecart-trains-fork.client.mixins.json",
 			"environment": "client"
 		}
 	],
 	"depends": {
 		"fabricloader": ">=0.15.10",
-		"minecraft": ">=1.20 <=1.20.2",
-		"java": ">=21",
+		"minecraft": ">=1.20 <=1.20.1",
+		"java": ">=17",
 		"fabric-api": "*"
 	},
 	"suggests": {
+		"cloth-config": "*",
+		"modmenu": "*"
 	}
 }
