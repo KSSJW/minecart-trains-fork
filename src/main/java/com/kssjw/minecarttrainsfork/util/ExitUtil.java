@@ -1,7 +1,6 @@
 package com.kssjw.minecarttrainsfork.util;
 
 import com.kssjw.minecarttrainsfork.MinecartTrainsFork;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;

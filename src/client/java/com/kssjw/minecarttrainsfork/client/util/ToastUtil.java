@@ -8,10 +8,12 @@ import net.minecraft.text.Text;
 public class ToastUtil {
 
     private ToastUtil() {}
-    
+
     public static void toast(String title, String description) {
+        if (title == null || description == null) return;
+
         ToastManager toastManager = MinecraftClient.getInstance().getToastManager();
-        SystemToast.show(
+        SystemToast.add(
             toastManager,
             SystemToast.Type.NARRATOR_TOGGLE,
             Text.translatable(title),

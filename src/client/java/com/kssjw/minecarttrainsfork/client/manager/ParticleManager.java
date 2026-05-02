@@ -1,8 +1,6 @@
 package com.kssjw.minecarttrainsfork.client.manager;
 
-import org.joml.Matrix4f;
-
-import com.kssjw.minecarttrainsfork.util.PositionUitl;
+import java.util.UUID;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayers;
@@ -14,6 +12,9 @@ import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import org.joml.Matrix4f;
+
+import com.kssjw.minecarttrainsfork.util.IChainableUtil;
 
 public class ParticleManager {
 
@@ -46,24 +47,20 @@ public class ParticleManager {
 
         if (ticks % FRAME_SKIP != 0) return;
 
-        AbstractMinecartEntity parentCart = (AbstractMinecartEntity)(
-            cart
-                .getEntityWorld()
-                    .getEntity(
-                        PositionUitl.getParentUUID(cart.getUuid())
-                    )
-        );
+        UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
+
+        if (parentCartUuid == null) return;
+
+        AbstractMinecartEntity parentCart = (AbstractMinecartEntity) world.getEntity(parentCartUuid);
 
         if (parentCart == null) return;
 
         Vec3d parentPos = parentCart.getEntityPos();
 
-        if (parentPos == null) return;
-
         // 粒子位置
-        double sx = parentPos.getX();
-        double sy = parentPos.getY() + 0.6;
-        double sz = parentPos.getZ();
+        double sx = parentPos.x;
+        double sy = parentPos.y + 0.6;
+        double sz = parentPos.z;
         double ex = cart.getX();
         double ey = cart.getY() + 0.6;
         double ez = cart.getZ();
@@ -110,24 +107,20 @@ public class ParticleManager {
 
         if (ticks % FRAME_SKIP != 0) return;
 
-        AbstractMinecartEntity parentCart = (AbstractMinecartEntity)(
-            cart
-                .getEntityWorld()
-                    .getEntity(
-                        PositionUitl.getParentUUID(cart.getUuid())
-                    )
-        );
+        UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
+
+        if (parentCartUuid == null) return;
+
+        AbstractMinecartEntity parentCart = (AbstractMinecartEntity) world.getEntity(parentCartUuid);
 
         if (parentCart == null) return;
 
         Vec3d parentPos = parentCart.getEntityPos();
 
-        if (parentPos == null) return;
-
         // 粒子位置
-        double sx = parentPos.getX();
-        double sy = parentPos.getY() + 0.6;
-        double sz = parentPos.getZ();
+        double sx = parentPos.x;
+        double sy = parentPos.y + 0.6;
+        double sz = parentPos.z;
         double ex = cart.getX();
         double ey = cart.getY() + 0.6;
         double ez = cart.getZ();
@@ -166,15 +159,9 @@ public class ParticleManager {
         if (LoadManager.isAPIFound() && ConfigManager.isEnabledDefaultHeadParticle() == false) return;
         if (!(cart.getEntityWorld() instanceof ClientWorld world)) return;
 
-        AbstractMinecartEntity parentCart = (AbstractMinecartEntity)(
-            cart
-                .getEntityWorld()
-                    .getEntity(
-                        PositionUitl.getParentUUID(cart.getUuid())
-                    )
-        );
+        UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
 
-        if (parentCart != null) return;
+        if (parentCartUuid != null && world.getEntity(parentCartUuid) != null) return;
 
         // 速度与最大数量
         final int FRAME_SKIP_HEAD = 40; // 每 X 时间刻染一次
@@ -214,15 +201,9 @@ public class ParticleManager {
         if (ConfigManager.isEnabledCustomHeadParticle() == false) return;
         if (!(cart.getEntityWorld() instanceof ClientWorld world)) return;
 
-        AbstractMinecartEntity parentCart = (AbstractMinecartEntity)(
-            cart
-                .getEntityWorld()
-                    .getEntity(
-                        PositionUitl.getParentUUID(cart.getUuid())
-                    )
-        );
+        UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
 
-        if (parentCart != null) return;
+        if (parentCartUuid != null && world.getEntity(parentCartUuid) != null) return;
 
         // 速度与最大数量
         final int FRAME_SKIP_HEAD = ConfigManager.getCustomHeadParticleCycle();
@@ -259,17 +240,17 @@ public class ParticleManager {
 
     private static void line(AbstractMinecartEntity cart) {
         if (LoadManager.isAPIFound() && ConfigManager.isEnabledLinkLine() == false) return;
+        if (cart == null) return;
+        if (!(cart.getEntityWorld() instanceof ClientWorld world)) return;
 
-        AbstractMinecartEntity parentCart = (AbstractMinecartEntity)(
-            cart
-                .getEntityWorld()
-                    .getEntity(
-                        PositionUitl.getParentUUID(cart.getUuid())
-                    )
-        );
+        UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
 
-        if (cart== null || parentCart == null) return;
-        
+        if (parentCartUuid == null) return;
+
+        AbstractMinecartEntity parentCart = (AbstractMinecartEntity) world.getEntity(parentCartUuid);
+
+        if (parentCart == null) return;
+
         Vec3d cartPos = cart.getEntityPos();
         Vec3d parentPos = parentCart.getEntityPos();
 

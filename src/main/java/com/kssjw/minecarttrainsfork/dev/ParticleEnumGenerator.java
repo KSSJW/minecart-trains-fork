@@ -1,13 +1,13 @@
 package com.kssjw.minecarttrainsfork.dev;
 
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.particle.SimpleParticleType;
 import java.lang.reflect.Field;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.particle.SimpleParticleType;
 
 public class ParticleEnumGenerator {
     

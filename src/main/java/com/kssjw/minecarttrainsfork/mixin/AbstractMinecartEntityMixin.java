@@ -4,14 +4,6 @@ import com.kssjw.minecarttrainsfork.manager.TrainManager;
 import com.kssjw.minecarttrainsfork.util.LinkUtil;
 import com.kssjw.minecarttrainsfork.util.DataUtil;
 import com.kssjw.minecarttrainsfork.util.IChainableUtil;
-
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -20,6 +12,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.UUID;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 
 @Mixin(AbstractMinecartEntity.class)
 public class AbstractMinecartEntityMixin implements IChainableUtil {
@@ -65,7 +63,7 @@ public class AbstractMinecartEntityMixin implements IChainableUtil {
 
     @Override
     public void setChainedParent(@Nullable AbstractMinecartEntity newParent) {
-        LinkUtil.setChainedParent(newParent, (IChainableUtil)(Object)this, (AbstractMinecartEntity)(Object)this);
+        LinkUtil.setChainedParent(newParent, (IChainableUtil)(Object)this);
     }
 
 

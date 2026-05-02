@@ -20,7 +20,7 @@ public class PlayerEntityMixin {
         ItemStack current = player.getMainHandStack();
 
         // 检查是否发生变化
-        if (!ItemStack.areEqual(current, lastMainHand)) {
+        if (lastMainHand != null && !ItemStack.areEqual(current, lastMainHand)) {
             ExitUtil.exit(current, lastMainHand, player);
             lastMainHand = current.copy();  // 更新缓存
         }

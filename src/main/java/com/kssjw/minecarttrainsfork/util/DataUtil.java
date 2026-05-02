@@ -1,11 +1,9 @@
 package com.kssjw.minecarttrainsfork.util;
 
 import java.util.UUID;
-
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
+import org.jetbrains.annotations.Nullable;
 
 public class DataUtil {
 

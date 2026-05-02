@@ -1,12 +1,12 @@
 package com.kssjw.minecarttrainsfork.manager;
 
 import com.kssjw.minecarttrainsfork.util.IChainableUtil;
-import com.kssjw.minecarttrainsfork.util.PositionUitl;
-
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 
@@ -14,8 +14,6 @@ public class TrainManager {
     
     public static void tick(AbstractMinecartEntity entity) {
         if (!entity.getEntityWorld().isClient()) {
-
-            if (!PositionUitl.isWorldInitiated(entity.getEntityWorld())) PositionUitl.setWorld(entity.getEntityWorld());
 
             IChainableUtil entityIChainable = (IChainableUtil)entity;
 
@@ -40,23 +38,50 @@ public class TrainManager {
                         entity.setVelocity(Vec3d.ZERO);
                     }
                 } else {
-                    IChainableUtil.unsetChainedParentChild((IChainableUtil)entityIChainable.getChainedParent(), entityIChainable);
+                    AbstractMinecartEntity parentCart = entityIChainable.getChainedParent();
+
+                    IChainableUtil.unsetChainedParentChild((IChainableUtil)parentCart, entityIChainable);
                     entity.dropStack((ServerWorld) entity.getEntityWorld(), new ItemStack(Items.IRON_CHAIN));
+
+                    for (PlayerEntity p : entity.getEntityWorld().getPlayers()) {
+                        NetworkManager.sendRelationshipPayload(entity.getUuid(), null, (ServerPlayerEntity) p);
+                        NetworkManager.sendRelationshipPayload(null, parentCart.getUuid(), (ServerPlayerEntity) p);
+                    }
 
                     return;
                 }
 
-                if (entityIChainable.getChainedParent().isRemoved()) IChainableUtil.unsetChainedParentChild((IChainableUtil)entityIChainable.getChainedParent(), entityIChainable);
+                if (entityIChainable.getChainedParent().isRemoved()) {
+                    AbstractMinecartEntity parentCart = entityIChainable.getChainedParent();
+
+                    IChainableUtil.unsetChainedParentChild((IChainableUtil)parentCart, entityIChainable);
+
+                    for (PlayerEntity p : entity.getEntityWorld().getPlayers()) {
+                        NetworkManager.sendRelationshipPayload(entity.getUuid(), null, (ServerPlayerEntity) p);
+                        NetworkManager.sendRelationshipPayload(null, parentCart.getUuid(), (ServerPlayerEntity) p);
+                    }
+                }
             }
 
-            if (entityIChainable.getChainedChild() != null && entityIChainable.getChainedChild().isRemoved()) IChainableUtil.unsetChainedParentChild(entityIChainable, (IChainableUtil)entityIChainable.getChainedChild());
+            if (entityIChainable.getChainedChild() != null && entityIChainable.getChainedChild().isRemoved()) {
+                AbstractMinecartEntity childCart = entityIChainable.getChainedChild();
+
+                IChainableUtil.unsetChainedParentChild(entityIChainable, (IChainableUtil)childCart);
+
+                for (PlayerEntity p : entity.getEntityWorld().getPlayers()) {
+                        NetworkManager.sendRelationshipPayload(childCart.getUuid(), null, (ServerPlayerEntity) p);
+                        NetworkManager.sendRelationshipPayload(null, childCart.getUuid(), (ServerPlayerEntity) p);
+                }
+            }
 
             for (Entity otherEntity : entity.getEntityWorld().getOtherEntities(entity, entity.getBoundingBox().expand(0.1), entity::collidesWith)) {
 
                 if (
                     otherEntity instanceof AbstractMinecartEntity otherCart
                     && entityIChainable.getChainedParent() != null
-                    && !otherCart.equals(entityIChainable.getChainedChild())
+                    && entityIChainable.getChainedChild() != null
+                    && entityIChainable.getChainedChild() instanceof AbstractMinecartEntity childCart
+                    && !otherCart.equals(childCart)
                 ) {
                     otherCart.setVelocity(entity.getVelocity());
                 }
