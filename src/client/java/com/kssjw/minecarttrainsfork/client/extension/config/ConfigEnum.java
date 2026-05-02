@@ -1,5 +1,7 @@
 package com.kssjw.minecarttrainsfork.client.extension.config;
 
+import org.jspecify.annotations.NonNull;
+
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 
@@ -108,13 +110,13 @@ public class ConfigEnum {
         white_smoke(ParticleTypes.WHITE_SMOKE),
         witch(ParticleTypes.WITCH);
 
-        private final SimpleParticleType type;
+        @NonNull private final SimpleParticleType type;
 
-        ParticleOption(SimpleParticleType type) {
+        ParticleOption(@NonNull SimpleParticleType type) {
           this.type = type;
         }
 
-        public SimpleParticleType getType() {
+        public @NonNull SimpleParticleType getType() {
           return type;
         }
     }

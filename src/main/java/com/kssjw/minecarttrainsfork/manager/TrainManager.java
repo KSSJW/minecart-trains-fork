@@ -80,7 +80,9 @@ public class TrainManager {
                 if (
                     otherEntity instanceof AbstractMinecart otherCart
                     && entityIChainable.getChainedParent() != null
-                    && !otherCart.equals(entityIChainable.getChainedChild())
+                    && entityIChainable.getChainedChild() != null
+                    && entityIChainable.getChainedChild() instanceof AbstractMinecart childCart
+                    && !otherCart.equals(childCart)
                 ) {
                     otherCart.setDeltaMovement(entity.getDeltaMovement());
                 }
