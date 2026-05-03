@@ -22,11 +22,31 @@ import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+
 import com.kssjw.minecarttrainsfork.MinecartTrainsFork;
+import com.kssjw.minecarttrainsfork.util.ComponentUtil;
 import com.kssjw.minecarttrainsfork.util.IChainableUtil;
 import com.kssjw.minecarttrainsfork.util.UnLinkUtil;
 
 public class EventManager {
+
+    public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
+        var player = event.getEntity();
+        var world = event.getLevel();
+        var hand = event.getHand();
+        var entity = event.getTarget();
+
+        var result = init(
+            entity,
+            player,
+            hand,
+            world,
+            ComponentUtil.PARENT_ID.get()
+        );
+
+        if (result.consumesAction()) event.setCanceled(true);
+    }
 
     private static InteractionResult link(ItemStack stack, AbstractMinecart cart, Player player, InteractionHand hand, Level world, DataComponentType<UUID> PARENT_ID) {
         if (
