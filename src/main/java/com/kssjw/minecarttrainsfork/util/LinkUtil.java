@@ -1,7 +1,7 @@
 package com.kssjw.minecarttrainsfork.util;
 
 import java.util.UUID;
-import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import org.jetbrains.annotations.Nullable;
 
 public class LinkUtil {

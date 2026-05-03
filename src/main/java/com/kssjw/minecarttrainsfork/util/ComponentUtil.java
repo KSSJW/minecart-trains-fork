@@ -2,7 +2,6 @@ package com.kssjw.minecarttrainsfork.util;
 
 import java.util.UUID;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -18,7 +17,7 @@ public class ComponentUtil {
 
     private ComponentUtil() {}
 
-	public static final DeferredRegister<DataComponentType<?>> COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, MinecartTrainsFork.MOD_ID);
+	public static final DeferredRegister<DataComponentType<?>> COMPONENTS = DeferredRegister.createDataComponents(MinecartTrainsFork.MOD_ID);
 
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<UUID>> PARENT_ID =
 		COMPONENTS.register("parent_id", () ->

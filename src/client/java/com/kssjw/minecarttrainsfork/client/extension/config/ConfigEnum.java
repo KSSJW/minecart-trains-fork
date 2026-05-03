@@ -1,7 +1,5 @@
 package com.kssjw.minecarttrainsfork.client.extension.config;
 
-import org.jspecify.annotations.NonNull;
-
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 
@@ -20,12 +18,12 @@ public class ConfigEnum {
         cherry_leaves(ParticleTypes.CHERRY_LEAVES),
         cloud(ParticleTypes.CLOUD),
         composter(ParticleTypes.COMPOSTER),
-        copper_fire_flame(ParticleTypes.COPPER_FIRE_FLAME),
         crimson_spore(ParticleTypes.CRIMSON_SPORE),
         crit(ParticleTypes.CRIT),
         current_down(ParticleTypes.CURRENT_DOWN),
         damage_indicator(ParticleTypes.DAMAGE_INDICATOR),
         dolphin(ParticleTypes.DOLPHIN),
+        dragon_breath(ParticleTypes.DRAGON_BREATH),
         dripping_dripstone_lava(ParticleTypes.DRIPPING_DRIPSTONE_LAVA),
         dripping_dripstone_water(ParticleTypes.DRIPPING_DRIPSTONE_WATER),
         dripping_honey(ParticleTypes.DRIPPING_HONEY),
@@ -33,6 +31,7 @@ public class ConfigEnum {
         dripping_obsidian_tear(ParticleTypes.DRIPPING_OBSIDIAN_TEAR),
         dripping_water(ParticleTypes.DRIPPING_WATER),
         dust_plume(ParticleTypes.DUST_PLUME),
+        effect(ParticleTypes.EFFECT),
         egg_crack(ParticleTypes.EGG_CRACK),
         elder_guardian(ParticleTypes.ELDER_GUARDIAN),
         electric_spark(ParticleTypes.ELECTRIC_SPARK),
@@ -49,10 +48,10 @@ public class ConfigEnum {
         falling_obsidian_tear(ParticleTypes.FALLING_OBSIDIAN_TEAR),
         falling_spore_blossom(ParticleTypes.FALLING_SPORE_BLOSSOM),
         falling_water(ParticleTypes.FALLING_WATER),
-        firefly(ParticleTypes.FIREFLY),
         firework(ParticleTypes.FIREWORK),
         fishing(ParticleTypes.FISHING),
         flame(ParticleTypes.FLAME),
+        flash(ParticleTypes.FLASH),
         glow(ParticleTypes.GLOW),
         glow_squid_ink(ParticleTypes.GLOW_SQUID_INK),
         gust(ParticleTypes.GUST),
@@ -61,6 +60,7 @@ public class ConfigEnum {
         happy_villager(ParticleTypes.HAPPY_VILLAGER),
         heart(ParticleTypes.HEART),
         infested(ParticleTypes.INFESTED),
+        instant_effect(ParticleTypes.INSTANT_EFFECT),
         item_cobweb(ParticleTypes.ITEM_COBWEB),
         item_slime(ParticleTypes.ITEM_SLIME),
         item_snowball(ParticleTypes.ITEM_SNOWBALL),
@@ -73,13 +73,10 @@ public class ConfigEnum {
         nautilus(ParticleTypes.NAUTILUS),
         note(ParticleTypes.NOTE),
         ominous_spawning(ParticleTypes.OMINOUS_SPAWNING),
-        pale_oak_leaves(ParticleTypes.PALE_OAK_LEAVES),
-        pause_mob_growth(ParticleTypes.PAUSE_MOB_GROWTH),
         poof(ParticleTypes.POOF),
         portal(ParticleTypes.PORTAL),
         raid_omen(ParticleTypes.RAID_OMEN),
         rain(ParticleTypes.RAIN),
-        reset_mob_growth(ParticleTypes.RESET_MOB_GROWTH),
         reverse_portal(ParticleTypes.REVERSE_PORTAL),
         scrape(ParticleTypes.SCRAPE),
         sculk_charge_pop(ParticleTypes.SCULK_CHARGE_POP),
@@ -110,13 +107,13 @@ public class ConfigEnum {
         white_smoke(ParticleTypes.WHITE_SMOKE),
         witch(ParticleTypes.WITCH);
 
-        @NonNull private final SimpleParticleType type;
+        private final SimpleParticleType type;
 
-        ParticleOption(@NonNull SimpleParticleType type) {
+        ParticleOption(SimpleParticleType type) {
           this.type = type;
         }
 
-        public @NonNull SimpleParticleType getType() {
+        public SimpleParticleType getType() {
           return type;
         }
     }

@@ -1,17 +1,15 @@
 package com.kssjw.minecarttrainsfork.util;
 
 import java.util.UUID;
-
-import com.kssjw.minecarttrainsfork.manager.NetworkManager;
-
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import com.kssjw.minecarttrainsfork.manager.NetworkManager;
 
 public class UnLinkUtil {
 
@@ -88,12 +86,12 @@ public class UnLinkUtil {
             if (world == null) return;
 
             if (hadParent) {
-                ItemEntity itemEntity = new ItemEntity(world, x, y, z, new ItemStack(Items.IRON_CHAIN));
+                ItemEntity itemEntity = new ItemEntity(world, x, y, z, new ItemStack(Items.CHAIN));
                 world.addFreshEntity(itemEntity);
             }
             
             if (hadChild) {
-                ItemEntity itemEntity = new ItemEntity(world, x, y, z, new ItemStack(Items.IRON_CHAIN));
+                ItemEntity itemEntity = new ItemEntity(world, x, y, z, new ItemStack(Items.CHAIN));
                 world.addFreshEntity(itemEntity);
             }
         }

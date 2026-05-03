@@ -2,7 +2,7 @@ package com.kssjw.minecarttrainsfork.client.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.toasts.SystemToast;
-import net.minecraft.client.gui.components.toasts.ToastManager;
+import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.network.chat.Component;
 
 public class ToastUtil {
@@ -12,7 +12,7 @@ public class ToastUtil {
     public static void toast(String title, String description) {
         if (title == null || description == null) return;
 
-        ToastManager toastManager = Minecraft.getInstance().getToastManager();
+        ToastComponent toastManager = Minecraft.getInstance().getToasts();
         SystemToast.add(
             toastManager,
             SystemToast.SystemToastId.NARRATOR_TOGGLE,

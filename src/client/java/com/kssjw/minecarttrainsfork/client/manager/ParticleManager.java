@@ -1,22 +1,21 @@
 package com.kssjw.minecarttrainsfork.client.manager;
 
 import java.util.UUID;
-
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 
 import com.kssjw.minecarttrainsfork.util.IChainableUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
-import net.minecraft.world.phys.Vec3;
 
 public class ParticleManager {
 
@@ -53,7 +52,12 @@ public class ParticleManager {
 
         if (parentCartUuid == null) return;
 
-        AbstractMinecart parentCart = (AbstractMinecart) world.getEntity(parentCartUuid);
+        AbstractMinecart parentCart = null;
+
+        // 1.21
+        for (Entity entity : world.entitiesForRendering()) {
+            if (entity instanceof AbstractMinecart && entity.getUUID().equals(parentCartUuid)) parentCart = (AbstractMinecart) entity;
+        }
 
         if (parentCart == null) return;
 
@@ -113,7 +117,12 @@ public class ParticleManager {
 
         if (parentCartUuid == null) return;
 
-        AbstractMinecart parentCart = (AbstractMinecart) world.getEntity(parentCartUuid);
+        AbstractMinecart parentCart = null;
+
+        // 1.21
+        for (Entity entity : world.entitiesForRendering()) {
+            if (entity instanceof AbstractMinecart && entity.getUUID().equals(parentCartUuid)) parentCart = (AbstractMinecart) entity;
+        }
 
         if (parentCart == null) return;
 
@@ -159,11 +168,17 @@ public class ParticleManager {
     // 默认头车粒子
     private static void defaultHeadParticle(AbstractMinecart cart) {
         if (LoadManager.isAPIFound() && ConfigManager.isEnabledDefaultHeadParticle() == false) return;
-        if (!(cart.level() instanceof ClientLevel world)) return;
+        if (!(cart.getCommandSenderWorld() instanceof ClientLevel world)) return;
 
         UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
+        AbstractMinecart parentCart = null;
 
-        if (parentCartUuid != null && world.getEntity(parentCartUuid) != null) return;
+        // 1.21
+        for (Entity entity : world.entitiesForRendering()) {
+            if (entity instanceof AbstractMinecart && entity.getUUID().equals(parentCartUuid)) parentCart = (AbstractMinecart) entity;
+        }
+
+        if (parentCartUuid != null && parentCart != null) return;
 
         // 速度与最大数量
         final int FRAME_SKIP_HEAD = 40; // 每 X 时间刻染一次
@@ -201,11 +216,17 @@ public class ParticleManager {
     // 自定义头车粒子
     private static void customHeadParticle(AbstractMinecart cart) {
         if (ConfigManager.isEnabledCustomHeadParticle() == false) return;
-        if (!(cart.level() instanceof ClientLevel world)) return;
+        if (!(cart.getCommandSenderWorld() instanceof ClientLevel world)) return;
 
         UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
+        AbstractMinecart parentCart = null;
 
-        if (parentCartUuid != null && world.getEntity(parentCartUuid) != null) return;
+        // 1.21
+        for (Entity entity : world.entitiesForRendering()) {
+            if (entity instanceof AbstractMinecart && entity.getUUID().equals(parentCartUuid)) parentCart = (AbstractMinecart) entity;
+        }
+
+        if (parentCartUuid != null && parentCart != null) return;
 
         // 速度与最大数量
         final int FRAME_SKIP_HEAD = ConfigManager.getCustomHeadParticleCycle();
@@ -243,13 +264,18 @@ public class ParticleManager {
     private static void line(AbstractMinecart cart) {
         if (LoadManager.isAPIFound() && ConfigManager.isEnabledLinkLine() == false) return;
         if (cart == null) return;
-        if (!(cart.level() instanceof ClientLevel world)) return;
+        if (!(cart.getCommandSenderWorld() instanceof ClientLevel world)) return;
 
         UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
 
         if (parentCartUuid == null) return;
 
-        AbstractMinecart parentCart = (AbstractMinecart) world.getEntity(parentCartUuid);
+        AbstractMinecart parentCart = null;
+
+        // 1.21
+        for (Entity entity : world.entitiesForRendering()) {
+            if (entity instanceof AbstractMinecart && entity.getUUID().equals(parentCartUuid)) parentCart = (AbstractMinecart) entity;
+        }
 
         if (parentCart == null) return;
 
@@ -257,7 +283,7 @@ public class ParticleManager {
         Vec3 parentPos = parentCart.position();
 
         // >= 1.20.5
-        Vec3 camPos = Minecraft.getInstance().gameRenderer.getMainCamera().position();
+        Vec3 camPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
         Vec3 pos1 = cartPos.subtract(camPos);
         Vec3 pos2 = parentPos.subtract(camPos);
 
@@ -276,7 +302,7 @@ public class ParticleManager {
 
         // >= 1.20.5
         Matrix4f matrix = (new PoseStack()).last().pose();
-        VertexConsumer consumer = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderTypes.solidMovingBlock());
+        VertexConsumer consumer = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.solid());
 
         int segments = 12; // 圆截面分段数
         float radius = 0.04f; // 半径
@@ -294,7 +320,7 @@ public class ParticleManager {
             Vec3 v3 = pos2Edge.add(offset2);
             Vec3 v4 = pos2Edge.add(offset1);
 
-            int light = LevelRenderer.getLightCoords(cart.level(), BlockPos.containing(pos1Edge));
+            int light = LevelRenderer.getLightColor(cart.getCommandSenderWorld(), BlockPos.containing(pos1Edge));
 
             // 渲染四边形 v1-v2-v3-v4
             consumer.addVertex(matrix, (float)v1.x, (float)(v1.y + 0.3), (float)v1.z).setColor(0xFF252c3d).setUv(0.0F, 0.0F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(0.0F, 1.0F, 0.0F);

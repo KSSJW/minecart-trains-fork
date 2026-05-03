@@ -12,9 +12,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.UUID;
-import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 @Mixin(AbstractMinecart.class)
 public class AbstractMinecartMixin implements IChainableUtil {
@@ -49,7 +49,15 @@ public class AbstractMinecartMixin implements IChainableUtil {
 
     @Override
     public @Nullable AbstractMinecart getChainedParent() {
-        return (AbstractMinecart)((AbstractMinecart)(Object)this).level().getEntity(this.getParentUUID());
+        return (AbstractMinecart)(
+            (
+                (ServerLevel)(
+                    (
+                        (AbstractMinecart)(Object)this
+                    ).level()
+                )
+            ).getEntity(this.getParentUUID())
+        );
     }
 
     @Override
@@ -60,7 +68,13 @@ public class AbstractMinecartMixin implements IChainableUtil {
 
     @Override
     public @Nullable AbstractMinecart getChainedChild() {
-        return (AbstractMinecart)((AbstractMinecart)(Object)this).level().getEntity(this.getChildUUID());
+        return (AbstractMinecart)(
+            (ServerLevel)(
+                (
+                    (AbstractMinecart)(Object)this
+                ).level()
+            )
+        ).getEntity(this.getChildUUID());
     }
 
     @Override
@@ -70,12 +84,12 @@ public class AbstractMinecartMixin implements IChainableUtil {
 
     // 数据存储与读取
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
-    public void mctrains$writeData(ValueOutput writeView, CallbackInfo ci) {
-        DataUtil.writeData(writeView, (IChainableUtil)(Object)this);
+    public void mctrains$writeData(CompoundTag nbt, CallbackInfo ci) {
+        DataUtil.writeData(nbt, (IChainableUtil)(Object)this);
     }
 
     @Inject(method="readAdditionalSaveData", at = @At("TAIL"))
-    public void mctrains$readData(ValueInput readView, CallbackInfo ci) {
-        DataUtil.readData(readView, (IChainableUtil)(Object)this);
+    public void mctrains$readData(CompoundTag nbt, CallbackInfo ci) {
+        DataUtil.readData(nbt, (IChainableUtil)(Object)this);
     }
 }

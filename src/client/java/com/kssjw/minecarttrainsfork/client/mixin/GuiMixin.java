@@ -6,17 +6,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.kssjw.minecarttrainsfork.client.manager.ConfigManager;
 import com.kssjw.minecarttrainsfork.client.manager.LoadManager;
-
-import org.spongepowered.asm.mixin.injection.At;
-
 import net.minecraft.client.gui.Gui;
 import net.minecraft.network.chat.Component;
+import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(Gui.class)
 public class GuiMixin {
 
     @Inject(method = "setOverlayMessage", at = @At("HEAD"), cancellable = true)
-    private void interceptOverlayMessage(Component message, boolean tinted, CallbackInfo ci) {
+    private void injectSetOverlayMessage(Component message, boolean tinted, CallbackInfo ci) {
         String insertion = message.getStyle().getInsertion();
 
         if (LoadManager.isAPIFound() == true

@@ -6,13 +6,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.kssjw.minecarttrainsfork.util.UnLinkUtil;
-
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
-
 import com.kssjw.minecarttrainsfork.manager.NetworkManager;
 import com.kssjw.minecarttrainsfork.util.IChainableUtil;
 
@@ -33,7 +31,6 @@ public class EntityMixin {
         if (self instanceof AbstractMinecart) {
             IChainableUtil icu = (IChainableUtil)(Object)this;
             Level world = ((Entity)(Object)this).level();
-            
             if (!world.isClientSide()) {
                 ServerLevel serverWorld = (ServerLevel)world;
                 UnLinkUtil.unlinkHandle(icu, serverWorld, null);

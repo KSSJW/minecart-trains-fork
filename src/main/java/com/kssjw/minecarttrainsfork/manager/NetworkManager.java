@@ -4,19 +4,20 @@ import java.util.UUID;
 
 import com.kssjw.minecarttrainsfork.MinecartTrainsFork;
 import com.kssjw.minecarttrainsfork.util.IChainableUtil;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
 public class NetworkManager {
 
-    public static void registerPayloads(RegisterPayloadHandlersEvent event) {
+     public static void registerPayloads(RegisterPayloadHandlersEvent event) {
 		var registrar = event.registrar("1");
 
 		 registrar.playToClient(
@@ -24,18 +25,26 @@ public class NetworkManager {
         	NetworkManager.RelationshipPayload.CODEC,
 			(payload, context) -> {
 				context.enqueueWork(() -> {
-					ClientLevel clientWorld = Minecraft.getInstance().level;
+                    ClientLevel clientWorld = Minecraft.getInstance().level;
 
 					if (clientWorld == null) return;
+				
+					if (clientWorld != null) {
+						UUID childUUID = payload.childUUID();
+						UUID parentUUID = payload.parentUUID();
 
-					UUID childUUID = payload.childUUID();
-					UUID parentUUID = payload.parentUUID();
+						IChainableUtil childChainableUtil = null;
+						IChainableUtil parentChainableUtil = null;
 
-					IChainableUtil childChainableUtil = (IChainableUtil) clientWorld.getEntity(childUUID);
-					IChainableUtil parentChainableUtil = (IChainableUtil) clientWorld.getEntity(parentUUID);
+						for (Entity entity : clientWorld.entitiesForRendering()) {
+							if (entity instanceof AbstractMinecart && entity.getUUID().equals(childUUID)) childChainableUtil = (IChainableUtil) entity;
+							if (entity instanceof AbstractMinecart && entity.getUUID().equals(parentUUID)) parentChainableUtil = (IChainableUtil) entity;
+						}
 
-					if (childChainableUtil != null) childChainableUtil.setParentUUID(parentUUID);
-					if (parentChainableUtil != null) parentChainableUtil.setChildUUID(childUUID);
+						if (childChainableUtil != null) childChainableUtil.setParentUUID(parentUUID);
+						if (parentChainableUtil != null) parentChainableUtil.setChildUUID(childUUID);
+					}
+
 				});
 			}
 		 );
@@ -50,7 +59,7 @@ public class NetworkManager {
 
     public record RelationshipPayload(UUID childUUID, UUID parentUUID) implements CustomPacketPayload {
         public static final Type<RelationshipPayload> TYPE = new Type<>(
-          Identifier.fromNamespaceAndPath(MinecartTrainsFork.MOD_ID, "relationship")  
+          ResourceLocation.fromNamespaceAndPath(MinecartTrainsFork.MOD_ID, "relationship")  
         );
 
         @Override

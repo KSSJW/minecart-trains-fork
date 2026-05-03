@@ -3,9 +3,6 @@ package com.kssjw.minecarttrainsfork.manager;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-
-import org.jspecify.annotations.NonNull;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
@@ -17,7 +14,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -51,7 +48,7 @@ public class EventManager {
     private static InteractionResult link(ItemStack stack, AbstractMinecart cart, Player player, InteractionHand hand, Level world, DataComponentType<UUID> PARENT_ID) {
         if (
             player.isShiftKeyDown()
-            && stack.is(Items.IRON_CHAIN)
+            && stack.is(Items.CHAIN)
             && world instanceof ServerLevel server
         ) {
             UUID uuid = stack.get(PARENT_ID);
@@ -72,9 +69,9 @@ public class EventManager {
                     }
 
                     if (train.contains(cartIChainable) || (parentIChainable).getChainedChild() != null) {
-                        player.sendOverlayMessage(Component.translatable(MinecartTrainsFork.MOD_ID + " ")
+                        player.displayClientMessage(Component.translatable(MinecartTrainsFork.MOD_ID + " ")
                             .append(Component.translatable("message.minecart-trains-fork.invalidchaining"))
-                            .withStyle(ChatFormatting.RED));
+                            .withStyle(ChatFormatting.RED), true);
                     } else {
 
                         if ((cartIChainable).getChainedParent() != null) IChainableUtil.unsetChainedParentChild(cartIChainable, (IChainableUtil)((cartIChainable).getChainedParent()));
@@ -120,7 +117,7 @@ public class EventManager {
         }
     }
 
-    public static @NonNull InteractionResult init(Entity entity, Player player, InteractionHand hand, Level world, DataComponentType<UUID> PARENT_ID) {
+    public static InteractionResult init(Entity entity, Player player, InteractionHand hand, Level world, DataComponentType<UUID> PARENT_ID) {
         if (entity instanceof AbstractMinecart cart && hand != null) {
             ItemStack stack = player.getItemInHand(hand);
 

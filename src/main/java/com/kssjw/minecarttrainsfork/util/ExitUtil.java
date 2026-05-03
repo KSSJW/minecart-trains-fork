@@ -15,27 +15,27 @@ public class ExitUtil {
 
     public static void exit(ItemStack current, ItemStack lastMainHand, Player player) {
 
-        if (!lastMainHand.is(Items.IRON_CHAIN) && current.is(Items.IRON_CHAIN)) {
-            player.sendOverlayMessage(Component.translatable(MinecartTrainsFork.MOD_ID + " ")
+        if (!lastMainHand.is(Items.CHAIN) && current.is(Items.CHAIN)) {
+            player.displayClientMessage(Component.translatable(MinecartTrainsFork.MOD_ID + " ")
                 .append(Component.translatable("message.minecart-trains-fork.chainingstarted"))
                 .setStyle(Style.EMPTY.withInsertion("MINECARTTRAINSFORK_OPTIONAL"))
-                .withStyle(ChatFormatting.GREEN));
+                .withStyle(ChatFormatting.GREEN), true);
         }
 
         // 如果之前是铁链，现在不是 → 清除 PARENT_ID
-        if (lastMainHand.is(Items.IRON_CHAIN) && !current.is(Items.IRON_CHAIN)) {
+        if (lastMainHand.is(Items.CHAIN) && !current.is(Items.CHAIN)) {
             Inventory inv = player.getInventory();
 
             for (int i = 0; i < inv.getContainerSize(); i++) {
                 ItemStack stack = inv.getItem(i);
 
-                if (stack.is(Items.IRON_CHAIN)) stack.remove(ComponentUtil.PARENT_ID);
+                if (stack.is(Items.CHAIN)) stack.remove(ComponentUtil.PARENT_ID);
             }
 
-            player.sendOverlayMessage(Component.translatable(MinecartTrainsFork.MOD_ID + " ")
+            player.displayClientMessage(Component.translatable(MinecartTrainsFork.MOD_ID + " ")
                 .append(Component.translatable("message.minecart-trains-fork.chainingcleared"))
                 .setStyle(Style.EMPTY.withInsertion("MINECARTTRAINSFORK_OPTIONAL"))
-                .withStyle(ChatFormatting.YELLOW));
+                .withStyle(ChatFormatting.YELLOW), true);
         }
     }
 }
