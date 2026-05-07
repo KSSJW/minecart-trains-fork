@@ -1,7 +1,9 @@
 package com.kssjw.minecarttrainsfork.client.mixin;
 
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.AbstractMinecartRenderer;
 import net.minecraft.client.renderer.entity.state.MinecartRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -11,9 +13,26 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.kssjw.minecarttrainsfork.client.manager.ParticleManager;
 import com.kssjw.minecarttrainsfork.util.LogUtil;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 @Mixin(AbstractMinecartRenderer.class)
 public class AbstractMinecartRendererMixin {
+    private CameraRenderState cachedCamera;
+    private PoseStack cachedStack;
+    private SubmitNodeCollector collector;
+
+    @Inject(
+        method = "submit(Lnet/minecraft/client/renderer/entity/state/MinecartRenderState;" +
+            "Lcom/mojang/blaze3d/vertex/PoseStack;" +
+            "Lnet/minecraft/client/renderer/SubmitNodeCollector;" +
+            "Lnet/minecraft/client/renderer/state/level/CameraRenderState;)V",
+        at = @At("HEAD")
+    )
+    private void injectSubmit(MinecartRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera, CallbackInfo ci) {
+        cachedCamera = camera;
+        cachedStack = poseStack;
+        collector = submitNodeCollector;
+    }
 
     @Inject(method = "extractRenderState", at = @At("TAIL"))
     private void injectUpdateRenderState(
@@ -35,7 +54,14 @@ public class AbstractMinecartRendererMixin {
         }
 
         try {
-            ParticleManager.linkLine(entity);
+            if (
+                cachedCamera == null
+                    || cachedCamera.pos == null
+                    || cachedStack == null
+                    || collector == null
+            ) return;
+
+            ParticleManager.linkLine(entity, cachedCamera.pos, cachedStack, collector);
         } catch (Throwable ex) {
             LogUtil.print("Link line error: " + ex);
         }

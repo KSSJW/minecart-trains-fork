@@ -4,17 +4,18 @@ import java.util.UUID;
 
 import org.joml.Matrix4f;
 
+import com.kssjw.minecarttrainsfork.MinecartTrainsFork;
 import com.kssjw.minecarttrainsfork.util.IChainableUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.phys.Vec3;
 
@@ -32,8 +33,8 @@ public class ParticleManager {
         if (LoadManager.isAPIFound()) customHeadParticle(entity);
     }
 
-    public static void linkLine(AbstractMinecart entity) {
-        line(entity);
+    public static void linkLine(AbstractMinecart entity, Vec3 camPos, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
+        line(entity, camPos, poseStack, submitNodeCollector);
     }
     
     // 默认连接粒子
@@ -240,7 +241,7 @@ public class ParticleManager {
         }
     }
 
-    private static void line(AbstractMinecart cart) {
+    private static void line(AbstractMinecart cart, Vec3 camPos, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
         if (LoadManager.isAPIFound() && ConfigManager.isEnabledLinkLine() == false) return;
         if (cart == null) return;
         if (!(cart.level() instanceof ClientLevel world)) return;
@@ -257,50 +258,110 @@ public class ParticleManager {
         Vec3 parentPos = parentCart.position();
 
         // >= 1.20.5
-        Vec3 camPos = Minecraft.getInstance().gameRenderer.getMainCamera().position();
         Vec3 pos1 = cartPos.subtract(camPos);
         Vec3 pos2 = parentPos.subtract(camPos);
 
-        // 方向向量
-        Vec3 dir = pos2.subtract(pos1).normalize();
+        Vec3 dir = pos2.subtract(pos1).normalize(); // 方向向量
 
         // 边缘点，保证线条在两车之间
         double offset = cart.getBbWidth() / 2.0;
         Vec3 pos1Edge = pos1.add(offset * dir.x, 0, offset * dir.z);
         Vec3 pos2Edge = pos2.add(-offset * dir.x, 0, -offset * dir.z);
 
-        // 构造圆截面基向量
         Vec3 up = Math.abs(dir.y) > 0.9 ? new Vec3(1,0,0) : new Vec3(0,1,0);
-        Vec3 side = dir.cross(up).normalize();
-        up = side.cross(dir).normalize();
 
-        // >= 1.20.5
-        Matrix4f matrix = (new PoseStack()).last().pose();
-        VertexConsumer consumer = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderTypes.solidMovingBlock());
+        double width = 0.05;
 
-        int segments = 12; // 圆截面分段数
-        float radius = 0.04f; // 半径
+        Vec3 side1 = dir.cross(up).normalize().scale(width);    // 水平
+        Vec3 side2 = dir.cross(side1).normalize().scale(width); // 垂直
 
-        for (int i = 0; i < segments; i++) {
-            double angle1 = 2 * Math.PI * i / segments;
-            double angle2 = 2 * Math.PI * (i + 1) / segments;
+        Vec3 a1 = pos1Edge.add(side1);
+        Vec3 a2 = pos2Edge.add(side1);
+        Vec3 a3 = pos2Edge.subtract(side1);
+        Vec3 a4 = pos1Edge.subtract(side1);
 
-            Vec3 offset1 = side.scale(Math.cos(angle1) * radius).add(up.scale(Math.sin(angle1) * radius));
-            Vec3 offset2 = side.scale(Math.cos(angle2) * radius).add(up.scale(Math.sin(angle2) * radius));
+        Vec3 b1 = pos1Edge.add(side2);
+        Vec3 b2 = pos2Edge.add(side2);
+        Vec3 b3 = pos2Edge.subtract(side2);
+        Vec3 b4 = pos1Edge.subtract(side2);
 
-            // 在 pos1Edge 和 pos2Edge 两端生成圆环顶点
-            Vec3 v1 = pos1Edge.add(offset1);
-            Vec3 v2 = pos1Edge.add(offset2);
-            Vec3 v3 = pos2Edge.add(offset2);
-            Vec3 v4 = pos2Edge.add(offset1);
+        int light = LevelRenderer.getLightCoords(cart.level(), BlockPos.containing(cartPos.add(parentPos).scale(0.5)));
 
-            int light = LevelRenderer.getLightCoords(cart.level(), BlockPos.containing(pos1Edge));
+        Vec3 normal1 = side1.normalize();
+        Vec3 normal2 = side2.normalize();
 
-            // 渲染四边形 v1-v2-v3-v4
-            consumer.addVertex(matrix, (float)v1.x, (float)(v1.y + 0.3), (float)v1.z).setColor(0xFF252c3d).setUv(0.0F, 0.0F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(0.0F, 1.0F, 0.0F);
-            consumer.addVertex(matrix, (float)v2.x, (float)(v2.y + 0.3), (float)v2.z).setColor(0xFF252c3d).setUv(1.0F, 0.0F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(0.0F, 1.0F, 0.0F);
-            consumer.addVertex(matrix, (float)v3.x, (float)(v3.y + 0.3), (float)v3.z).setColor(0xFF252c3d).setUv(1.0F, 1.0F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(0.0F, 1.0F, 0.0F);
-            consumer.addVertex(matrix, (float)v4.x, (float)(v4.y + 0.3), (float)v4.z).setColor(0xFF252c3d).setUv(0.0F, 1.0F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(0.0F, 1.0F, 0.0F);
-        }
+        submitNodeCollector.submitCustomGeometry(
+            poseStack,
+            RenderTypes.entityCutout(Identifier.fromNamespaceAndPath(MinecartTrainsFork.MOD_ID, "textures/chain.png")),
+            (pose, buffer) -> {
+                Matrix4f matrix = pose.pose();
+
+                /*
+                 *   ---|    1 --------- 2   |---
+                 *      |    |           |   |
+                 * cart |    |           |   | cart
+                 *      |    |           |   |
+                 *   ---|    4 --------- 3   |---
+                */
+
+                // 水平
+                buffer.addVertex(matrix, (float)a1.x, (float)(a1.y + 0.3), (float)a1.z)
+                    .setUv(0.0F, 0.0F)
+                    .setColor(255, 255, 255, 255)
+                    .setOverlay(OverlayTexture.NO_OVERLAY)
+                    .setLight(light)
+                    .setNormal((float)normal1.x, (float)normal1.y, (float)normal1.z);
+
+                buffer.addVertex(matrix, (float)a2.x, (float)(a2.y + 0.3), (float)a2.z)
+                    .setUv(1.0F, 0.0F)
+                    .setColor(255, 255, 255, 255)
+                    .setOverlay(OverlayTexture.NO_OVERLAY)
+                    .setLight(light)
+                    .setNormal((float)normal1.x, (float)normal1.y, (float)normal1.z);
+
+                buffer.addVertex(matrix, (float)a3.x, (float)(a3.y + 0.3), (float)a3.z)
+                    .setUv(1.0F, 1.0F)
+                    .setColor(255, 255, 255, 255)
+                    .setOverlay(OverlayTexture.NO_OVERLAY)
+                    .setLight(light)
+                    .setNormal((float)normal1.x, (float)normal1.y, (float)normal1.z);
+
+                buffer.addVertex(matrix, (float)a4.x, (float)(a4.y + 0.3), (float)a4.z)
+                    .setUv(0.0F, 1.0F)
+                    .setColor(255, 255, 255, 255)
+                    .setOverlay(OverlayTexture.NO_OVERLAY)
+                    .setLight(light)
+                    .setNormal((float)normal1.x, (float)normal1.y, (float)normal1.z);
+
+                // 垂直
+                buffer.addVertex(matrix, (float)b1.x, (float)(b1.y + 0.3), (float)b1.z)
+                    .setUv(0.0F, 0.0F)
+                    .setColor(255, 255, 255, 255)
+                    .setOverlay(OverlayTexture.NO_OVERLAY)
+                    .setLight(light)
+                    .setNormal((float)normal2.x, (float)normal2.y, (float)normal2.z);
+
+                buffer.addVertex(matrix, (float)b2.x, (float)(b2.y + 0.3), (float)b2.z)
+                    .setUv(1.0F, 0.0F)
+                    .setColor(255, 255, 255, 255)
+                    .setOverlay(OverlayTexture.NO_OVERLAY)
+                    .setLight(light)
+                    .setNormal((float)normal2.x, (float)normal2.y, (float)normal2.z);
+
+                buffer.addVertex(matrix, (float)b3.x, (float)(b3.y + 0.3), (float)b3.z)
+                    .setUv(1.0F, 1.0F)
+                    .setColor(255, 255, 255, 255)
+                    .setOverlay(OverlayTexture.NO_OVERLAY)
+                    .setLight(light)
+                    .setNormal((float)normal2.x, (float)normal2.y, (float)normal2.z);
+
+                buffer.addVertex(matrix, (float)b4.x, (float)(b4.y + 0.3), (float)b4.z)
+                    .setUv(0.0F, 1.0F)
+                    .setColor(255, 255, 255, 255)
+                    .setOverlay(OverlayTexture.NO_OVERLAY)
+                    .setLight(light)
+                    .setNormal((float)normal2.x, (float)normal2.y, (float)normal2.z);
+            }
+        );
     }
 }
