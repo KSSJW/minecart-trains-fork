@@ -24,13 +24,13 @@ public class ParticleManager {
     public static void linkParticle(AbstractMinecart entity) {
         defaultLinkParticle(entity);
 
-        if (LoadManager.isAPIFound()) customLinkParticle(entity);
+        if (ClientLoadManager.isAPIFound()) customLinkParticle(entity);
     }
 
     public static void headParticle(AbstractMinecart entity) {
         defaultHeadParticle(entity);
 
-        if (LoadManager.isAPIFound()) customHeadParticle(entity);
+        if (ClientLoadManager.isAPIFound()) customHeadParticle(entity);
     }
 
     public static void linkLine(AbstractMinecart entity, Vec3 camPos, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
@@ -39,7 +39,7 @@ public class ParticleManager {
     
     // 默认连接粒子
     private static void defaultLinkParticle(AbstractMinecart cart) {
-        if (LoadManager.isAPIFound() && ConfigManager.isEnabledDefaultLinkParticle() == false) return;
+        if (ClientLoadManager.isAPIFound() && ClientConfigManager.isEnabledDefaultLinkParticle() == false) return;
         if (cart == null) return;                
         if (!(cart.level() instanceof ClientLevel world)) return;
         
@@ -99,12 +99,12 @@ public class ParticleManager {
 
     // 自定义连接粒子
     private static void customLinkParticle(AbstractMinecart cart) {
-        if (ConfigManager.isEnabledCustomLinkParticle() == false) return;
+        if (ClientConfigManager.isEnabledCustomLinkParticle() == false) return;
         if (cart == null) return;
         if (!(cart.level() instanceof ClientLevel world)) return;
         
         // 速度与最大数量
-        final int FRAME_SKIP = ConfigManager.getCustomLinkParticleCycle();
+        final int FRAME_SKIP = ClientConfigManager.getCustomLinkParticleCycle();
         final int MAX_STEPS = 6;
         long ticks = Minecraft.getInstance().gui.getGuiTicks();
 
@@ -145,7 +145,7 @@ public class ParticleManager {
             double pz = sz + dz * t;
 
             try {
-                world.addParticle(ConfigManager.getSelectedLinkParticle(), px, py, pz, 0.0, 0.0, 0.0);
+                world.addParticle(ClientConfigManager.getSelectedLinkParticle(), px, py, pz, 0.0, 0.0, 0.0);
             } catch (Throwable e) {
 
                 try {
@@ -159,7 +159,7 @@ public class ParticleManager {
 
     // 默认头车粒子
     private static void defaultHeadParticle(AbstractMinecart cart) {
-        if (LoadManager.isAPIFound() && ConfigManager.isEnabledDefaultHeadParticle() == false) return;
+        if (ClientLoadManager.isAPIFound() && ClientConfigManager.isEnabledDefaultHeadParticle() == false) return;
         if (!(cart.level() instanceof ClientLevel world)) return;
 
         UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
@@ -201,7 +201,7 @@ public class ParticleManager {
 
     // 自定义头车粒子
     private static void customHeadParticle(AbstractMinecart cart) {
-        if (ConfigManager.isEnabledCustomHeadParticle() == false) return;
+        if (ClientConfigManager.isEnabledCustomHeadParticle() == false) return;
         if (!(cart.level() instanceof ClientLevel world)) return;
 
         UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
@@ -209,7 +209,7 @@ public class ParticleManager {
         if (parentCartUuid != null && world.getEntity(parentCartUuid) != null) return;
 
         // 速度与最大数量
-        final int FRAME_SKIP_HEAD = ConfigManager.getCustomHeadParticleCycle();
+        final int FRAME_SKIP_HEAD = ClientConfigManager.getCustomHeadParticleCycle();
         final int MAX_HEAD_PARTICLES = 6;
         long ticks = Minecraft.getInstance().gui.getGuiTicks();
         
@@ -229,7 +229,7 @@ public class ParticleManager {
             double pz = baseZ + offsetZ;
 
             try {
-                world.addParticle(ConfigManager.getSelectedHeadParticle(), px, py, pz, 0.0, 0.0, 0.0);
+                world.addParticle(ClientConfigManager.getSelectedHeadParticle(), px, py, pz, 0.0, 0.0, 0.0);
             } catch (Throwable e) {
 
                 try {
@@ -242,7 +242,7 @@ public class ParticleManager {
     }
 
     private static void line(AbstractMinecart cart, Vec3 camPos, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
-        if (LoadManager.isAPIFound() && ConfigManager.isEnabledLinkLine() == false) return;
+        if (ClientLoadManager.isAPIFound() && ClientConfigManager.isEnabledLinkLine() == false) return;
         if (cart == null) return;
         if (!(cart.level() instanceof ClientLevel world)) return;
 

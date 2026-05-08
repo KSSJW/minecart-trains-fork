@@ -1,0 +1,14 @@
+package com.kssjw.minecarttrainsfork.extension.config;
+
+import me.shedaniel.autoconfig.ConfigData;
+import me.shedaniel.autoconfig.annotation.Config;
+import me.shedaniel.autoconfig.annotation.ConfigEntry;
+
+@Config(name = "minecart-trains-fork-server")
+public class ConfigValue implements ConfigData {
+
+    @ConfigEntry.Category("general")
+    @ConfigEntry.Gui.PrefixText
+    @ConfigEntry.BoundedDiscrete(min = 3, max = 10)
+    public int cartSpacing = 5;
+}

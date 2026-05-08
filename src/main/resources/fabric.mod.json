@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "minecart-trains-fork",
-	"version": "2.4.0-alpha.1+26.1",
+	"version": "2.4.0-alpha.2+26.1",
 	"name": "Minecart Trains Fork",
 	"description": "Forked from Minecart Trains, This mod adds additional mechanics to make minecart transportation more fun and useful as a train system!",
 	"authors": [
@@ -33,7 +33,6 @@
 		"modmenu": {
 			"links": {
 				"modmenu.modrinth": "https://modrinth.com/mod/minecart-trains-fork",
-				"modmenu.discord": "https://discord.gg/4PSurrp6Ve",
 				"modmenu.curseforge": "https://www.curseforge.com/minecraft/mc-mods/minecart-trains-fork"
 			}
 		}

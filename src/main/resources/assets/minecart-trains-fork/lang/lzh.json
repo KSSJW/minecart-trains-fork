@@ -6,30 +6,30 @@
     "message.minecart-trains-fork.chainingcleared": "連清",
     "message.minecart-trains-fork.invalidchaining": "連不可",
 
-    "text.autoconfig.minecart-trains-fork.title": "Minecart Trains Fork 之設",
+    "text.autoconfig.minecart-trains-fork-client.title": "Minecart Trains Fork 之設",
 
-    "text.autoconfig.minecart-trains-fork.category.general": "凡設",
-    "text.autoconfig.minecart-trains-fork.category.advanced": "高設",
+    "text.autoconfig.minecart-trains-fork-client.category.general": "凡設",
+    "text.autoconfig.minecart-trains-fork-client.category.advanced": "高設",
 
-    "text.autoconfig.minecart-trains-fork.option.enabledDefaultLinkParticle.@PrefixText": "連之粒",
-    "text.autoconfig.minecart-trains-fork.option.enabledDefaultLinkParticle": "    示常連之粒",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledDefaultLinkParticle.@PrefixText": "連之粒",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledDefaultLinkParticle": "    示常連之粒",
 
-    "text.autoconfig.minecart-trains-fork.option.enabledDefaultHeadParticle.@PrefixText": "首車之粒",
-    "text.autoconfig.minecart-trains-fork.option.enabledDefaultHeadParticle": "    示常首車之粒",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledDefaultHeadParticle.@PrefixText": "首車之粒",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledDefaultHeadParticle": "    示常首車之粒",
 
-    "text.autoconfig.minecart-trains-fork.option.enabledLinkLine.@PrefixText": "連之線",
-    "text.autoconfig.minecart-trains-fork.option.enabledLinkLine": "    示連之線",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledLinkLine.@PrefixText": "連之線",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledLinkLine": "    示連之線",
 
-    "text.autoconfig.minecart-trains-fork.option.enabledNotice.@PrefixText": "告",
-    "text.autoconfig.minecart-trains-fork.option.enabledNotice": "    示連鎖之告",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledNotice.@PrefixText": "告",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledNotice": "    示連鎖之告",
 
-    "text.autoconfig.minecart-trains-fork.option.enabledCustomLinkParticle.@PrefixText": "連之粒",
-    "text.autoconfig.minecart-trains-fork.option.enabledCustomLinkParticle": "    示自連之粒",
-    "text.autoconfig.minecart-trains-fork.option.selectedLinkParticle": "    所選自連之粒",
-    "text.autoconfig.minecart-trains-fork.option.customLinkParticleCycle": "    自連之粒之週",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledCustomLinkParticle.@PrefixText": "連之粒",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledCustomLinkParticle": "    示自連之粒",
+    "text.autoconfig.minecart-trains-fork-client.option.selectedLinkParticle": "    所選自連之粒",
+    "text.autoconfig.minecart-trains-fork-client.option.customLinkParticleCycle": "    自連之粒之週",
 
-    "text.autoconfig.minecart-trains-fork.option.enabledCustomHeadParticle.@PrefixText": "首車之粒",
-    "text.autoconfig.minecart-trains-fork.option.enabledCustomHeadParticle": "    示自首車之粒",
-    "text.autoconfig.minecart-trains-fork.option.selectedHeadParticle": "    所選自首車之粒",
-    "text.autoconfig.minecart-trains-fork.option.customHeadParticleCycle": "    自首車之粒之週"
+    "text.autoconfig.minecart-trains-fork-client.option.enabledCustomHeadParticle.@PrefixText": "首車之粒",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledCustomHeadParticle": "    示自首車之粒",
+    "text.autoconfig.minecart-trains-fork-client.option.selectedHeadParticle": "    所選自首車之粒",
+    "text.autoconfig.minecart-trains-fork-client.option.customHeadParticleCycle": "    自首車之粒之週"
 }

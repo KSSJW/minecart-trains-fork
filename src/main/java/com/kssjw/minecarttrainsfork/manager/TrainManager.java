@@ -24,7 +24,9 @@ public class TrainManager {
                 if (distance <= 4) {
                     Vec3 directionToParent = entityIChainable.getChainedParent().position().subtract(entity.position()).normalize();
 
-                    if (distance > 1) {
+                    double cartSpacing = ConfigManager.getCartSpacing();
+
+                    if (distance > cartSpacing) {
                         Vec3 parentVelocity = entityIChainable.getChainedParent().getDeltaMovement();
 
                         if (parentVelocity.length() == 0) {
@@ -33,7 +35,7 @@ public class TrainManager {
                             entity.setDeltaMovement(directionToParent.scale(parentVelocity.length()));
                             entity.setDeltaMovement(entity.getDeltaMovement().scale(distance));
                         }
-                    } else if(distance < 0.8) {
+                    } else if (distance < cartSpacing - 0.2) {
                         entity.setDeltaMovement(directionToParent.scale(-0.05));
                     } else {
                         entity.setDeltaMovement(Vec3.ZERO);

@@ -6,8 +6,8 @@ import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
-@Config(name = "minecart-trains-fork")
-public class ConfigValue implements ConfigData {
+@Config(name = "minecart-trains-fork-client")
+public class ClientConfigValue implements ConfigData {
 
     //  Link Particle
     @ConfigEntry.Category("general")
