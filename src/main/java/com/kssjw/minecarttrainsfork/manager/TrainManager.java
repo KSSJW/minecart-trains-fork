@@ -43,6 +43,14 @@ public class TrainManager {
                 } else {
                     AbstractMinecart parentCart = entityIChainable.getChainedParent();
 
+                    if (ConfigManager.isEnabledBrakingAfterTrainSeparation()) {
+                        for (AbstractMinecart cart = entity; ((IChainableUtil)cart).getChainedParent() != null; cart = (AbstractMinecart)((IChainableUtil)cart).getChainedParent()) {
+                            AbstractMinecart parent = ((IChainableUtil)cart).getChainedParent();
+                            parent.setDeltaMovement(Vec3.ZERO);
+                            cart.setDeltaMovement(Vec3.ZERO);
+                        }
+                    }
+
                     IChainableUtil.unsetChainedParentChild((IChainableUtil)parentCart, entityIChainable);
                     entity.spawnAtLocation((ServerLevel) entity.level(), new ItemStack(Items.IRON_CHAIN));
 

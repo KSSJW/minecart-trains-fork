@@ -9,6 +9,10 @@ public class ConfigValue implements ConfigData {
 
     @ConfigEntry.Category("general")
     @ConfigEntry.Gui.PrefixText
+    public boolean brakingAfterTrainSeparation = true;
+
+    @ConfigEntry.Category("general")
+    @ConfigEntry.Gui.PrefixText
     @ConfigEntry.BoundedDiscrete(min = 3, max = 10)
     public int cartSpacing = 5;
 }

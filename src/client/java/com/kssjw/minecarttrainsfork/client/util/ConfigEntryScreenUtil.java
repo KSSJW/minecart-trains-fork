@@ -11,11 +11,11 @@ import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
-public class ConfigEntryScreen extends Screen {
+public class ConfigEntryScreenUtil extends Screen {
 
     private final Screen parent;
 
-    public ConfigEntryScreen(Screen parent) {
+    public ConfigEntryScreenUtil(Screen parent) {
         super(Component.literal(""));
         this.parent = parent;
     }
