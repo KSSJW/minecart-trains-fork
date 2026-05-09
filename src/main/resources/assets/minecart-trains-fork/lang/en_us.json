@@ -6,7 +6,27 @@
     "message.minecart-trains-fork.chainingcleared": "Chaining Cleared",
     "message.minecart-trains-fork.invalidchaining": "Invalid Chaining",
 
-    "text.autoconfig.minecart-trains-fork-client.title": "Minecart Trains Fork Configuration",
+    "screen.minecart-trains-fork.ConfigEntryScreen.title": "Minecart Trains Fork Configuration",
+    "screen.minecart-trains-fork.ConfigEntryScreen.server": "Server",
+    "screen.minecart-trains-fork.ConfigEntryScreen.client": "Client",
+    "screen.minecart-trains-fork.ConfigEntryScreen.cancel": "Cancel",
+
+    "screen.minecart-trains-fork.IllegalOperationScreen.title": "§cIllegal Operation",
+    "screen.minecart-trains-fork.IllegalOperationScreen.desc": ":( Don't be discouraged, this is not a bug.\n\nIt looks like you're playing a multiplayer game.\nYou cannot change the server configuration through this setting.\n\nIf you need to make changes, please contact the server administrator\nto modify the configuration file.\n§6... > config > minecart-trains-fork.json",
+    "screen.minecart-trains-fork.IllegalOperationScreen.yes": "OK",
+    "screen.minecart-trains-fork.IllegalOperationScreen.no": "OK",
+
+    "text.autoconfig.minecart-trains-fork.title": "Minecart Trains Fork Configuration (Server)",
+
+    "text.autoconfig.minecart-trains-fork.category.general": "General Settings",
+
+    "text.autoconfig.minecart-trains-fork.option.brakingAfterTrainSeparation.@PrefixText": "Train",
+    "text.autoconfig.minecart-trains-fork.option.brakingAfterTrainSeparation": "    Braking After Train Separation",
+    "text.autoconfig.minecart-trains-fork.option.cartSpacing": "    Cart Spacing",
+    "text.autoconfig.minecart-trains-fork.option.cartSpacing.@Tooltip[0]": "Note: This value will be divided by 10.",
+    "text.autoconfig.minecart-trains-fork.option.cartSpacing.@Tooltip[1]": "Example: 5 -> 0.5",
+
+    "text.autoconfig.minecart-trains-fork-client.title": "Minecart Trains Fork Configuration (Client)",
 
     "text.autoconfig.minecart-trains-fork-client.category.general": "General Settings",
     "text.autoconfig.minecart-trains-fork-client.category.advanced": "Advanced Settings",

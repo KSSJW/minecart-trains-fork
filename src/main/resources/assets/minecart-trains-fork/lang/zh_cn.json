@@ -6,7 +6,27 @@
     "message.minecart-trains-fork.chainingcleared": "连接清理",
     "message.minecart-trains-fork.invalidchaining": "连接无效",
 
-    "text.autoconfig.minecart-trains-fork-client.title": "Minecart Trains Fork 配置",
+    "screen.minecart-trains-fork.ConfigEntryScreen.title": "Minecart Trains Fork 配置",
+    "screen.minecart-trains-fork.ConfigEntryScreen.server": "服务端",
+    "screen.minecart-trains-fork.ConfigEntryScreen.client": "客户端",
+    "screen.minecart-trains-fork.ConfigEntryScreen.cancel": "取消",
+
+    "screen.minecart-trains-fork.IllegalOperationScreen.title": "§c不允许的操作",
+    "screen.minecart-trains-fork.IllegalOperationScreen.desc": ":( 不要灰心，这不是Bug。\n\n看起来您正在进行多人游戏。\n您不能通过该设置更改服务器的配置。\n\n如需更改，请联系服务器管理员来更改配置文件。\n§6... > config > minecart-trains-fork.json",
+    "screen.minecart-trains-fork.IllegalOperationScreen.yes": "好",
+    "screen.minecart-trains-fork.IllegalOperationScreen.no": "好",
+
+    "text.autoconfig.minecart-trains-fork.title": "Minecart Trains Fork 配置 (服务端)",
+
+    "text.autoconfig.minecart-trains-fork.category.general": "通用设置",
+
+    "text.autoconfig.minecart-trains-fork.option.brakingAfterTrainSeparation.@PrefixText": "列车",
+    "text.autoconfig.minecart-trains-fork.option.brakingAfterTrainSeparation": "    列车分离后制动",
+    "text.autoconfig.minecart-trains-fork.option.cartSpacing": "    车辆间距",
+    "text.autoconfig.minecart-trains-fork.option.cartSpacing.@Tooltip[0]": "注: 数值会被除以10。",
+    "text.autoconfig.minecart-trains-fork.option.cartSpacing.@Tooltip[1]": "例如: 5 -> 0.5",
+
+    "text.autoconfig.minecart-trains-fork-client.title": "Minecart Trains Fork 配置 (客户端)",
 
     "text.autoconfig.minecart-trains-fork-client.category.general": "通用设置",
     "text.autoconfig.minecart-trains-fork-client.category.advanced": "高级设置",

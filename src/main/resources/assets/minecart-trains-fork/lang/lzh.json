@@ -6,7 +6,27 @@
     "message.minecart-trains-fork.chainingcleared": "連清",
     "message.minecart-trains-fork.invalidchaining": "連不可",
 
-    "text.autoconfig.minecart-trains-fork-client.title": "Minecart Trains Fork 之設",
+    "screen.minecart-trains-fork.ConfigEntryScreen.title": "Minecart Trains Fork 設置",
+    "screen.minecart-trains-fork.ConfigEntryScreen.server": "伺服之端",
+    "screen.minecart-trains-fork.ConfigEntryScreen.client": "客戶之端",
+    "screen.minecart-trains-fork.ConfigEntryScreen.cancel": "作罷",
+
+    "screen.minecart-trains-fork.IllegalOperationScreen.title": "§c操作不許",
+    "screen.minecart-trains-fork.IllegalOperationScreen.desc": ":( 毋灰心，此非謬也。\n\n觀汝方行多人之戲。\n此設置不足以改伺服之制。\n\n欲更之，請告伺服之主，使改配置之文。\n§6... > config > minecart-trains-fork.json",
+    "screen.minecart-trains-fork.IllegalOperationScreen.yes": "善",
+    "screen.minecart-trains-fork.IllegalOperationScreen.no": "善",
+
+    "text.autoconfig.minecart-trains-fork.title": "Minecart Trains Fork 設置 (伺服之端)",
+
+    "text.autoconfig.minecart-trains-fork.category.general": "凡設",
+
+    "text.autoconfig.minecart-trains-fork.option.brakingAfterTrainSeparation.@PrefixText": "列車",
+    "text.autoconfig.minecart-trains-fork.option.brakingAfterTrainSeparation": "    列車分離而止",
+    "text.autoconfig.minecart-trains-fork.option.cartSpacing": "    車間之距",
+    "text.autoconfig.minecart-trains-fork.option.cartSpacing.@Tooltip[0]": "註: 數值除以十。",
+    "text.autoconfig.minecart-trains-fork.option.cartSpacing.@Tooltip[1]": "如: 5 -> 0.5",
+
+    "text.autoconfig.minecart-trains-fork-client.title": "Minecart Trains Fork 設置 (客戶之端)",
 
     "text.autoconfig.minecart-trains-fork-client.category.general": "凡設",
     "text.autoconfig.minecart-trains-fork-client.category.advanced": "高設",

@@ -10,6 +10,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 
 public class ConfigEntryScreenUtil extends Screen {
 
@@ -28,22 +29,22 @@ public class ConfigEntryScreenUtil extends Screen {
         boolean inWorld = this.minecraft.level != null && this.minecraft.player != null;
         boolean isMultiplayerWorld = inWorld && this.minecraft.getCurrentServer() != null;
 
-        String title = "Minecart Trains Fork Configuration";
+        Component title = Component.translatable("screen.minecart-trains-fork.ConfigEntryScreen.title");
         this.addRenderableWidget(
             new StringWidget(
-                w / 2 - this.font.width(Component.literal(title)) / 2,
+                w / 2 - this.font.width(title) / 2,
                 h / 3,
-                this.font.width(Component.literal(title)),
+                this.font.width(title),
                 this.font.lineHeight,
-                Component.literal(title),
+                title,
                 this.font
             )
         );
         
-        String server = "Server";
+        MutableComponent server = Component.translatable("screen.minecart-trains-fork.ConfigEntryScreen.server");
         this.addRenderableWidget(
             Button.builder(
-                isMultiplayerWorld ? Component.literal(server).withStyle(ChatFormatting.RED) : Component.literal(server).withStyle(ChatFormatting.GREEN),
+                isMultiplayerWorld ? server.withStyle(ChatFormatting.RED) : server.withStyle(ChatFormatting.GREEN),
                 button -> {
                     if (isMultiplayerWorld) {
                         this.minecraft.setScreen(IllegalOperationScreenUtil.get(this));
@@ -56,10 +57,10 @@ public class ConfigEntryScreenUtil extends Screen {
             .build()
         );
 
-        String client = "Client";
+        MutableComponent client = Component.translatable("screen.minecart-trains-fork.ConfigEntryScreen.client");
         this.addRenderableWidget(
             Button.builder(
-                Component.literal(client).withStyle(ChatFormatting.GREEN),
+                client.withStyle(ChatFormatting.GREEN),
                 button -> {
                     if (ClientLoadManager.isAPIFound()) {
                         this.minecraft.setScreen(AutoConfigClient.getConfigScreen(ClientConfigValue.class, this).get());
@@ -73,10 +74,10 @@ public class ConfigEntryScreenUtil extends Screen {
             .build()
         );
 
-        String cancel = "Cancel";
+        Component cancel = Component.translatable("screen.minecart-trains-fork.ConfigEntryScreen.cancel");
         this.addRenderableWidget(
             Button.builder(
-                Component.literal(cancel),
+                cancel,
                 button -> {
                     this.minecraft.setScreen(parent);
                 }
