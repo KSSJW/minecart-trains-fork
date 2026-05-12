@@ -13,7 +13,7 @@ public class ClientConfigManager {
     private static ClientConfigValue config = AutoConfig.getConfigHolder(ClientConfigValue.class).getConfig();
 
     public static boolean isEnabledDefaultLinkParticle() {
-        return ClientLoadManager.isAPIFound() ? config.enabledDefaultLinkParticle : true;
+        return ClientLoadManager.isAPIFound() ? config.enabledDefaultLinkParticle : false;
     }
 
     public static boolean isEnabledDefaultHeadParticle() {

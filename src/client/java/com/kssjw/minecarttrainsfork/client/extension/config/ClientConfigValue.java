@@ -12,7 +12,7 @@ public class ClientConfigValue implements ConfigData {
     //  Link Particle
     @ConfigEntry.Category("general")
     @ConfigEntry.Gui.PrefixText
-    public boolean enabledDefaultLinkParticle = true;
+    public boolean enabledDefaultLinkParticle = false;
 
     //  Head Particle
     @ConfigEntry.Category("general")
