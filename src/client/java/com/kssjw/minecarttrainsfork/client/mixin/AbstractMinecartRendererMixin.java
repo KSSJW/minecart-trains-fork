@@ -54,13 +54,6 @@ public class AbstractMinecartRendererMixin {
         }
 
         try {
-            if (
-                cachedCamera == null
-                    || cachedCamera.pos == null
-                    || cachedStack == null
-                    || collector == null
-            ) return;
-
             ParticleManager.linkLine(entity, cachedCamera.pos, cachedStack, collector);
         } catch (Throwable ex) {
             LogUtil.print("Link line error: " + ex);

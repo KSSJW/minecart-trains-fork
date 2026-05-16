@@ -257,6 +257,8 @@ public class ParticleManager {
         Vec3 cartPos = cart.position();
         Vec3 parentPos = parentCart.position();
 
+        if (camPos == null) return;
+
         // >= 1.20.5
         Vec3 pos1 = cartPos.subtract(camPos);
         Vec3 pos2 = parentPos.subtract(camPos);
@@ -289,6 +291,8 @@ public class ParticleManager {
 
         Vec3 normal1 = side1.normalize();
         Vec3 normal2 = side2.normalize();
+
+        if (poseStack == null) return;
 
         submitNodeCollector.submitCustomGeometry(
             poseStack,
