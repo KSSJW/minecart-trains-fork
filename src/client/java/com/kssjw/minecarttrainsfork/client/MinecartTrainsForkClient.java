@@ -1,7 +1,7 @@
 package com.kssjw.minecarttrainsfork.client;
 
 import com.kssjw.minecarttrainsfork.client.extension.config.ConfigEntry;
-import com.kssjw.minecarttrainsfork.client.manager.LoadManager;
+import com.kssjw.minecarttrainsfork.client.manager.ClientLoadManager;
 
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
@@ -12,7 +12,7 @@ import net.neoforged.api.distmarker.Dist;
 public class MinecartTrainsForkClient {
 
 	public MinecartTrainsForkClient() {
-		LoadManager.init();
+		ClientLoadManager.init();
 		ModLoadingContext.get().registerExtensionPoint(
 			IConfigScreenFactory.class,
 			() -> (mod, parent) -> {

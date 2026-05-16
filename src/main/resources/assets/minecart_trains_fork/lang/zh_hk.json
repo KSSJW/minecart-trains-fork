@@ -1,0 +1,55 @@
+{
+    "toast.minecart-trains-fork.apinotfound.title": "Cloth Config API 未被找到",
+    "toast.minecart-trains-fork.apinotfound.desc": "您需要安裝 §6Cloth Config API。",
+
+    "message.minecart-trains-fork.chainingstarted": "連接開始",
+    "message.minecart-trains-fork.chainingcleared": "連接清理",
+    "message.minecart-trains-fork.invalidchaining": "連接無效",
+
+    "screen.minecart-trains-fork.ConfigEntryScreen.title": "Minecart Trains Fork 設定",
+    "screen.minecart-trains-fork.ConfigEntryScreen.server": "伺服器",
+    "screen.minecart-trains-fork.ConfigEntryScreen.client": "客戶端",
+    "screen.minecart-trains-fork.ConfigEntryScreen.cancel": "取消",
+
+    "screen.minecart-trains-fork.IllegalOperationScreen.title": "§c不允許的操作",
+    "screen.minecart-trains-fork.IllegalOperationScreen.desc": ":( 唔好灰心，呢個唔係 Bug。\n\n睇嚟您而家喺多人遊戲入面。\n您唔可以透過呢個設定更改伺服器配置。\n\n如果要更改，請聯絡伺服器管理員去修改配置檔案。\n§6... > config > minecart-trains-fork.json",
+    "screen.minecart-trains-fork.IllegalOperationScreen.yes": "好",
+    "screen.minecart-trains-fork.IllegalOperationScreen.no": "好",
+
+    "text.autoconfig.minecart-trains-fork.title": "Minecart Trains Fork 設定 (伺服器)",
+
+    "text.autoconfig.minecart-trains-fork.category.general": "一般設定",
+
+    "text.autoconfig.minecart-trains-fork.option.brakingAfterTrainSeparation.@PrefixText": "列車",
+    "text.autoconfig.minecart-trains-fork.option.brakingAfterTrainSeparation": "    列車分離後煞車",
+    "text.autoconfig.minecart-trains-fork.option.cartSpacing": "    車輛間距",
+    "text.autoconfig.minecart-trains-fork.option.cartSpacing.@Tooltip[0]": "註: 數值會被除以 10。",
+    "text.autoconfig.minecart-trains-fork.option.cartSpacing.@Tooltip[1]": "例如: 5 -> 0.5",
+
+    "text.autoconfig.minecart-trains-fork-client.title": "Minecart Trains Fork 設定 (客戶端)",
+
+    "text.autoconfig.minecart-trains-fork-client.category.general": "一般設定",
+    "text.autoconfig.minecart-trains-fork-client.category.advanced": "進階設定",
+
+    "text.autoconfig.minecart-trains-fork-client.option.enabledDefaultLinkParticle.@PrefixText": "連接粒子",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledDefaultLinkParticle": "    顯示預設連接粒子",
+
+    "text.autoconfig.minecart-trains-fork-client.option.enabledDefaultHeadParticle.@PrefixText": "頭車粒子",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledDefaultHeadParticle": "    顯示預設頭車粒子",
+
+    "text.autoconfig.minecart-trains-fork-client.option.enabledLinkLine.@PrefixText": "連接線條",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledLinkLine": "    顯示連接線條",
+
+    "text.autoconfig.minecart-trains-fork-client.option.enabledNotice.@PrefixText": "提示",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledNotice": "    顯示鏈接提示",
+
+    "text.autoconfig.minecart-trains-fork-client.option.enabledCustomLinkParticle.@PrefixText": "連接粒子",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledCustomLinkParticle": "    顯示自訂連接粒子",
+    "text.autoconfig.minecart-trains-fork-client.option.selectedLinkParticle": "    選擇的自訂連接粒子",
+    "text.autoconfig.minecart-trains-fork-client.option.customLinkParticleCycle": "    自訂連接粒子週期",
+
+    "text.autoconfig.minecart-trains-fork-client.option.enabledCustomHeadParticle.@PrefixText": "頭車粒子",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledCustomHeadParticle": "    顯示自訂頭車粒子",
+    "text.autoconfig.minecart-trains-fork-client.option.selectedHeadParticle": "    選擇的自訂頭車粒子",
+    "text.autoconfig.minecart-trains-fork-client.option.customHeadParticleCycle": "    自訂頭車粒子週期"
+}
