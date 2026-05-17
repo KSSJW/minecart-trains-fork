@@ -2,29 +2,29 @@ package com.kssjw.minecarttrainsfork.client.manager;
 
 import org.jspecify.annotations.NonNull;
 
-import com.kssjw.minecarttrainsfork.client.extension.config.ConfigValue;
+import com.kssjw.minecarttrainsfork.client.extension.config.ClientConfigValue;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.particle.SimpleParticleType;
 
-public class ConfigManager {
+public class ClientConfigManager {
     
-    private static ConfigValue config = AutoConfig.getConfigHolder(ConfigValue.class).getConfig();
+    private static ClientConfigValue config = AutoConfig.getConfigHolder(ClientConfigValue.class).getConfig();
 
     public static boolean isEnabledDefaultLinkParticle() {
-        return LoadManager.isAPIFound() ? config.enabledDefaultLinkParticle : true;
+        return ClientLoadManager.isAPIFound() ? config.enabledDefaultLinkParticle : false;
     }
 
     public static boolean isEnabledDefaultHeadParticle() {
-        return LoadManager.isAPIFound() ? config.enabledDefaultHeadParticle : true;
+        return ClientLoadManager.isAPIFound() ? config.enabledDefaultHeadParticle : true;
     }
 
     public static boolean isEnabledLinkLine() {
-        return LoadManager.isAPIFound() ? config.enabledLinkLine : true;
+        return ClientLoadManager.isAPIFound() ? config.enabledLinkLine : true;
     }
 
     public static boolean isEnabledNotice() {
-        return LoadManager.isAPIFound() ? config.enabledNotice : true;
+        return ClientLoadManager.isAPIFound() ? config.enabledNotice : true;
     }
 
     /* ------ */

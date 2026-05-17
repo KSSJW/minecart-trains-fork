@@ -12,9 +12,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.UUID;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
@@ -24,7 +21,6 @@ public class AbstractMinecartEntityMixin implements IChainableUtil {
 
     @Unique private @Nullable UUID parentUUID;
     @Unique private @Nullable UUID childUUID;
-    @Unique private static final TrackedData<Integer> PARENT_ID = DataTracker.registerData(AbstractMinecartEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
     @Override
     public UUID getParentUUID() {
@@ -49,11 +45,6 @@ public class AbstractMinecartEntityMixin implements IChainableUtil {
     @Inject(method = "tick", at = @At("HEAD"))
     private void mctrains$tick(CallbackInfo ci) {
         TrainManager.tick((AbstractMinecartEntity)(Object)this);
-    }
-
-    @Inject(method = "initDataTracker", at = @At("TAIL"))
-    private void initTracker(DataTracker.Builder builder, CallbackInfo ci) {
-        builder.add(PARENT_ID, -1);
     }
 
     @Override
