@@ -5,9 +5,6 @@ import com.kssjw.minecarttrainsfork.util.LinkUtil;
 import com.kssjw.minecarttrainsfork.util.DataUtil;
 import com.kssjw.minecarttrainsfork.util.IChainableUtil;
 
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
@@ -26,7 +23,6 @@ public class AbstractMinecartEntityMixin implements IChainableUtil {
 
     @Unique private @Nullable UUID parentUUID;
     @Unique private @Nullable UUID childUUID;
-    @Unique private static final TrackedData<Integer> PARENT_ID = DataTracker.registerData(AbstractMinecartEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
     @Override
     public UUID getParentUUID() {
@@ -51,11 +47,6 @@ public class AbstractMinecartEntityMixin implements IChainableUtil {
     @Inject(method = "tick", at = @At("HEAD"))
     private void mctrains$tick(CallbackInfo ci) {
         TrainManager.tick((AbstractMinecartEntity)(Object)this);
-    }
-
-    @Inject(method = "initDataTracker", at = @At("TAIL"))
-    private void initTracker(DataTracker.Builder builder, CallbackInfo ci) {
-        builder.add(PARENT_ID, -1);
     }
 
     @Override

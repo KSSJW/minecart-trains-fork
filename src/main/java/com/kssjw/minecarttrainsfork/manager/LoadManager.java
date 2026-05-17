@@ -1,9 +1,9 @@
-package com.kssjw.minecarttrainsfork.client.manager;
+package com.kssjw.minecarttrainsfork.manager;
 
-import com.kssjw.minecarttrainsfork.client.extension.config.ConfigValue;
+import com.kssjw.minecarttrainsfork.extension.config.ConfigValue;
 
 public class LoadManager {
-
+    
     private static boolean apiFound;
 
     public static void init() {
