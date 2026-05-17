@@ -12,9 +12,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.UUID;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -24,7 +21,6 @@ public class AbstractMinecartMixin implements IChainableUtil {
 
     @Unique private @Nullable UUID parentUUID;
     @Unique private @Nullable UUID childUUID;
-    @Unique private static final EntityDataAccessor<Integer> PARENT_ID = SynchedEntityData.defineId(AbstractMinecart.class, EntityDataSerializers.INT);
 
     @Override
     public UUID getParentUUID() {
@@ -49,11 +45,6 @@ public class AbstractMinecartMixin implements IChainableUtil {
     @Inject(method = "tick", at = @At("HEAD"))
     private void mctrains$tick(CallbackInfo ci) {
         TrainManager.tick((AbstractMinecart)(Object)this);
-    }
-
-    @Inject(method = "defineSynchedData", at = @At("TAIL"))
-    private void initTracker(SynchedEntityData.Builder builder, CallbackInfo ci) {
-        builder.define(PARENT_ID, -1);
     }
 
     @Override

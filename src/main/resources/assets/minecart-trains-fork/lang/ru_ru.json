@@ -1,0 +1,55 @@
+{
+    "toast.minecart-trains-fork.apinotfound.title": "Cloth Config API не найден",
+    "toast.minecart-trains-fork.apinotfound.desc": "Вам необходимо установить §6Cloth Config API.",
+
+    "message.minecart-trains-fork.chainingstarted": "Режим Сцепки Вкл",
+    "message.minecart-trains-fork.chainingcleared": "Режим Сцепки Выкл",
+    "message.minecart-trains-fork.invalidchaining": "Недопустимая Сцепка",
+
+    "screen.minecart-trains-fork.ConfigEntryScreen.title": "Настройки Minecart Trains Fork",
+    "screen.minecart-trains-fork.ConfigEntryScreen.server": "Сервер",
+    "screen.minecart-trains-fork.ConfigEntryScreen.client": "Клиент",
+    "screen.minecart-trains-fork.ConfigEntryScreen.cancel": "Закрыть",
+
+    "screen.minecart-trains-fork.IllegalOperationScreen.title": "§cОперация Требующая Прав",
+    "screen.minecart-trains-fork.IllegalOperationScreen.desc": ":(Не расстраивайтесь, это не ошибка.\n\nПохоже, что вы играете в многопользовательскую игру.\nВы не можете изменить конфигурацию сервера с помощью этой настройки.\n\nЕсли вам необходимо внести изменения, пожалуйста, свяжитесь с администратором сервера\nчтобы изменить конфигурационный файл\n§6... > config > minecart-trains-fork.json",
+    "screen.minecart-trains-fork.IllegalOperationScreen.yes": "OK",
+    "screen.minecart-trains-fork.IllegalOperationScreen.no": "OK",
+
+    "text.autoconfig.minecart-trains-fork.title": "Настройки Minecart Trains Fork (Сервер)",
+
+    "text.autoconfig.minecart-trains-fork.category.general": "Общие Настройки",
+
+    "text.autoconfig.minecart-trains-fork.option.brakingAfterTrainSeparation.@PrefixText": "Вагонетка",
+    "text.autoconfig.minecart-trains-fork.option.brakingAfterTrainSeparation": "    Торможение После Отсоединения Вагонетки",
+    "text.autoconfig.minecart-trains-fork.option.cartSpacing": "    Расстояние Между Вагонетками",
+    "text.autoconfig.minecart-trains-fork.option.cartSpacing.@Tooltip[0]": "Примечание: Это значение будет разделено на 10.",
+    "text.autoconfig.minecart-trains-fork.option.cartSpacing.@Tooltip[1]": "Пример: 5 -> 0.5",
+
+    "text.autoconfig.minecart-trains-fork-client.title": "Настройки Minecart Trains Fork (Клиент)",
+
+    "text.autoconfig.minecart-trains-fork-client.category.general": "Общие Настройки",
+    "text.autoconfig.minecart-trains-fork-client.category.advanced": "Расширенные Настройки",
+
+    "text.autoconfig.minecart-trains-fork-client.option.enabledDefaultLinkParticle.@PrefixText": "Частицы Над Местом Сцепки",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledDefaultLinkParticle": "    Показывать Стандартные Частицы Над Местом Сцепки",
+
+    "text.autoconfig.minecart-trains-fork-client.option.enabledDefaultHeadParticle.@PrefixText": "Частицы От Ведущей Вагонетки",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledDefaultHeadParticle": "    Показывать Стандартные Частицы От Ведущей Вагонетки",
+
+    "text.autoconfig.minecart-trains-fork-client.option.enabledLinkLine.@PrefixText": "Связующая Цепь",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledLinkLine": "    Показать Связующую Цепь",
+
+    "text.autoconfig.minecart-trains-fork-client.option.enabledNotice.@PrefixText": "Уведомления",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledNotice": "    Показывать Уведомления О Сцепке",
+
+    "text.autoconfig.minecart-trains-fork-client.option.enabledCustomLinkParticle.@PrefixText": "Частицы Над Местом Сцепки",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledCustomLinkParticle": "    Показывать Пользовательские Частицы Над Местом Сцепки",
+    "text.autoconfig.minecart-trains-fork-client.option.selectedLinkParticle": "    Выбрать Пользовательские Частицы Над Местом Сцепки",
+    "text.autoconfig.minecart-trains-fork-client.option.customLinkParticleCycle": "    Интервал Пользовательских Частиц Над Местом Сцепки",
+    
+    "text.autoconfig.minecart-trains-fork-client.option.enabledCustomHeadParticle.@PrefixText": "Частицы От Ведущей Вагонетки",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledCustomHeadParticle": "    Показывать Пользовательские Частицы От Ведущей Вагонетки",
+    "text.autoconfig.minecart-trains-fork-client.option.selectedHeadParticle": "    Выбрать Пользовательские Частицы От Ведущей Вагонетки",
+    "text.autoconfig.minecart-trains-fork-client.option.customHeadParticleCycle": "    Интервал Пользовательских Частиц От Ведущей Вагонетки"
+}

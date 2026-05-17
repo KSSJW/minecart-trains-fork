@@ -1,6 +1,7 @@
 package com.kssjw.minecarttrainsfork;
 
 import com.kssjw.minecarttrainsfork.manager.EventManager;
+import com.kssjw.minecarttrainsfork.manager.LoadManager;
 import com.kssjw.minecarttrainsfork.manager.NetworkManager;
 import com.kssjw.minecarttrainsfork.util.ComponentUtil;
 import net.fabricmc.api.ModInitializer;
@@ -17,6 +18,7 @@ public class MinecartTrainsFork implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		LoadManager.init();
 		
 		Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "parent_id"), ComponentUtil.PARENT_ID);
 
