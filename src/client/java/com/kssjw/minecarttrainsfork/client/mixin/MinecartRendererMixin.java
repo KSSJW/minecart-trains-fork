@@ -9,19 +9,15 @@ import com.kssjw.minecarttrainsfork.client.manager.ParticleManager;
 import com.kssjw.minecarttrainsfork.util.LogUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MinecartRenderer;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 @Mixin(MinecartRenderer.class)
-public abstract class MinecartRendererMixin<T extends AbstractMinecart, S extends AbstractMinecart> extends EntityRenderer<T> {
-
-    protected MinecartRendererMixin(EntityRendererProvider.Context context) {super(context);}
+public class MinecartRendererMixin {
 
     @Inject(method = "render(Lnet/minecraft/world/entity/vehicle/AbstractMinecart;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V", at = @At("TAIL"))
-    public void mctrains$updateRenderState(
-        T entity,
+    private void injectRender(
+        AbstractMinecart entity,
         float yaw,
         float tickDelta,
         PoseStack matrices,
@@ -42,7 +38,7 @@ public abstract class MinecartRendererMixin<T extends AbstractMinecart, S extend
         }
 
         try {
-            ParticleManager.linkLine(entity);
+            ParticleManager.linkLine(entity, vertexConsumers);
         } catch (Throwable ex) {
             LogUtil.print("Link line error: " + ex);
         }

@@ -22,7 +22,9 @@ public class TrainManager {
                 if (distance <= 4) {
                     Vec3 directionToParent = entityIChainable.getChainedParent().position().subtract(entity.position()).normalize();
 
-                    if (distance > 1) {
+                    double cartSpacing = ConfigManager.getCartSpacing();
+
+                    if (distance > cartSpacing) {
                         Vec3 parentVelocity = entityIChainable.getChainedParent().getDeltaMovement();
 
                         if (parentVelocity.length() == 0) {
@@ -31,13 +33,21 @@ public class TrainManager {
                             entity.setDeltaMovement(directionToParent.scale(parentVelocity.length()));
                             entity.setDeltaMovement(entity.getDeltaMovement().scale(distance));
                         }
-                    } else if(distance < 0.8) {
+                    } else if (distance < cartSpacing - 0.2) {
                         entity.setDeltaMovement(directionToParent.scale(-0.05));
                     } else {
                         entity.setDeltaMovement(Vec3.ZERO);
                     }
                 } else {
                     AbstractMinecart parentCart = entityIChainable.getChainedParent();
+
+                    if (ConfigManager.isEnabledBrakingAfterTrainSeparation()) {
+                        for (AbstractMinecart cart = entity; ((IChainableUtil)cart).getChainedParent() != null; cart = (AbstractMinecart)((IChainableUtil)cart).getChainedParent()) {
+                            AbstractMinecart parent = ((IChainableUtil)cart).getChainedParent();
+                            parent.setDeltaMovement(Vec3.ZERO);
+                            cart.setDeltaMovement(Vec3.ZERO);
+                        }
+                    }
 
                     IChainableUtil.unsetChainedParentChild((IChainableUtil)parentCart, entityIChainable);
                     entity.spawnAtLocation(new ItemStack(Items.CHAIN));

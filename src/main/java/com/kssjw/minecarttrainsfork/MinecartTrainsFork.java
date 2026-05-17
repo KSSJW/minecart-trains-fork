@@ -1,6 +1,7 @@
 package com.kssjw.minecarttrainsfork;
 
 import com.kssjw.minecarttrainsfork.manager.EventManager;
+import com.kssjw.minecarttrainsfork.manager.LoadManager;
 import com.kssjw.minecarttrainsfork.manager.NetworkManager;
 import com.kssjw.minecarttrainsfork.util.ComponentUtil;
 import net.neoforged.bus.api.IEventBus;
@@ -13,6 +14,7 @@ public class MinecartTrainsFork {
 	public static final String MOD_ID = "minecart_trains_fork";
 
 	public MinecartTrainsFork(IEventBus modEventBus) {
+		LoadManager.init();
 		
 		ComponentUtil.register(modEventBus);
 
