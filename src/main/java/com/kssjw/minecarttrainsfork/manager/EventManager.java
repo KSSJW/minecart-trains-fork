@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.UUID;
 import net.minecraft.component.ComponentType;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.item.AxeItem;
@@ -52,6 +53,8 @@ public class EventManager {
                         player.sendMessage(Text.translatable(MinecartTrainsFork.MOD_ID + " ")
                             .append(Text.translatable("message.minecart-trains-fork.invalidchaining"))
                             .formatted(Formatting.RED), true);
+
+                        return ActionResult.PASS;
                     } else {
 
                         if ((cartIChainable).getChainedParent() != null) IChainableUtil.unsetChainedParentChild(cartIChainable, (IChainableUtil)((cartIChainable).getChainedParent()));
@@ -81,9 +84,11 @@ public class EventManager {
         }
     }
 
-    private static ActionResult unlink(PlayerEntity player, ItemStack stack, AbstractMinecartEntity cart, World world) {
+    private static ActionResult unlink(PlayerEntity player, ItemStack stack, AbstractMinecartEntity cart, World world, Hand hand) {
         if (player.isSneaking() && stack.getItem() instanceof AxeItem) {
             IChainableUtil icu = (IChainableUtil)(Object)cart;
+
+            if (!player.isCreative() && (icu.getParentUUID() != null || icu.getChildUUID() != null)) stack.damage(1, player, hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
             
             if (!world.isClient()) {
                 ServerWorld serverWorld = (ServerWorld)world;
@@ -109,7 +114,7 @@ public class EventManager {
             }
 
             // 解编逻辑
-            ActionResult unlinkResult = unlink(player, stack, cart, world);
+            ActionResult unlinkResult = unlink(player, stack, cart, world, hand);
 
             if (unlinkResult == ActionResult.SUCCESS) {
                 return ActionResult.SUCCESS;
