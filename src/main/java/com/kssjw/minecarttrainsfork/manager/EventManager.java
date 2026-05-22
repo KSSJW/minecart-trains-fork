@@ -55,6 +55,8 @@ public class EventManager {
                         player.displayClientMessage(Component.translatable(MinecartTrainsFork.MOD_ID + " ")
                             .append(Component.translatable("message.minecart-trains-fork.invalidchaining"))
                             .withStyle(ChatFormatting.RED), true);
+
+                        return InteractionResult.PASS;
                     } else {
 
                         if ((cartIChainable).getChainedParent() != null) IChainableUtil.unsetChainedParentChild(cartIChainable, (IChainableUtil)((cartIChainable).getChainedParent()));
@@ -84,9 +86,11 @@ public class EventManager {
         }
     }
 
-    private static InteractionResult unlink(Player player, ItemStack stack, AbstractMinecart cart, Level world) {
+    private static InteractionResult unlink(Player player, ItemStack stack, AbstractMinecart cart, Level world, InteractionHand hand) {
         if (player.isShiftKeyDown() && stack.getItem() instanceof AxeItem) {
             IChainableUtil icu = (IChainableUtil)(Object)cart;
+
+            if (!player.isCreative() && (icu.getParentUUID() != null || icu.getChildUUID() != null)) stack.hurtAndBreak(1, player, hand);
             
             if (!world.isClientSide()) {
                 ServerLevel serverWorld = (ServerLevel)world;
@@ -112,7 +116,7 @@ public class EventManager {
             }
 
             // 解编逻辑
-            InteractionResult unlinkResult = unlink(player, stack, cart, world);
+            InteractionResult unlinkResult = unlink(player, stack, cart, world, hand);
 
             if (unlinkResult == InteractionResult.SUCCESS) {
                 return InteractionResult.SUCCESS;
