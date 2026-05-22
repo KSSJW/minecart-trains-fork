@@ -295,7 +295,7 @@ public class ParticleManager {
 
         submitNodeCollector.submitCustom(
             poseStack,
-            RenderLayers.entityCutout(Identifier.of(MinecartTrainsFork.MOD_ID, "textures/chain.png")),
+            RenderLayers.entityCutoutNoCull(Identifier.of(MinecartTrainsFork.MOD_ID, "textures/chain.png")),
             (pose, buffer) -> {
                 Matrix4f matrix = pose.getPositionMatrix();
 
