@@ -18,7 +18,6 @@ import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
 
 import com.kssjw.minecarttrainsfork.MinecartTrainsFork;
-import com.kssjw.minecarttrainsfork.manager.LoadManager;
 import com.kssjw.minecarttrainsfork.util.IChainableUtil;
 
 public class ParticleManager {
@@ -267,7 +266,7 @@ public class ParticleManager {
 
     // 1.20
     private static void line(AbstractMinecartEntity cart, MatrixStack matrices, VertexConsumerProvider vertexConsumers) {
-        if (LoadManager.isAPIFound() && ClientConfigManager.isEnabledLinkLine() == false) return;
+        if (ClientLoadManager.isAPIFound() && ClientConfigManager.isEnabledLinkLine() == false) return;
         if (cart == null) return;                
         if (!(cart.getWorld() instanceof ClientWorld world)) return;
 
