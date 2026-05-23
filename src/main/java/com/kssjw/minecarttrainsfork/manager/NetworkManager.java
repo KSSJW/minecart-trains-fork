@@ -1,90 +1,142 @@
 package com.kssjw.minecarttrainsfork.manager;
 
-import java.util.UUID;
-
 import com.kssjw.minecarttrainsfork.MinecartTrainsFork;
 import com.kssjw.minecarttrainsfork.util.IChainableUtil;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.network.simple.SimpleChannel;
+
+import java.util.UUID;
+import java.util.function.Supplier;
 
 public class NetworkManager {
 
-     public static void registerPayloads(RegisterPayloadHandlersEvent event) {
-		var registrar = event.registrar("1");
+    private static final String PROTOCOL_VERSION = "1";
 
-		 registrar.playToClient(
-			NetworkManager.RelationshipPayload.TYPE,
-        	NetworkManager.RelationshipPayload.CODEC,
-			(payload, context) -> {
-				context.enqueueWork(() -> {
-                    ClientLevel clientWorld = Minecraft.getInstance().level;
+    public static final SimpleChannel CHANNEL =
+            NetworkRegistry.newSimpleChannel(
+                    new ResourceLocation(MinecartTrainsFork.MOD_ID, "main"),
+                    () -> PROTOCOL_VERSION,
+                    PROTOCOL_VERSION::equals,
+                    PROTOCOL_VERSION::equals
+            );
 
-					if (clientWorld == null) return;
-				
-					if (clientWorld != null) {
-						UUID childUUID = payload.childUUID();
-						UUID parentUUID = payload.parentUUID();
+    private static int packetId = 0;
 
-						IChainableUtil childChainableUtil = null;
-						IChainableUtil parentChainableUtil = null;
+    public static void register() {
 
-						for (Entity entity : clientWorld.entitiesForRendering()) {
-							if (entity instanceof AbstractMinecart && entity.getUUID().equals(childUUID)) childChainableUtil = (IChainableUtil) entity;
-							if (entity instanceof AbstractMinecart && entity.getUUID().equals(parentUUID)) parentChainableUtil = (IChainableUtil) entity;
-						}
+        CHANNEL.registerMessage(
+                packetId++,
+                RelationshipPayload.class,
 
-						if (childChainableUtil != null) childChainableUtil.setParentUUID(parentUUID);
-						if (parentChainableUtil != null) parentChainableUtil.setChildUUID(childUUID);
-					}
-
-				});
-			}
-		 );
-	}
-
-    public static void sendRelationshipPayload(UUID childUUID, UUID parentUUID, ServerPlayer player) {
-        if (player == null) return;
-
-        RelationshipPayload relationship = new RelationshipPayload(childUUID, parentUUID);
-        player.connection.send(relationship);
+                RelationshipPayload::encode,
+                RelationshipPayload::decode,
+                RelationshipPayload::handle
+        );
     }
 
-    public record RelationshipPayload(UUID childUUID, UUID parentUUID) implements CustomPacketPayload {
-        public static final Type<RelationshipPayload> TYPE = new Type<>(
-          ResourceLocation.fromNamespaceAndPath(MinecartTrainsFork.MOD_ID, "relationship")  
-        );
+    public static class RelationshipPayload {
 
-        @Override
-        public Type<? extends CustomPacketPayload> type() {
-            return TYPE;
+        public UUID childUUID;
+        public UUID parentUUID;
+
+        public RelationshipPayload(UUID childUUID, UUID parentUUID) {
+            this.childUUID = childUUID;
+            this.parentUUID = parentUUID;
         }
 
-        public static final StreamCodec<FriendlyByteBuf, RelationshipPayload> CODEC = StreamCodec.of(
-            
-            // 写入 UUID
-            (buf, payload) -> {
-                buf.writeUUID(payload.childUUID() != null ? payload.childUUID() : new UUID(0L, 0L));
-                buf.writeUUID(payload.parentUUID() != null ? payload.parentUUID() : new UUID(0L, 0L));
-            },
+        // 编码
+        public static void encode(RelationshipPayload packet, FriendlyByteBuf buf) {
 
-            // 读取 UUID
-            buf -> {
-                UUID child = buf.readUUID();
-                UUID parent = buf.readUUID();
+            buf.writeBoolean(packet.childUUID != null);
 
-                if (child.getMostSignificantBits() == 0L && child.getLeastSignificantBits() == 0L) child = null;
-                if (parent.getMostSignificantBits() == 0L && parent.getLeastSignificantBits() == 0L) parent = null;
+            if (packet.childUUID != null)
+                buf.writeUUID(packet.childUUID);
 
-                return new RelationshipPayload(child, parent);
-            }
+            buf.writeBoolean(packet.parentUUID != null);
+
+            if (packet.parentUUID != null)
+                buf.writeUUID(packet.parentUUID);
+        }
+
+        // 解码
+        public static RelationshipPayload decode(FriendlyByteBuf buf) {
+
+            UUID child = null;
+            UUID parent = null;
+
+            if (buf.readBoolean())
+                child = buf.readUUID();
+
+            if (buf.readBoolean())
+                parent = buf.readUUID();
+
+            return new RelationshipPayload(child, parent);
+        }
+
+        // 接收处理
+        public static void handle(
+                RelationshipPayload packet,
+                Supplier<NetworkEvent.Context> ctx
+        ) {
+
+            ctx.get().enqueueWork(() -> {
+
+                Minecraft client = Minecraft.getInstance();
+
+                ClientLevel clientWorld = client.level;
+
+                if (clientWorld == null)
+                    return;
+
+                IChainableUtil childChainableUtil = null;
+                IChainableUtil parentChainableUtil = null;
+
+                for (Entity entity : clientWorld.entitiesForRendering()) {
+
+                    if (entity instanceof AbstractMinecart minecart) {
+
+                        if (minecart.getUUID().equals(packet.childUUID))
+                            childChainableUtil = (IChainableUtil) minecart;
+
+                        if (minecart.getUUID().equals(packet.parentUUID))
+                            parentChainableUtil = (IChainableUtil) minecart;
+                    }
+                }
+
+                if (childChainableUtil != null)
+                    childChainableUtil.setParentUUID(packet.parentUUID);
+
+                if (parentChainableUtil != null)
+                    parentChainableUtil.setChildUUID(packet.childUUID);
+            });
+
+            ctx.get().setPacketHandled(true);
+        }
+    }
+
+    // 发送
+    public static void sendRelationshipPayload(
+            UUID childUUID,
+            UUID parentUUID,
+            ServerPlayer player
+    ) {
+
+        if (player == null)
+            return;
+
+        CHANNEL.send(
+                PacketDistributor.PLAYER.with(() -> player),
+                new RelationshipPayload(childUUID, parentUUID)
         );
     }
 }

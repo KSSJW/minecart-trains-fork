@@ -34,8 +34,8 @@ public class ParticleManager {
         if (ClientLoadManager.isAPIFound()) customHeadParticle(entity);
     }
 
-    public static void linkLine(AbstractMinecart entity, MultiBufferSource vertexConsumers) {
-        line(entity, vertexConsumers);
+    public static void linkLine(AbstractMinecart entity, PoseStack matrices, MultiBufferSource vertexConsumers) {
+        line(entity, matrices, vertexConsumers);
     }
     
     // 默认连接粒子
@@ -264,10 +264,11 @@ public class ParticleManager {
         }
     }
 
-    private static void line(AbstractMinecart cart, MultiBufferSource vertexConsumers) {
+    // 1.20
+    private static void line(AbstractMinecart cart, PoseStack matrices, MultiBufferSource vertexConsumers) {
         if (ClientLoadManager.isAPIFound() && ClientConfigManager.isEnabledLinkLine() == false) return;
-        if (cart == null) return;
-        if (!(cart.getCommandSenderWorld() instanceof ClientLevel world)) return;
+        if (cart == null) return;                
+        if (!(cart.level() instanceof ClientLevel world)) return;
 
         UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
 
@@ -285,15 +286,11 @@ public class ParticleManager {
         Vec3 cartPos = cart.position();
         Vec3 parentPos = parentCart.position();
 
-        // >= 1.20.5
-        Vec3 camPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+        // 1.20
+        Vec3 pos1 = Vec3.ZERO;
+        Vec3 pos2 = parentPos.subtract(cartPos);
 
-        if (camPos == null) return;
-
-        Vec3 pos1 = cartPos.subtract(camPos);
-        Vec3 pos2 = parentPos.subtract(camPos);
-
-        Vec3 dir = pos2.subtract(pos1).normalize(); // 方向向量
+        Vec3 dir = pos2.normalize();   // 1.20
 
         // 边缘点，保证线条在两车之间
         double offset = cart.getBbWidth() / 2.0;
@@ -302,9 +299,8 @@ public class ParticleManager {
 
         Vec3 up = Math.abs(dir.y) > 0.9 ? new Vec3(1,0,0) : new Vec3(0,1,0);
 
-        // >= 1.20.5
-        Matrix4f matrix = (new PoseStack()).last().pose();
-        VertexConsumer consumer = vertexConsumers.getBuffer(RenderType.entityCutoutNoCull(ResourceLocation.fromNamespaceAndPath(MinecartTrainsFork.MOD_ID, "textures/chain.png")));
+        Matrix4f matrix = matrices.last().pose();
+        VertexConsumer consumer = vertexConsumers.getBuffer(RenderType.entityCutoutNoCull(ResourceLocation.tryBuild(MinecartTrainsFork.MOD_ID, "textures/chain.png")));
 
         double width = 0.05;
 
@@ -335,61 +331,69 @@ public class ParticleManager {
         */
 
         // 水平
-        consumer.addVertex(matrix, (float)a1.x, (float)(a1.y + 0.3), (float)a1.z)
-            .setUv(0.0F, 0.0F)
-            .setColor(255, 255, 255, 255)
-            .setOverlay(OverlayTexture.NO_OVERLAY)
-            .setLight(light)
-            .setNormal((float)normal1.x, (float)normal1.y, (float)normal1.z);
+        consumer.vertex(matrix, (float)a1.x, (float)(a1.y + 0.3), (float)a1.z)
+            .color(255, 255, 255, 255)
+            .uv(0.0F, 0.0F)
+            .overlayCoords(OverlayTexture.NO_OVERLAY)
+            .uv2(light)
+            .normal((float)normal1.x, (float)normal1.y, (float)normal1.z)
+            .endVertex();
 
-        consumer.addVertex(matrix, (float)a2.x, (float)(a2.y + 0.3), (float)a2.z)
-            .setUv(1.0F, 0.0F)
-            .setColor(255, 255, 255, 255)
-            .setOverlay(OverlayTexture.NO_OVERLAY)
-            .setLight(light)
-            .setNormal((float)normal1.x, (float)normal1.y, (float)normal1.z);
+        consumer.vertex(matrix, (float)a2.x, (float)(a2.y + 0.3), (float)a2.z)
+            .color(255, 255, 255, 255)
+            .uv(1.0F, 0.0F)
+            .overlayCoords(OverlayTexture.NO_OVERLAY)
+            .uv2(light)
+            .normal((float)normal1.x, (float)normal1.y, (float)normal1.z)
+            .endVertex();
 
-        consumer.addVertex(matrix, (float)a3.x, (float)(a3.y + 0.3), (float)a3.z)
-            .setUv(1.0F, 1.0F)
-            .setColor(255, 255, 255, 255)
-            .setOverlay(OverlayTexture.NO_OVERLAY)
-            .setLight(light)
-            .setNormal((float)normal1.x, (float)normal1.y, (float)normal1.z);
+        consumer.vertex(matrix, (float)a3.x, (float)(a3.y + 0.3), (float)a3.z)
+            .color(255, 255, 255, 255)
+            .uv(1.0F, 1.0F)
+            .overlayCoords(OverlayTexture.NO_OVERLAY)
+            .uv2(light)
+            .normal((float)normal1.x, (float)normal1.y, (float)normal1.z)
+            .endVertex();
 
-        consumer.addVertex(matrix, (float)a4.x, (float)(a4.y + 0.3), (float)a4.z)
-            .setUv(0.0F, 1.0F)
-            .setColor(255, 255, 255, 255)
-            .setOverlay(OverlayTexture.NO_OVERLAY)
-            .setLight(light)
-            .setNormal((float)normal1.x, (float)normal1.y, (float)normal1.z);
+        consumer.vertex(matrix, (float)a4.x, (float)(a4.y + 0.3), (float)a4.z)
+            .color(255, 255, 255, 255)
+            .uv(0.0F, 1.0F)
+            .overlayCoords(OverlayTexture.NO_OVERLAY)
+            .uv2(light)
+            .normal((float)normal1.x, (float)normal1.y, (float)normal1.z)
+            .endVertex();
 
         // 垂直
-        consumer.addVertex(matrix, (float)b1.x, (float)(b1.y + 0.3), (float)b1.z)
-            .setUv(0.0F, 0.0F)
-            .setColor(255, 255, 255, 255)
-            .setOverlay(OverlayTexture.NO_OVERLAY)
-            .setLight(light)
-            .setNormal((float)normal2.x, (float)normal2.y, (float)normal2.z);
+        consumer.vertex(matrix, (float)b1.x, (float)(b1.y + 0.3), (float)b1.z)
+            .color(255, 255, 255, 255)
+            .uv(0.0F, 0.0F)
+            .overlayCoords(OverlayTexture.NO_OVERLAY)
+            .uv2(light)
+            .normal((float)normal2.x, (float)normal2.y, (float)normal2.z)
+            .endVertex();
 
-        consumer.addVertex(matrix, (float)b2.x, (float)(b2.y + 0.3), (float)b2.z)
-            .setUv(1.0F, 0.0F)
-            .setColor(255, 255, 255, 255)
-            .setOverlay(OverlayTexture.NO_OVERLAY)
-            .setLight(light)
-            .setNormal((float)normal2.x, (float)normal2.y, (float)normal2.z);
+        consumer.vertex(matrix, (float)b2.x, (float)(b2.y + 0.3), (float)b2.z)
+            .color(255, 255, 255, 255)
+            .uv(1.0F, 0.0F)
+            .overlayCoords(OverlayTexture.NO_OVERLAY)
+            .uv2(light)
+            .normal((float)normal2.x, (float)normal2.y, (float)normal2.z)
+            .endVertex();
 
-        consumer.addVertex(matrix, (float)b3.x, (float)(b3.y + 0.3), (float)b3.z)
-            .setUv(1.0F, 1.0F)
-            .setColor(255, 255, 255, 255)
-            .setOverlay(OverlayTexture.NO_OVERLAY)
-            .setLight(light)
-            .setNormal((float)normal2.x, (float)normal2.y, (float)normal2.z);
+        consumer.vertex(matrix, (float)b3.x, (float)(b3.y + 0.3), (float)b3.z)
+            .color(255, 255, 255, 255)
+            .uv(1.0F, 1.0F)
+            .overlayCoords(OverlayTexture.NO_OVERLAY)
+            .uv2(light)
+            .normal((float)normal2.x, (float)normal2.y, (float)normal2.z)
+            .endVertex();
 
-        consumer.addVertex(matrix, (float)b4.x, (float)(b4.y + 0.3), (float)b4.z)
-            .setUv(0.0F, 1.0F)
-            .setColor(255, 255, 255, 255)
-            .setOverlay(OverlayTexture.NO_OVERLAY)
-            .setLight(light)
-            .setNormal((float)normal2.x, (float)normal2.y, (float)normal2.z);
+        consumer.vertex(matrix, (float)b4.x, (float)(b4.y + 0.3), (float)b4.z)
+            .color(255, 255, 255, 255)
+            .uv(0.0F, 1.0F)
+            .overlayCoords(OverlayTexture.NO_OVERLAY)
+            .uv2(light)
+            .normal((float)normal2.x, (float)normal2.y, (float)normal2.z)
+            .endVertex();
     }
 }

@@ -3,21 +3,26 @@ package com.kssjw.minecarttrainsfork.client;
 import com.kssjw.minecarttrainsfork.client.extension.config.ConfigEntry;
 import com.kssjw.minecarttrainsfork.client.manager.ClientLoadManager;
 
-import net.neoforged.fml.ModLoadingContext;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
-import net.neoforged.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
-@Mod(value = "minecart_trains_fork", dist = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = "minecart_trains_fork", bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class MinecartTrainsForkClient {
 
-	public MinecartTrainsForkClient() {
+	@SubscribeEvent
+	public static void onClientSetup(FMLClientSetupEvent event) {
 		ClientLoadManager.init();
 		ModLoadingContext.get().registerExtensionPoint(
-			IConfigScreenFactory.class,
-			() -> (mod, parent) -> {
-                return ConfigEntry.getModConfigScreenFactory(parent);
-            }
+			ConfigScreenFactory.class,
+			() -> new ConfigScreenFactory(
+				(mc, parent) -> {
+					return ConfigEntry.getModConfigScreenFactory(parent);
+				}
+			)
 		);
 	}
 }

@@ -29,7 +29,7 @@ public class ExitUtil {
             for (int i = 0; i < inv.getContainerSize(); i++) {
                 ItemStack stack = inv.getItem(i);
 
-                if (stack.is(Items.CHAIN)) stack.remove(ComponentUtil.PARENT_ID);
+                if (stack.is(Items.CHAIN)) ComponentUtil.removeParent(stack);
             }
 
             player.displayClientMessage(Component.translatable(MinecartTrainsFork.MOD_ID + " ")

@@ -13,10 +13,10 @@ import net.minecraft.client.renderer.entity.MinecartRenderer;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 @Mixin(MinecartRenderer.class)
-public class MinecartRendererMixin {
+public class MinecartRendererMixin{
 
     @Inject(method = "render(Lnet/minecraft/world/entity/vehicle/AbstractMinecart;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V", at = @At("TAIL"))
-    private void injectRender(
+    public void injectRender(
         AbstractMinecart entity,
         float yaw,
         float tickDelta,
@@ -38,7 +38,7 @@ public class MinecartRendererMixin {
         }
 
         try {
-            ParticleManager.linkLine(entity, vertexConsumers);
+            ParticleManager.linkLine(entity, matrices, vertexConsumers);
         } catch (Throwable ex) {
             LogUtil.print("Link line error: " + ex);
         }

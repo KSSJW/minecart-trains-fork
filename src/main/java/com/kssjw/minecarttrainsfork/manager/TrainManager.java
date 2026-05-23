@@ -89,10 +89,10 @@ public class TrainManager {
                     otherEntity instanceof AbstractMinecart otherCart
                     && entityIChainable.getChainedParent() != null
                     && entityIChainable.getChainedChild() != null
-                    && entityIChainable.getChainedChild() instanceof AbstractMinecart childCart
-                    && !otherCart.equals(childCart)
                 ) {
-                    otherCart.setDeltaMovement(entity.getDeltaMovement());
+                    AbstractMinecart childCart = entityIChainable.getChainedChild();
+
+                    if (!otherCart.equals(childCart)) otherCart.setDeltaMovement(entity.getDeltaMovement());
                 }
             }
         }

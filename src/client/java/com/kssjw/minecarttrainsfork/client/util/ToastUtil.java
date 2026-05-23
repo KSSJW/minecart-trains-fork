@@ -15,7 +15,7 @@ public class ToastUtil {
         ToastComponent toastManager = Minecraft.getInstance().getToasts();
         SystemToast.add(
             toastManager,
-            SystemToast.SystemToastId.NARRATOR_TOGGLE,
+            SystemToast.SystemToastIds.NARRATOR_TOGGLE,
             Component.translatable(title),
             Component.translatable(description)
         );

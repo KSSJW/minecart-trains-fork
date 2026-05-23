@@ -3,9 +3,7 @@ package com.kssjw.minecarttrainsfork.manager;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,14 +12,13 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 import com.kssjw.minecarttrainsfork.MinecartTrainsFork;
 import com.kssjw.minecarttrainsfork.util.ComponentUtil;
@@ -40,20 +37,19 @@ public class EventManager {
             entity,
             player,
             hand,
-            world,
-            ComponentUtil.PARENT_ID.get()
+            world
         );
 
         if (result.consumesAction()) event.setCanceled(true);
     }
 
-    private static InteractionResult link(ItemStack stack, AbstractMinecart cart, Player player, InteractionHand hand, Level world, DataComponentType<UUID> PARENT_ID) {
+    private static InteractionResult link(ItemStack stack, AbstractMinecart cart, Player player, InteractionHand hand, Level world) {
         if (
             player.isShiftKeyDown()
             && stack.is(Items.CHAIN)
             && world instanceof ServerLevel server
         ) {
-            UUID uuid = stack.get(PARENT_ID);
+            UUID uuid = ComponentUtil.getParent(stack);
 
             if (uuid != null && !cart.getUUID().equals(uuid)) {
                 if (server.getEntity(uuid) instanceof AbstractMinecart parent) {
@@ -85,16 +81,16 @@ public class EventManager {
                         NetworkManager.sendRelationshipPayload(cart.getUUID(), parent.getUUID(), (ServerPlayer) player);
                     }
                 } else {
-                    stack.remove(PARENT_ID);
+                    ComponentUtil.removeParent(stack);
                 }
 
                 world.playSound(null, cart.getX(), cart.getY(), cart.getZ(), SoundEvents.CHAIN_PLACE, SoundSource.NEUTRAL, 1f, 1.1f);
 
                 if (!player.isCreative()) stack.shrink(1);
 
-                stack.remove(PARENT_ID);
+                ComponentUtil.removeParent(stack);
             } else {
-                stack.set(PARENT_ID, cart.getUUID());
+                ComponentUtil.setParent(stack, cart.getUUID());
                 world.playSound(null, cart.getX(), cart.getY(), cart.getZ(), SoundEvents.CHAIN_HIT, SoundSource.NEUTRAL, 1f, 1.1f);
             }
             
@@ -109,7 +105,7 @@ public class EventManager {
         if (player.isShiftKeyDown() && stack.getItem() instanceof AxeItem) {
             IChainableUtil icu = (IChainableUtil)(Object)cart;
 
-            if (!player.isCreative() && (icu.getParentUUID() != null || icu.getChildUUID() != null)) stack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
+            if (!player.isCreative() && (icu.getParentUUID() != null || icu.getChildUUID() != null)) stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
             
             if (!world.isClientSide()) {
                 ServerLevel serverWorld = (ServerLevel)world;
@@ -123,12 +119,12 @@ public class EventManager {
         }
     }
 
-    public static InteractionResult init(Entity entity, Player player, InteractionHand hand, Level world, DataComponentType<UUID> PARENT_ID) {
+    public static InteractionResult init(Entity entity, Player player, InteractionHand hand, Level world) {
         if (entity instanceof AbstractMinecart cart && hand != null) {
             ItemStack stack = player.getItemInHand(hand);
 
             // 链接逻辑
-            InteractionResult linkResult = link(stack, cart, player, hand, world, PARENT_ID);
+            InteractionResult linkResult = link(stack, cart, player, hand, world);
             
             if (linkResult == InteractionResult.SUCCESS) {
                 return InteractionResult.SUCCESS;
