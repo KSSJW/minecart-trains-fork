@@ -9,6 +9,7 @@ This mod was forked from [Minecart Trains](https://github.com/Larsens-Mods/minec
 
 [![Fabric](https://img.shields.io/badge/Available%20for-Fabric-dbd0b4)](https://fabricmc.net)
 [![NeoForge](https://img.shields.io/badge/Available%20for-NeoForge-e68c37)](https://neoforged.net)
+[![Forge](https://img.shields.io/badge/Available%20for-Forge-2e435f)](https://files.minecraftforge.net/)
 
 ## Environment
 
@@ -41,7 +42,7 @@ This mod was forked from [Minecart Trains](https://github.com/Larsens-Mods/minec
 | Cloth Config API  | Optional      | Client Display Configuration |
 | Mod Menu          | Optional      | Client Configuration Entry |
 
-### NeoForge
+### NeoForge / Forge
 
 [Cloth Config API](https://github.com/shedaniel/cloth-config)
 
