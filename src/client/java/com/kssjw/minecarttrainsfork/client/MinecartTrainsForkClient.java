@@ -2,7 +2,7 @@ package com.kssjw.minecarttrainsfork.client;
 
 import java.util.UUID;
 
-import com.kssjw.minecarttrainsfork.client.manager.LoadManager;
+import com.kssjw.minecarttrainsfork.client.manager.ClientLoadManager;
 import com.kssjw.minecarttrainsfork.manager.NetworkManager;
 import com.kssjw.minecarttrainsfork.util.IChainableUtil;
 
@@ -16,7 +16,7 @@ public class MinecartTrainsForkClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		LoadManager.init();
+		ClientLoadManager.init();
 
 		// 1.20
 		ClientPlayNetworking.registerGlobalReceiver(

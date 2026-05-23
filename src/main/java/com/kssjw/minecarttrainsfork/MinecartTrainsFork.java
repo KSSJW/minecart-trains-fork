@@ -1,6 +1,7 @@
 package com.kssjw.minecarttrainsfork;
 
 import com.kssjw.minecarttrainsfork.manager.EventManager;
+import com.kssjw.minecarttrainsfork.manager.LoadManager;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
@@ -11,6 +12,7 @@ public class MinecartTrainsFork implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		LoadManager.init();
 		
 		UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
 			return EventManager.init(entity, player, hand, world);
