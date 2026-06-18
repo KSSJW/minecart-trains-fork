@@ -47,9 +47,9 @@ public class ConfigEntryScreenUtil extends Screen {
                 isMultiplayerWorld ? server.withStyle(ChatFormatting.RED) : server.withStyle(ChatFormatting.GREEN),
                 button -> {
                     if (isMultiplayerWorld) {
-                        this.minecraft.setScreen(IllegalOperationScreenUtil.get(this));
+                        this.minecraft.gui.setScreen(IllegalOperationScreenUtil.get(this));
                     } else {
-                        this.minecraft.setScreen(AutoConfigClient.getConfigScreen(ConfigValue.class, this).get());
+                        this.minecraft.gui.setScreen(AutoConfigClient.getConfigScreen(ConfigValue.class, this).get());
                     }
                 }
             )
@@ -63,10 +63,10 @@ public class ConfigEntryScreenUtil extends Screen {
                 client.withStyle(ChatFormatting.GREEN),
                 button -> {
                     if (ClientLoadManager.isAPIFound()) {
-                        this.minecraft.setScreen(AutoConfigClient.getConfigScreen(ClientConfigValue.class, this).get());
+                        this.minecraft.gui.setScreen(AutoConfigClient.getConfigScreen(ClientConfigValue.class, this).get());
                     } else {
                         ToastUtil.toast("toast.minecart-trains-fork.apinotfound.title", "toast.minecart-trains-fork.apinotfound.desc");
-                        this.minecraft.setScreen(parent);
+                        this.minecraft.gui.setScreen(parent);
                     }
                 }
             )
@@ -79,7 +79,7 @@ public class ConfigEntryScreenUtil extends Screen {
             Button.builder(
                 cancel,
                 button -> {
-                    this.minecraft.setScreen(parent);
+                    this.minecraft.gui.setScreen(parent);
                 }
             )
             .bounds(w / 2 - 50, h / 2 + 50, 100, 20)
@@ -89,6 +89,6 @@ public class ConfigEntryScreenUtil extends Screen {
 
     @Override
     public void onClose() {
-        this.minecraft.setScreen(parent);
+        this.minecraft.gui.setScreen(parent);
     }
 }
