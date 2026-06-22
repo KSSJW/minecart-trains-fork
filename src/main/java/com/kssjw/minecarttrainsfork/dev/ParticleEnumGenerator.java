@@ -6,11 +6,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import com.kssjw.minecarttrainsfork.util.LogUtil;
+
+import net.minecraft.SharedConstants;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 
 public class ParticleEnumGenerator {
-    
+
+    /**
+     * @deprecated For development use only.
+     */
+    @Deprecated(since = "dev")
     public static void generateEnum() {
 
         try {
@@ -24,6 +32,7 @@ public class ParticleEnumGenerator {
             Collections.sort(names);
 
             try (FileWriter writer = new FileWriter("ParticleList.txt")) {
+                writer.write("// " + SharedConstants.getCurrentVersion().id() + "\n");
 
                 for (int i = 0; i < names.size(); i++) {
                     String name = names.get(i).toLowerCase();   // 枚举常量名小写
@@ -33,7 +42,7 @@ public class ParticleEnumGenerator {
                 }
             }
 
-            System.out.println("已生成枚举类源码。");
+            LogUtil.print("The enumeration list has been generated.");
         } catch (IOException e) {
             e.printStackTrace();
         }
