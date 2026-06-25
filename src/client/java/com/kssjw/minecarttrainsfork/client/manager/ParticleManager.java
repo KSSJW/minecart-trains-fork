@@ -9,13 +9,13 @@ import com.kssjw.minecarttrainsfork.util.IChainableUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.phys.Vec3;
 
@@ -46,7 +46,7 @@ public class ParticleManager {
         // 速度与最大数量
         final int FRAME_SKIP = 40;  // 每 X 时间刻染一次
         final int MAX_STEPS = 6;    // 每次最多生成 X 个粒子
-        long ticks = Minecraft.getInstance().gui.getGuiTicks();
+        long ticks = Minecraft.getInstance().gui.hud.getGuiTicks();
 
         if (ticks % FRAME_SKIP != 0) return;
 
@@ -106,7 +106,7 @@ public class ParticleManager {
         // 速度与最大数量
         final int FRAME_SKIP = ClientConfigManager.getCustomLinkParticleCycle();
         final int MAX_STEPS = 6;
-        long ticks = Minecraft.getInstance().gui.getGuiTicks();
+        long ticks = Minecraft.getInstance().gui.hud.getGuiTicks();
 
         if (ticks % FRAME_SKIP != 0) return;
 
@@ -169,7 +169,7 @@ public class ParticleManager {
         // 速度与最大数量
         final int FRAME_SKIP_HEAD = 40; // 每 X 时间刻染一次
         final int MAX_HEAD_PARTICLES = 6;
-        long ticks = Minecraft.getInstance().gui.getGuiTicks();
+        long ticks = Minecraft.getInstance().gui.hud.getGuiTicks();
 
         if (ticks % FRAME_SKIP_HEAD != 0) return;
 
@@ -211,7 +211,7 @@ public class ParticleManager {
         // 速度与最大数量
         final int FRAME_SKIP_HEAD = ClientConfigManager.getCustomHeadParticleCycle();
         final int MAX_HEAD_PARTICLES = 6;
-        long ticks = Minecraft.getInstance().gui.getGuiTicks();
+        long ticks = Minecraft.getInstance().gui.hud.getGuiTicks();
         
         if (ticks % FRAME_SKIP_HEAD != 0) return;
 
@@ -287,7 +287,7 @@ public class ParticleManager {
         Vec3 b3 = pos2Edge.subtract(side2);
         Vec3 b4 = pos1Edge.subtract(side2);
 
-        int light = LevelRenderer.getLightCoords(cart.level(), BlockPos.containing(cartPos.add(parentPos).scale(0.5)));
+        int light = LightCoordsUtil.getLightCoords(cart.level(), BlockPos.containing(cartPos.add(parentPos).scale(0.5)));
 
         Vec3 normal1 = side1.normalize();
         Vec3 normal2 = side2.normalize();

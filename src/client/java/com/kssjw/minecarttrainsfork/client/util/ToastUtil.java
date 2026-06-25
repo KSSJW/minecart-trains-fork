@@ -12,7 +12,7 @@ public class ToastUtil {
     public static void toast(String title, String description) {
         if (title == null || description == null) return;
 
-        ToastManager toastManager = Minecraft.getInstance().getToastManager();
+        ToastManager toastManager = Minecraft.getInstance().gui.toastManager();
         SystemToast.add(
             toastManager,
             SystemToast.SystemToastId.NARRATOR_TOGGLE,

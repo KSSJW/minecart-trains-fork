@@ -5,20 +5,21 @@ This mod was forked from [Minecart Trains](https://github.com/Larsens-Mods/minec
 - This mod allows you to build more realistic Minecart trains in Minecraft while trying to stay close to vanilla mechanics.
 - The **Server** is responsible for connecting the carts, and the **Client** is responsible for rendering the connection effect.
 
-## Loader
+## Platforms
 
 [![Fabric](https://img.shields.io/badge/Available%20for-Fabric-dbd0b4)](https://fabricmc.net)
 [![NeoForge](https://img.shields.io/badge/Available%20for-NeoForge-e68c37)](https://neoforged.net)
+[![Forge](https://img.shields.io/badge/Available%20for-Forge-2e435f)](https://files.minecraftforge.net/)
 
-## Environment
+## Environments
 
 ![ServerAndClient](https://img.shields.io/badge/Side-Server%20and%20Client-3c8527)
 
 ## Releases
 
-[![Github](https://img.shields.io/badge/Published%20in-GitHub-808284?logo=github&logoColor=white)](https://github.com/KSSJW/minecart-trains-fork/releases)
-[![Modrinth](https://img.shields.io/badge/Published%20in-Modrinth-1bd96a?logo=modrinth&logoColor=white)](https://modrinth.com/mod/minecart-trains-fork)
-[![CurseForge](https://img.shields.io/badge/Published%20in-CurseForge-f16436?logo=curseforge&logoColor=white)](https://www.curseforge.com/minecraft/mc-mods/minecart-trains-fork)
+[![Github](https://img.shields.io/badge/Published%20on-GitHub-808284?logo=github&logoColor=white)](https://github.com/KSSJW/minecart-trains-fork/releases)
+[![Modrinth](https://img.shields.io/badge/Published%20on-Modrinth-1bd96a?logo=modrinth&logoColor=white)](https://modrinth.com/mod/minecart-trains-fork)
+[![CurseForge](https://img.shields.io/badge/Published%20on-CurseForge-f16436?logo=curseforge&logoColor=white)](https://www.curseforge.com/minecraft/mc-mods/minecart-trains-fork)
 
 ## Compatibility
 
@@ -41,7 +42,7 @@ This mod was forked from [Minecart Trains](https://github.com/Larsens-Mods/minec
 | Cloth Config API  | Optional      | Client Display Configuration |
 | Mod Menu          | Optional      | Client Configuration Entry |
 
-### NeoForge
+### NeoForge / Forge
 
 [Cloth Config API](https://github.com/shedaniel/cloth-config)
 

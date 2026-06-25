@@ -10,6 +10,8 @@ public class ConfigEnum {
     private ConfigEnum() {}
 
     public enum ParticleOption {
+      
+        // 26.2
         angry_villager(ParticleTypes.ANGRY_VILLAGER),
         ash(ParticleTypes.ASH),
         bubble(ParticleTypes.BUBBLE),
@@ -72,6 +74,8 @@ public class ConfigEnum {
         mycelium(ParticleTypes.MYCELIUM),
         nautilus(ParticleTypes.NAUTILUS),
         note(ParticleTypes.NOTE),
+        noxious_gas(ParticleTypes.NOXIOUS_GAS),
+        noxious_gas_cloud(ParticleTypes.NOXIOUS_GAS_CLOUD),
         ominous_spawning(ParticleTypes.OMINOUS_SPAWNING),
         pale_oak_leaves(ParticleTypes.PALE_OAK_LEAVES),
         pause_mob_growth(ParticleTypes.PAUSE_MOB_GROWTH),
@@ -96,6 +100,8 @@ public class ConfigEnum {
         splash(ParticleTypes.SPLASH),
         spore_blossom_air(ParticleTypes.SPORE_BLOSSOM_AIR),
         squid_ink(ParticleTypes.SQUID_INK),
+        sulfur_bubbles(ParticleTypes.SULFUR_BUBBLES),
+        sulfur_cube_goo(ParticleTypes.SULFUR_CUBE_GOO),
         sweep_attack(ParticleTypes.SWEEP_ATTACK),
         totem_of_undying(ParticleTypes.TOTEM_OF_UNDYING),
         trial_omen(ParticleTypes.TRIAL_OMEN),
