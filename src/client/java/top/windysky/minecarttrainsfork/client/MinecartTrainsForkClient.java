@@ -1,0 +1,40 @@
+package top.windysky.minecarttrainsfork.client;
+
+import java.util.UUID;
+
+import top.windysky.minecarttrainsfork.client.manager.ClientLoadManager;
+import top.windysky.minecarttrainsfork.manager.NetworkManager;
+import top.windysky.minecarttrainsfork.util.IChainableUtil;
+
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+
+public class MinecartTrainsForkClient implements ClientModInitializer {
+
+	@Override
+	public void onInitializeClient() {
+		ClientLoadManager.init();
+
+		ClientPlayNetworking.registerGlobalReceiver(
+			NetworkManager.RelationshipPayload.TYPE,
+			(payload, context) -> {
+				context.client().execute(() -> {
+					ClientLevel clientWorld = Minecraft.getInstance().level;
+				
+					if (clientWorld != null) {
+						UUID childUUID = payload.childUUID();
+						UUID parentUUID = payload.parentUUID();
+
+						IChainableUtil childChainableUtil = (IChainableUtil) clientWorld.getEntity(childUUID);
+						IChainableUtil parentChainableUtil = (IChainableUtil) clientWorld.getEntity(parentUUID);
+
+						if (childChainableUtil != null) childChainableUtil.setParentUUID(parentUUID);
+						if (parentChainableUtil != null) parentChainableUtil.setChildUUID(childUUID);
+					}
+				});
+			}
+		);
+	}
+}

@@ -1,6 +1,6 @@
 {
 	"required": true,
-	"package": "org.kssjw.minecarttrainsfork.client.mixin",
+	"package": "top.windysky.minecarttrainsfork.client.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"client": [
 		"AbstractMinecartRendererMixin",
