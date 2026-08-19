@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
@@ -154,11 +155,13 @@ public class ParticleManager {
     public static void linkParticle(AbstractMinecart cart) {
         int frameSkip = 40;
         int maxSteps = 6;
+        SimpleParticleType particleType = ParticleTypes.SOUL_FIRE_FLAME;
 
         if (ClientLoadManager.isAPIFound()) {
             if (!ClientConfigManager.isEnabledLinkParticle()) return;
 
             frameSkip = ClientConfigManager.getLinkParticleCycle();
+            particleType = ClientConfigManager.getLinkParticleType();
         }
 
         if (cart == null) return;
@@ -166,6 +169,7 @@ public class ParticleManager {
         
         final int FRAME_SKIP = frameSkip;
         final int MAX_STEPS = maxSteps;
+        final SimpleParticleType PARTICLE_TYPE = particleType;
         long ticks = Minecraft.getInstance().gui.hud.getGuiTicks();
 
         if (ticks % FRAME_SKIP != 0) return;
@@ -203,13 +207,14 @@ public class ParticleManager {
             double py = sy + dy * t;
             double pz = sz + dz * t;
 
-            world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, px, py, pz, 0.0, 0.0, 0.0);
+            world.addParticle(PARTICLE_TYPE, px, py, pz, 0.0, 0.0, 0.0);
         }
     }
 
     public static void headParticle(AbstractMinecart cart) {
         int frameSkip = 40;
         int maxSteps = 6;
+        SimpleParticleType particleType = ParticleTypes.COMPOSTER;
 
         if (ClientLoadManager.isAPIFound()) {
             if (!ClientConfigManager.isEnabledHeadParticle()) return;
@@ -226,6 +231,7 @@ public class ParticleManager {
 
         final int FRAME_SKIP = frameSkip;
         final int MAX_STEPS = maxSteps;
+        final SimpleParticleType PARTICLE_TYPE = particleType;
         long ticks = Minecraft.getInstance().gui.hud.getGuiTicks();
 
         if (ticks % FRAME_SKIP != 0) return;
@@ -242,7 +248,7 @@ public class ParticleManager {
             double py = baseY + offsetY;
             double pz = baseZ + offsetZ;
 
-            world.addParticle(ParticleTypes.COMPOSTER, px, py, pz, 0.0, 0.0, 0.0);
+            world.addParticle(PARTICLE_TYPE, px, py, pz, 0.0, 0.0, 0.0);
         }
     }
 }

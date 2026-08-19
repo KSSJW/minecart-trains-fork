@@ -38,7 +38,7 @@ public class ClientConfigManager {
         return config.linkParticleCycle;
     }
 
-    public static @NonNull SimpleParticleType getHeadParticle() {
+    public static @NonNull SimpleParticleType getHeadParticleType() {
         return config.headParticleType.getType();
     }
 
