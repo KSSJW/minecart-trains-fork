@@ -25,9 +25,9 @@ This mod was forked from [Minecart Trains](https://github.com/Larsens-Mods/minec
 
 | Symbol    | Relation      |
 | :-: | :-: |
-| ✅        | Required      |
-| ⬜        | Optional      |
-| ❌        | Incompatible  |
+| v         | Required      |
+| o         | Optional      |
+| x         | Incompatible  |
 
 ### Fabric
 
@@ -39,14 +39,14 @@ This mod was forked from [Minecart Trains](https://github.com/Larsens-Mods/minec
 
 | Server Side       | Relation  | Description |
 | :-- | :-- | :-- |
-| Fabric API        | ✅        | - |
-| Cloth Config API  | ⬜        | Train Behavior Configuration |
+| Fabric API        | v         | - |
+| Cloth Config API  | o         | Train Behavior Configuration |
 
 | Client Side       | Relation  | Description |
 | :-- | :-- | :-- |
-| Fabric API        | ✅        | - |
-| Cloth Config API  | ⬜        | Client Display Configuration |
-| Mod Menu          | ⬜        | Client Configuration Entry |
+| Fabric API        | v         | - |
+| Cloth Config API  | o         | Client Display Configuration |
+| Mod Menu          | o         | Client Configuration Entry |
 
 ### NeoForge / Forge
 
@@ -54,11 +54,11 @@ This mod was forked from [Minecart Trains](https://github.com/Larsens-Mods/minec
 
 | Server Side       | Relation  | Description |
 | :-- | :-- | :-- |
-| Cloth Config API  | ⬜        | Train Behavior Configuration |
+| Cloth Config API  | o         | Train Behavior Configuration |
 
 | Client Side       | Relation  | Description |
 | :-- | :-- | :-- |
-| Cloth Config API  | ⬜        | Client Display Configuration |
+| Cloth Config API  | o         | Client Display Configuration |
 
 ## Progress
 
