@@ -20,13 +20,13 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.kssjw.minecarttrainsfork.MinecartTrainsFork"
+			"org.kssjw.minecarttrainsfork.MinecartTrainsFork"
 		],
 		"client": [
-			"com.kssjw.minecarttrainsfork.client.MinecartTrainsForkClient"
+			"org.kssjw.minecarttrainsfork.client.MinecartTrainsForkClient"
 		],
 		"modmenu": [
-			"com.kssjw.minecarttrainsfork.client.extension.config.ConfigEntry"
+			"org.kssjw.minecarttrainsfork.client.extension.config.ConfigEntry"
 		]
 	},
 	"custom": {
