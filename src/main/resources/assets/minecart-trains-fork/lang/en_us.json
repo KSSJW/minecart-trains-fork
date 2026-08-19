@@ -45,6 +45,7 @@
 
     "text.autoconfig.minecart-trains-fork-client.option.headParticleType.@PrefixText": "Head Particle",
     "text.autoconfig.minecart-trains-fork-client.option.headParticleType": "    Selected Custom Head Cart Particle",
+    "text.autoconfig.minecart-trains-fork-client.option.headParticleNumber": "    Number of Head Particle",
     "text.autoconfig.minecart-trains-fork-client.option.headParticleCycle": "    Custom Head Particle Interval",
 
     "text.autoconfig.minecart-trains-fork-client.option.linkParticleType.@PrefixText": "Link Particle",
