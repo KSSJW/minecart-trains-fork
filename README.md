@@ -23,6 +23,12 @@ This mod was forked from [Minecart Trains](https://github.com/Larsens-Mods/minec
 
 ## Compatibility
 
+| Symbol    | Relation      |
+| :-: | :-: |
+| ✅        | Required      |
+| ⬜        | Optional      |
+| ❌        | Incompatible  |
+
 ### Fabric
 
 [Fabric API](https://github.com/FabricMC/fabric-api)
@@ -31,28 +37,28 @@ This mod was forked from [Minecart Trains](https://github.com/Larsens-Mods/minec
 
 [Mod Menu](https://github.com/TerraformersMC/ModMenu)
 
-| Server Mod        | Relation      | Description |
-| :---------------- | :------------ | :--- |
-| Fabric API        | **Required**  | - |
-| Cloth Config API  | Optional      | Train Behavior Configuration |
+| Server Side       | Relation  | Description |
+| :-- | :-- | :-- |
+| Fabric API        | ✅        | - |
+| Cloth Config API  | ⬜        | Train Behavior Configuration |
 
-| Client Mod        | Relation      | Description |
-| :---------------- | :------------ | :--- |
-| Fabric API        | **Required**  | - |
-| Cloth Config API  | Optional      | Client Display Configuration |
-| Mod Menu          | Optional      | Client Configuration Entry |
+| Client Side       | Relation  | Description |
+| :-- | :-- | :-- |
+| Fabric API        | ✅        | - |
+| Cloth Config API  | ⬜        | Client Display Configuration |
+| Mod Menu          | ⬜        | Client Configuration Entry |
 
 ### NeoForge / Forge
 
 [Cloth Config API](https://github.com/shedaniel/cloth-config)
 
-| Server Mod        | Relation      | Description |
-| :---------------- | :------------ | :--- |
-| Cloth Config API  | Optional      | Train Behavior Configuration |
+| Server Side       | Relation  | Description |
+| :-- | :-- | :-- |
+| Cloth Config API  | ⬜        | Train Behavior Configuration |
 
-| Client Mod        | Relation      | Description |
-| :---------------- | :------------ | :--- |
-| Cloth Config API  | Optional      | Client Display Configuration |
+| Client Side       | Relation  | Description |
+| :-- | :-- | :-- |
+| Cloth Config API  | ⬜        | Client Display Configuration |
 
 ## Progress
 
