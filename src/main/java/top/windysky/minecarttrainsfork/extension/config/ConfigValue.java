@@ -4,7 +4,7 @@ import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
-@Config(name = "minecart-trains-fork")
+@Config(name = "minecart-trains-fork-server")
 public class ConfigValue implements ConfigData {
 
     @ConfigEntry.Category("general")
