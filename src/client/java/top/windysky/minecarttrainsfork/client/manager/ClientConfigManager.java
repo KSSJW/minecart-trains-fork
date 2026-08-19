@@ -12,45 +12,41 @@ public class ClientConfigManager {
     
     private static ClientConfigValue config = AutoConfig.getConfigHolder(ClientConfigValue.class).getConfig();
 
-    public static boolean isEnabledDefaultLinkParticle() {
-        return ClientLoadManager.isAPIFound() ? config.enabledDefaultLinkParticle : false;
-    }
-
-    public static boolean isEnabledDefaultHeadParticle() {
-        return ClientLoadManager.isAPIFound() ? config.enabledDefaultHeadParticle : true;
-    }
-
     public static boolean isEnabledLinkLine() {
         return ClientLoadManager.isAPIFound() ? config.enabledLinkLine : true;
+    }
+
+    public static boolean isEnabledHeadParticle() {
+        return ClientLoadManager.isAPIFound() ? config.enabledHeadParticle : true;
+    }
+
+    public static boolean isEnabledLinkParticle() {
+        return ClientLoadManager.isAPIFound() ? config.enabledLinkParticle : false;
     }
 
     public static boolean isEnabledNotice() {
         return ClientLoadManager.isAPIFound() ? config.enabledNotice : true;
     }
 
-    /* ------ */
+    /* */
 
-    public static boolean isEnabledCustomLinkParticle() {
-        return config.enabledCustomLinkParticle;
+    public static @NonNull SimpleParticleType getLinkParticleType() {
+        return config.linkParticleType.getType();
     }
 
-    public static @NonNull SimpleParticleType getSelectedLinkParticle() {
-        return config.selectedLinkParticle.getType();
+    public static int getLinkParticleCycle() {
+        return config.linkParticleCycle;
     }
 
-    public static int getCustomLinkParticleCycle() {
-        return config.customLinkParticleCycle;
+    public static @NonNull SimpleParticleType getHeadParticle() {
+        return config.headParticleType.getType();
     }
 
-    public static boolean isEnabledCustomHeadParticle() {
-        return config.enabledCustomHeadParticle;
+    public static int getHeadParticleNumber() {
+        return config.headParticleNumber;
     }
 
-    public static @NonNull SimpleParticleType getSelectedHeadParticle() {
-        return config.selectedHeadParticle.getType();
-    }
-
-    public static int getCustomHeadParticleCycle() {
-        return config.customHeadParticleCycle;
+    public static int getHeadParticleCycle() {
+        return config.headParticleCycle;
     }
 }

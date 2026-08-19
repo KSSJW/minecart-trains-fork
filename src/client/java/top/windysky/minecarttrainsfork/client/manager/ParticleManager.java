@@ -6,6 +6,7 @@ import org.joml.Matrix4f;
 
 import top.windysky.minecarttrainsfork.MinecartTrainsFork;
 import top.windysky.minecarttrainsfork.util.IChainableUtil;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
@@ -22,228 +23,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class ParticleManager {
 
-    public static void linkParticle(AbstractMinecart entity) {
-        defaultLinkParticle(entity);
-
-        if (ClientLoadManager.isAPIFound()) customLinkParticle(entity);
-    }
-
-    public static void headParticle(AbstractMinecart entity) {
-        defaultHeadParticle(entity);
-
-        if (ClientLoadManager.isAPIFound()) customHeadParticle(entity);
-    }
-
-    public static void linkLine(AbstractMinecart entity, Vec3 camPos, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
-        line(entity, camPos, poseStack, submitNodeCollector);
-    }
-    
-    // 默认连接粒子
-    private static void defaultLinkParticle(AbstractMinecart cart) {
-        if (ClientLoadManager.isAPIFound() && ClientConfigManager.isEnabledDefaultLinkParticle() == false) return;
-        if (cart == null) return;                
-        if (!(cart.level() instanceof ClientLevel world)) return;
-        
-        // 速度与最大数量
-        final int FRAME_SKIP = 40;  // 每 X 时间刻染一次
-        final int MAX_STEPS = 6;    // 每次最多生成 X 个粒子
-        long ticks = Minecraft.getInstance().gui.hud.getGuiTicks();
-
-        if (ticks % FRAME_SKIP != 0) return;
-
-        UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
-
-        if (parentCartUuid == null) return;
-
-        AbstractMinecart parentCart = (AbstractMinecart) world.getEntity(parentCartUuid);
-
-        if (parentCart == null) return;
-
-        Vec3 parentPos = parentCart.position();
-
-        // 粒子位置
-        double sx = parentPos.x;
-        double sy = parentPos.y + 0.6;
-        double sz = parentPos.z;
-        double ex = cart.getX();
-        double ey = cart.getY() + 0.6;
-        double ez = cart.getZ();
-
-        double dx = ex - sx, dy = ey - sy, dz = ez - sz;
-        double distSq = dx*dx + dy*dy + dz*dz;
-
-        if (distSq < 1e-6) return;
-
-        double dist = Math.sqrt(distSq);
-
-        double spacing = Math.max(0.25, dist / MAX_STEPS);
-        int steps = Math.min(MAX_STEPS, Math.max(1, (int)Math.ceil(dist / spacing)));
-
-        for (int i = 0; i <= steps; i++) {
-            double t = (double)i / (double)steps;
-            double px = sx + dx * t;
-            double py = sy + dy * t;
-            double pz = sz + dz * t;
-
-            try {
-                world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, px, py, pz, 0.0, 0.0, 0.0);
-            } catch (Throwable e) {
-
-                try {
-                    world.addParticle(ParticleTypes.FLAME, px, py, pz, 0.0, 0.0, 0.0);    // Fallback
-                } catch (Throwable ignored) {
-                    break;
-                }
-            }
-        }
-    }
-
-    // 自定义连接粒子
-    private static void customLinkParticle(AbstractMinecart cart) {
-        if (ClientConfigManager.isEnabledCustomLinkParticle() == false) return;
-        if (cart == null) return;
-        if (!(cart.level() instanceof ClientLevel world)) return;
-        
-        // 速度与最大数量
-        final int FRAME_SKIP = ClientConfigManager.getCustomLinkParticleCycle();
-        final int MAX_STEPS = 6;
-        long ticks = Minecraft.getInstance().gui.hud.getGuiTicks();
-
-        if (ticks % FRAME_SKIP != 0) return;
-
-        UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
-
-        if (parentCartUuid == null) return;
-
-        AbstractMinecart parentCart = (AbstractMinecart) world.getEntity(parentCartUuid);
-
-        if (parentCart == null) return;
-
-        Vec3 parentPos = parentCart.position();
-
-        // 粒子位置
-        double sx = parentPos.x;
-        double sy = parentPos.y + 0.6;
-        double sz = parentPos.z;
-        double ex = cart.getX();
-        double ey = cart.getY() + 0.6;
-        double ez = cart.getZ();
-
-        double dx = ex - sx, dy = ey - sy, dz = ez - sz;
-        double distSq = dx*dx + dy*dy + dz*dz;
-
-        if (distSq < 1e-6) return;
-
-        double dist = Math.sqrt(distSq);
-
-        double spacing = Math.max(0.25, dist / MAX_STEPS);
-        int steps = Math.min(MAX_STEPS, Math.max(1, (int)Math.ceil(dist / spacing)));
-
-        for (int i = 0; i <= steps; i++) {
-            double t = (double)i / (double)steps;
-            double px = sx + dx * t;
-            double py = sy + dy * t;
-            double pz = sz + dz * t;
-
-            try {
-                world.addParticle(ClientConfigManager.getSelectedLinkParticle(), px, py, pz, 0.0, 0.0, 0.0);
-            } catch (Throwable e) {
-
-                try {
-                    world.addParticle(ParticleTypes.FLAME, px, py, pz, 0.0, 0.0, 0.0);    // Fallback
-                } catch (Throwable ignored) {
-                    break;
-                }
-            }
-        }
-    }
-
-    // 默认头车粒子
-    private static void defaultHeadParticle(AbstractMinecart cart) {
-        if (ClientLoadManager.isAPIFound() && ClientConfigManager.isEnabledDefaultHeadParticle() == false) return;
-        if (!(cart.level() instanceof ClientLevel world)) return;
-
-        UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
-
-        if (parentCartUuid != null && world.getEntity(parentCartUuid) != null) return;
-
-        // 速度与最大数量
-        final int FRAME_SKIP_HEAD = 40; // 每 X 时间刻染一次
-        final int MAX_HEAD_PARTICLES = 6;
-        long ticks = Minecraft.getInstance().gui.hud.getGuiTicks();
-
-        if (ticks % FRAME_SKIP_HEAD != 0) return;
-
-        // 粒子位置
-        double baseX = cart.getX();
-        double baseY = cart.getY() + 0.8;
-        double baseZ = cart.getZ();
-
-        for (int i = 0; i < MAX_HEAD_PARTICLES; i++) {
-            double offsetX = (Math.random() - 0.5) * 0.4;
-            double offsetY = (Math.random() - 0.5) * 0.2;
-            double offsetZ = (Math.random() - 0.5) * 0.4;
-            double px = baseX + offsetX;
-            double py = baseY + offsetY;
-            double pz = baseZ + offsetZ;
-
-            try {
-                world.addParticle(ParticleTypes.COMPOSTER, px, py, pz, 0.0, 0.0, 0.0);
-            } catch (Throwable e) {
-
-                try {
-                    world.addParticle(ParticleTypes.FLAME, px, py, pz, 0.0, 0.0, 0.0);    // Fallback
-                } catch (Throwable ignored) {
-                    break;
-                }
-            }
-        }
-    }
-
-    // 自定义头车粒子
-    private static void customHeadParticle(AbstractMinecart cart) {
-        if (ClientConfigManager.isEnabledCustomHeadParticle() == false) return;
-        if (!(cart.level() instanceof ClientLevel world)) return;
-
-        UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
-
-        if (parentCartUuid != null && world.getEntity(parentCartUuid) != null) return;
-
-        // 速度与最大数量
-        final int FRAME_SKIP_HEAD = ClientConfigManager.getCustomHeadParticleCycle();
-        final int MAX_HEAD_PARTICLES = 6;
-        long ticks = Minecraft.getInstance().gui.hud.getGuiTicks();
-        
-        if (ticks % FRAME_SKIP_HEAD != 0) return;
-
-        // 粒子位置
-        double baseX = cart.getX();
-        double baseY = cart.getY() + 0.8;
-        double baseZ = cart.getZ();
-
-        for (int i = 0; i < MAX_HEAD_PARTICLES; i++) {
-            double offsetX = (Math.random() - 0.5) * 0.4;
-            double offsetY = (Math.random() - 0.5) * 0.2;
-            double offsetZ = (Math.random() - 0.5) * 0.4;
-            double px = baseX + offsetX;
-            double py = baseY + offsetY;
-            double pz = baseZ + offsetZ;
-
-            try {
-                world.addParticle(ClientConfigManager.getSelectedHeadParticle(), px, py, pz, 0.0, 0.0, 0.0);
-            } catch (Throwable e) {
-
-                try {
-                    world.addParticle(ParticleTypes.FLAME, px, py, pz, 0.0, 0.0, 0.0);    // Fallback
-                } catch (Throwable ignored) {
-                    break;
-                }
-            }
-        }
-    }
-
-    private static void line(AbstractMinecart cart, Vec3 camPos, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
-        if (ClientLoadManager.isAPIFound() && ClientConfigManager.isEnabledLinkLine() == false) return;
+    public static void linkLine(AbstractMinecart cart, Vec3 camPos, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
+        if (ClientLoadManager.isAPIFound() && !ClientConfigManager.isEnabledLinkLine()) return;
         if (cart == null) return;
         if (!(cart.level() instanceof ClientLevel world)) return;
 
@@ -264,9 +45,9 @@ public class ParticleManager {
         Vec3 pos1 = cartPos.subtract(camPos);
         Vec3 pos2 = parentPos.subtract(camPos);
 
-        Vec3 dir = pos2.subtract(pos1).normalize(); // 方向向量
+        Vec3 dir = pos2.subtract(pos1).normalize(); // Direction vector
 
-        // 边缘点，保证线条在两车之间
+        // Edge points of two cars
         double offset = cart.getBbWidth() / 2.0;
         Vec3 pos1Edge = pos1.add(offset * dir.x, 0, offset * dir.z);
         Vec3 pos2Edge = pos2.add(-offset * dir.x, 0, -offset * dir.z);
@@ -275,8 +56,8 @@ public class ParticleManager {
 
         double width = 0.05;
 
-        Vec3 side1 = dir.cross(up).normalize().scale(width);    // 水平
-        Vec3 side2 = dir.cross(side1).normalize().scale(width); // 垂直
+        Vec3 side1 = dir.cross(up).normalize().scale(width);    // Level
+        Vec3 side2 = dir.cross(side1).normalize().scale(width); // Vertical
 
         Vec3 a1 = pos1Edge.add(side1);
         Vec3 a2 = pos2Edge.add(side1);
@@ -309,7 +90,7 @@ public class ParticleManager {
                  *   ---|    4 --------- 3   |---
                 */
 
-                // 水平
+                // Level
                 buffer.addVertex(matrix, (float)a1.x, (float)(a1.y + 0.3), (float)a1.z)
                     .setUv(0.0F, 0.0F)
                     .setColor(255, 255, 255, 255)
@@ -338,7 +119,7 @@ public class ParticleManager {
                     .setLight(light)
                     .setNormal((float)normal1.x, (float)normal1.y, (float)normal1.z);
 
-                // 垂直
+                // Vertical
                 buffer.addVertex(matrix, (float)b1.x, (float)(b1.y + 0.3), (float)b1.z)
                     .setUv(0.0F, 0.0F)
                     .setColor(255, 255, 255, 255)
@@ -368,5 +149,100 @@ public class ParticleManager {
                     .setNormal((float)normal2.x, (float)normal2.y, (float)normal2.z);
             }
         );
+    }
+
+    public static void linkParticle(AbstractMinecart cart) {
+        int frameSkip = 40;
+        int maxSteps = 6;
+
+        if (ClientLoadManager.isAPIFound()) {
+            if (!ClientConfigManager.isEnabledLinkParticle()) return;
+
+            frameSkip = ClientConfigManager.getLinkParticleCycle();
+        }
+
+        if (cart == null) return;
+        if (!(cart.level() instanceof ClientLevel world)) return;
+        
+        final int FRAME_SKIP = frameSkip;
+        final int MAX_STEPS = maxSteps;
+        long ticks = Minecraft.getInstance().gui.hud.getGuiTicks();
+
+        if (ticks % FRAME_SKIP != 0) return;
+
+        UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
+
+        if (parentCartUuid == null) return;
+
+        AbstractMinecart parentCart = (AbstractMinecart) world.getEntity(parentCartUuid);
+
+        if (parentCart == null) return;
+
+        Vec3 parentPos = parentCart.position();
+
+        double sx = parentPos.x;
+        double sy = parentPos.y + 0.6;
+        double sz = parentPos.z;
+        double ex = cart.getX();
+        double ey = cart.getY() + 0.6;
+        double ez = cart.getZ();
+
+        double dx = ex - sx, dy = ey - sy, dz = ez - sz;
+        double distSq = dx*dx + dy*dy + dz*dz;
+
+        if (distSq < 1e-6) return;
+
+        double dist = Math.sqrt(distSq);
+
+        double spacing = Math.max(0.25, dist / MAX_STEPS);
+        int steps = Math.min(MAX_STEPS, Math.max(1, (int)Math.ceil(dist / spacing)));
+
+        for (int i = 0; i <= steps; i++) {
+            double t = (double)i / (double)steps;
+            double px = sx + dx * t;
+            double py = sy + dy * t;
+            double pz = sz + dz * t;
+
+            world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, px, py, pz, 0.0, 0.0, 0.0);
+        }
+    }
+
+    public static void headParticle(AbstractMinecart cart) {
+        int frameSkip = 40;
+        int maxSteps = 6;
+
+        if (ClientLoadManager.isAPIFound()) {
+            if (!ClientConfigManager.isEnabledHeadParticle()) return;
+
+            frameSkip = ClientConfigManager.getHeadParticleCycle();
+            maxSteps = ClientConfigManager.getHeadParticleNumber();
+        }
+
+        if (!(cart.level() instanceof ClientLevel world)) return;
+
+        UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
+
+        if (parentCartUuid != null && world.getEntity(parentCartUuid) != null) return;
+
+        final int FRAME_SKIP = frameSkip;
+        final int MAX_STEPS = maxSteps;
+        long ticks = Minecraft.getInstance().gui.hud.getGuiTicks();
+
+        if (ticks % FRAME_SKIP != 0) return;
+
+        double baseX = cart.getX();
+        double baseY = cart.getY() + 0.8;
+        double baseZ = cart.getZ();
+
+        for (int i = 0; i < MAX_STEPS; i++) {
+            double offsetX = (Math.random() - 0.5) * 0.4;
+            double offsetY = (Math.random() - 0.5) * 0.2;
+            double offsetZ = (Math.random() - 0.5) * 0.4;
+            double px = baseX + offsetX;
+            double py = baseY + offsetY;
+            double pz = baseZ + offsetZ;
+
+            world.addParticle(ParticleTypes.COMPOSTER, px, py, pz, 0.0, 0.0, 0.0);
+        }
     }
 }
