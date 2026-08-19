@@ -31,38 +31,30 @@ This mod was forked from [Minecart Trains](https://github.com/Larsens-Mods/minec
 
 ### Fabric
 
-[Fabric API](https://github.com/FabricMC/fabric-api)
-
-[Cloth Config API](https://github.com/shedaniel/cloth-config)
-
-[Mod Menu](https://github.com/TerraformersMC/ModMenu)
-
 | Server Side       | Relation  | Description |
-| :-- | :-- | :-- |
+| :-- | :-: | :-- |
 | Fabric API        | v         | - |
 | Cloth Config API  | o         | Train Behavior Configuration |
 
 | Client Side       | Relation  | Description |
-| :-- | :-- | :-- |
+| :-- | :-: | :-- |
 | Fabric API        | v         | - |
 | Cloth Config API  | o         | Client Display Configuration |
 | Mod Menu          | o         | Client Configuration Entry |
 
 ### NeoForge / Forge
 
-[Cloth Config API](https://github.com/shedaniel/cloth-config)
-
 | Server Side       | Relation  | Description |
-| :-- | :-- | :-- |
+| :-- | :-: | :-- |
 | Cloth Config API  | o         | Train Behavior Configuration |
 
 | Client Side       | Relation  | Description |
-| :-- | :-- | :-- |
+| :-- | :-: | :-- |
 | Cloth Config API  | o         | Client Display Configuration |
 
 ## Progress
 
-Check out the latest development progress here. [Development Progress](https://www.windysky.top/docs/minecraft-java-edition/minecart-trains-fork/version)
+Check out the latest development progress here: [Development Progress](https://www.windysky.top/docs/minecraft-java-edition/minecart-trains-fork/version)
 
 ![Line](./assets/Line.png)
 
