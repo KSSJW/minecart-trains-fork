@@ -58,9 +58,9 @@ This mod was forked from [Minecart Trains](https://github.com/Larsens-Mods/minec
 
 Check out the latest development progress here. [Development Progress](https://www.windysky.top/docs/minecraft-java-edition/minecart-trains-fork/version)
 
-![Line](./images/Line.png)
+![Line](./assets/Line.png)
 
-![Particle](./images/Particle.png)
+![Particle](./assets/Particle.png)
 
 ## Features
 
@@ -97,8 +97,8 @@ minecart-trains-fork-server.json
 
 ```
 
-![ConfigEntry](./images/ConfigEntry.png)
+![ConfigEntry](./assets/ConfigEntry.png)
 
-![ServerConfig](./images/ServerConfig.png)
+![ServerConfig](./assets/ServerConfig.png)
 
-![ClientConfig](./images/ClientConfig.png)
+![ClientConfig](./assets/ClientConfig.png)
