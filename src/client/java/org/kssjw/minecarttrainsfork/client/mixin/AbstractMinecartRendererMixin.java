@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.entity.AbstractMinecartRenderer;
 import net.minecraft.client.renderer.entity.state.MinecartRenderState;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
+import net.minecraft.world.phys.Vec3;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,9 +18,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 @Mixin(AbstractMinecartRenderer.class)
 public class AbstractMinecartRendererMixin {
-    private CameraRenderState cachedCamera;
+    private Vec3 cachedCameraPos;
     private PoseStack cachedStack;
-    private SubmitNodeCollector collector;
+    private SubmitNodeCollector cachedCollector;
 
     @Inject(
         method = "submit(Lnet/minecraft/client/renderer/entity/state/MinecartRenderState;" +
@@ -29,9 +30,9 @@ public class AbstractMinecartRendererMixin {
         at = @At("HEAD")
     )
     private void injectSubmit(MinecartRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera, CallbackInfo ci) {
-        cachedCamera = camera;
-        cachedStack = poseStack;
-        collector = submitNodeCollector;
+        if (camera != null && camera.pos != null) cachedCameraPos = camera.pos;
+        if (poseStack != null) cachedStack = poseStack;
+        if (submitNodeCollector != null) cachedCollector = submitNodeCollector;
     }
 
     @Inject(method = "extractRenderState", at = @At("TAIL"))
@@ -54,7 +55,7 @@ public class AbstractMinecartRendererMixin {
         }
 
         try {
-            ParticleManager.linkLine(entity, cachedCamera.pos, cachedStack, collector);
+            ParticleManager.linkLine(entity, cachedCameraPos, cachedStack, cachedCollector);
         } catch (Throwable ex) {
             LogUtil.print("Link line error: " + ex);
         }
