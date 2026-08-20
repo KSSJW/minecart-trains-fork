@@ -152,6 +152,47 @@ public class ParticleManager {
         );
     }
 
+    public static void headParticle(AbstractMinecart cart) {
+        int frameSkip = 40;
+        int maxSteps = 6;
+        SimpleParticleType particleType = ParticleTypes.COMPOSTER;
+
+        if (ClientLoadManager.isAPIFound()) {
+            if (!ClientConfigManager.isEnabledHeadParticle()) return;
+
+            frameSkip = ClientConfigManager.getHeadParticleCycle();
+            maxSteps = ClientConfigManager.getHeadParticleNumber();
+        }
+
+        if (!(cart.level() instanceof ClientLevel world)) return;
+
+        UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
+
+        if (parentCartUuid != null && world.getEntity(parentCartUuid) != null) return;
+
+        final int FRAME_SKIP = frameSkip;
+        final int MAX_STEPS = maxSteps;
+        final SimpleParticleType PARTICLE_TYPE = particleType;
+        long ticks = Minecraft.getInstance().gui.hud.getGuiTicks();
+
+        if (ticks % FRAME_SKIP != 0) return;
+
+        double baseX = cart.getX();
+        double baseY = cart.getY() + 0.8;
+        double baseZ = cart.getZ();
+
+        for (int i = 0; i < MAX_STEPS; i++) {
+            double offsetX = (Math.random() - 0.5) * 0.4;
+            double offsetY = (Math.random() - 0.5) * 0.2;
+            double offsetZ = (Math.random() - 0.5) * 0.4;
+            double px = baseX + offsetX;
+            double py = baseY + offsetY;
+            double pz = baseZ + offsetZ;
+
+            world.addParticle(PARTICLE_TYPE, px, py, pz, 0.0, 0.0, 0.0);
+        }
+    }
+
     public static void linkParticle(AbstractMinecart cart) {
         int frameSkip = 40;
         int maxSteps = 6;
@@ -206,47 +247,6 @@ public class ParticleManager {
             double px = sx + dx * t;
             double py = sy + dy * t;
             double pz = sz + dz * t;
-
-            world.addParticle(PARTICLE_TYPE, px, py, pz, 0.0, 0.0, 0.0);
-        }
-    }
-
-    public static void headParticle(AbstractMinecart cart) {
-        int frameSkip = 40;
-        int maxSteps = 6;
-        SimpleParticleType particleType = ParticleTypes.COMPOSTER;
-
-        if (ClientLoadManager.isAPIFound()) {
-            if (!ClientConfigManager.isEnabledHeadParticle()) return;
-
-            frameSkip = ClientConfigManager.getHeadParticleCycle();
-            maxSteps = ClientConfigManager.getHeadParticleNumber();
-        }
-
-        if (!(cart.level() instanceof ClientLevel world)) return;
-
-        UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
-
-        if (parentCartUuid != null && world.getEntity(parentCartUuid) != null) return;
-
-        final int FRAME_SKIP = frameSkip;
-        final int MAX_STEPS = maxSteps;
-        final SimpleParticleType PARTICLE_TYPE = particleType;
-        long ticks = Minecraft.getInstance().gui.hud.getGuiTicks();
-
-        if (ticks % FRAME_SKIP != 0) return;
-
-        double baseX = cart.getX();
-        double baseY = cart.getY() + 0.8;
-        double baseZ = cart.getZ();
-
-        for (int i = 0; i < MAX_STEPS; i++) {
-            double offsetX = (Math.random() - 0.5) * 0.4;
-            double offsetY = (Math.random() - 0.5) * 0.2;
-            double offsetZ = (Math.random() - 0.5) * 0.4;
-            double px = baseX + offsetX;
-            double py = baseY + offsetY;
-            double pz = baseZ + offsetZ;
 
             world.addParticle(PARTICLE_TYPE, px, py, pz, 0.0, 0.0, 0.0);
         }
