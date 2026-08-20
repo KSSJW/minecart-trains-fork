@@ -44,6 +44,11 @@ public class ClientConfigValue implements ConfigData {
     @ConfigEntry.BoundedDiscrete(min = 1, max = 32)
     public int headParticleNumber = 6;
 
+    // Height of head particle
+    @ConfigEntry.Category("advanced")
+    @ConfigEntry.BoundedDiscrete(min = 1, max = 20)
+    public int headParticleHeight = 8;
+
     // Cycle of head particle
     @ConfigEntry.Category("advanced")
     @ConfigEntry.BoundedDiscrete(min = 1, max = 100)
@@ -54,6 +59,11 @@ public class ClientConfigValue implements ConfigData {
     @ConfigEntry.Gui.PrefixText
     @ConfigEntry.Gui.EnumHandler
     public ParticleOption linkParticleType = ParticleOption.soul_fire_flame;
+
+    // Height of link particle
+    @ConfigEntry.Category("advanced")
+    @ConfigEntry.BoundedDiscrete(min = 1, max = 20)
+    public int linkParticleHeight = 6;
 
     // Cycle of link particle
     @ConfigEntry.Category("advanced")

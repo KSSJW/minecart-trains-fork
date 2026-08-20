@@ -46,9 +46,11 @@
     "text.autoconfig.minecart-trains-fork-client.option.headParticleType.@PrefixText": "Head Particle",
     "text.autoconfig.minecart-trains-fork-client.option.headParticleType": "    Selected Custom Head Cart Particle",
     "text.autoconfig.minecart-trains-fork-client.option.headParticleNumber": "    Number of Head Particle",
+    "text.autoconfig.minecart-trains-fork-client.option.headParticleHeight": "    Height of Head Particle",
     "text.autoconfig.minecart-trains-fork-client.option.headParticleCycle": "    Custom Head Particle Interval",
 
     "text.autoconfig.minecart-trains-fork-client.option.linkParticleType.@PrefixText": "Link Particle",
     "text.autoconfig.minecart-trains-fork-client.option.linkParticleType": "    Selected Custom Link Particle",
+    "text.autoconfig.minecart-trains-fork-client.option.linkParticleHeight": "    Height of Link Particle",
     "text.autoconfig.minecart-trains-fork-client.option.linkParticleCycle": "    Custom Link Particle Interval"
 }
