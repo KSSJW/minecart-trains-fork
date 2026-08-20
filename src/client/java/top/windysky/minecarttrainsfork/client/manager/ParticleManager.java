@@ -155,6 +155,7 @@ public class ParticleManager {
     public static void headParticle(AbstractMinecart cart) {
         int frameSkip = 40;
         int maxSteps = 6;
+        double particleHeight = 0.8;
         SimpleParticleType particleType = ParticleTypes.COMPOSTER;
 
         if (ClientLoadManager.isAPIFound()) {
@@ -162,6 +163,7 @@ public class ParticleManager {
 
             frameSkip = ClientConfigManager.getHeadParticleCycle();
             maxSteps = ClientConfigManager.getHeadParticleNumber();
+            particleHeight = ClientConfigManager.getHeadParticleHeight();
         }
 
         if (!(cart.level() instanceof ClientLevel world)) return;
@@ -172,13 +174,14 @@ public class ParticleManager {
 
         final int FRAME_SKIP = frameSkip;
         final int MAX_STEPS = maxSteps;
+        final double PARTICLE_HEIGHT = particleHeight;
         final SimpleParticleType PARTICLE_TYPE = particleType;
         long ticks = Minecraft.getInstance().gui.hud.getGuiTicks();
 
         if (ticks % FRAME_SKIP != 0) return;
 
         double baseX = cart.getX();
-        double baseY = cart.getY() + 0.8;
+        double baseY = cart.getY() + PARTICLE_HEIGHT;
         double baseZ = cart.getZ();
 
         for (int i = 0; i < MAX_STEPS; i++) {
@@ -196,6 +199,7 @@ public class ParticleManager {
     public static void linkParticle(AbstractMinecart cart) {
         int frameSkip = 40;
         int maxSteps = 6;
+        double particleHeight = 0.6;
         SimpleParticleType particleType = ParticleTypes.SOUL_FIRE_FLAME;
 
         if (ClientLoadManager.isAPIFound()) {
@@ -203,6 +207,7 @@ public class ParticleManager {
 
             frameSkip = ClientConfigManager.getLinkParticleCycle();
             particleType = ClientConfigManager.getLinkParticleType();
+            particleHeight = ClientConfigManager.getLinkParticleHeight();
         }
 
         if (cart == null) return;
@@ -210,6 +215,7 @@ public class ParticleManager {
         
         final int FRAME_SKIP = frameSkip;
         final int MAX_STEPS = maxSteps;
+        final double PARTICLE_HEIGHT = particleHeight;
         final SimpleParticleType PARTICLE_TYPE = particleType;
         long ticks = Minecraft.getInstance().gui.hud.getGuiTicks();
 
@@ -226,10 +232,10 @@ public class ParticleManager {
         Vec3 parentPos = parentCart.position();
 
         double sx = parentPos.x;
-        double sy = parentPos.y + 0.6;
+        double sy = parentPos.y + PARTICLE_HEIGHT;
         double sz = parentPos.z;
         double ex = cart.getX();
-        double ey = cart.getY() + 0.6;
+        double ey = cart.getY() + PARTICLE_HEIGHT;
         double ez = cart.getZ();
 
         double dx = ex - sx, dy = ey - sy, dz = ez - sz;

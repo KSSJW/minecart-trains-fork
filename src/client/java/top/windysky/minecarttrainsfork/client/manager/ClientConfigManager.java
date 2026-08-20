@@ -34,6 +34,10 @@ public class ClientConfigManager {
         return config.linkParticleType.getType();
     }
 
+    public static double getLinkParticleHeight() {
+        return config.linkParticleHeight * 0.1;
+    }
+
     public static int getLinkParticleCycle() {
         return config.linkParticleCycle;
     }
@@ -44,6 +48,10 @@ public class ClientConfigManager {
 
     public static int getHeadParticleNumber() {
         return config.headParticleNumber;
+    }
+
+    public static double getHeadParticleHeight() {
+        return config.headParticleHeight * 0.1;
     }
 
     public static int getHeadParticleCycle() {
