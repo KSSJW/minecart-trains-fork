@@ -164,6 +164,7 @@ public class ParticleManager {
             frameSkip = ClientConfigManager.getHeadParticleCycle();
             maxSteps = ClientConfigManager.getHeadParticleNumber();
             particleHeight = ClientConfigManager.getHeadParticleHeight();
+            particleType = ClientConfigManager.getHeadParticleType();
         }
 
         if (!(cart.level() instanceof ClientLevel world)) return;
