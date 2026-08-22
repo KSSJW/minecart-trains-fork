@@ -18,7 +18,9 @@ public class ItemEntityMixin {
     private void onPickup(Player player, CallbackInfo ci) {
         ItemEntity self = (ItemEntity)(Object)this;
         ItemStack stack = self.getItem();
-        
-        if (stack.is(Items.IRON_CHAIN)) stack.remove(ComponentUtil.PARENT_ID);
+
+        if (stack.is(Items.IRON_CHAIN)) {
+            stack.remove(ComponentUtil.PARENT_ID);
+        }
     }
 }

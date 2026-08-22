@@ -59,7 +59,9 @@ public class EventManager {
                         return InteractionResult.PASS;
                     } else {
 
-                        if ((cartIChainable).getChainedParent() != null) IChainableUtil.unsetChainedParentChild(cartIChainable, (IChainableUtil)((cartIChainable).getChainedParent()));
+                        if ((cartIChainable).getChainedParent() != null) {
+                            IChainableUtil.unsetChainedParentChild(cartIChainable, (IChainableUtil)((cartIChainable).getChainedParent()));
+                        }
 
                         IChainableUtil.setChainedParentChild(parentIChainable, cartIChainable);
 
@@ -71,14 +73,16 @@ public class EventManager {
 
                 world.playSound(null, cart.getX(), cart.getY(), cart.getZ(), SoundEvents.CHAIN_PLACE, SoundSource.NEUTRAL, 1f, 1.1f);
 
-                if (!player.isCreative()) stack.shrink(1);
+                if (!player.isCreative()) {
+                    stack.shrink(1);
+                }
 
                 stack.remove(PARENT_ID);
             } else {
                 stack.set(PARENT_ID, cart.getUUID());
                 world.playSound(null, cart.getX(), cart.getY(), cart.getZ(), SoundEvents.CHAIN_HIT, SoundSource.NEUTRAL, 1f, 1.1f);
             }
-            
+
             return InteractionResult.SUCCESS;
 
         } else {
@@ -90,8 +94,10 @@ public class EventManager {
         if (player.isShiftKeyDown() && stack.getItem() instanceof AxeItem) {
             IChainableUtil icu = (IChainableUtil)(Object)cart;
 
-            if (!player.isCreative() && (icu.getParentUUID() != null || icu.getChildUUID() != null)) stack.hurtAndBreak(1, player, hand);
-            
+            if (!player.isCreative() && (icu.getParentUUID() != null || icu.getChildUUID() != null)) {
+                stack.hurtAndBreak(1, player, hand);
+            }
+
             if (!world.isClientSide()) {
                 ServerLevel serverWorld = (ServerLevel)world;
                 UnLinkUtil.unlinkHandle(icu, serverWorld, player);
@@ -110,7 +116,7 @@ public class EventManager {
 
             // 链接逻辑
             InteractionResult linkResult = link(stack, cart, player, hand, world, PARENT_ID);
-            
+
             if (linkResult == InteractionResult.SUCCESS) {
                 return InteractionResult.SUCCESS;
             }

@@ -26,7 +26,9 @@ public class ParticleEnumGenerator {
 
             for (Field field : ParticleTypes.class.getFields()) {
 
-                if (java.lang.reflect.Modifier.isStatic(field.getModifiers()) && SimpleParticleType.class.isAssignableFrom(field.getType())) names.add(field.getName());
+                if (java.lang.reflect.Modifier.isStatic(field.getModifiers()) && SimpleParticleType.class.isAssignableFrom(field.getType())) {
+                    names.add(field.getName());
+                }
             }
 
             Collections.sort(names);

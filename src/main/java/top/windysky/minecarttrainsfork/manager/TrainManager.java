@@ -12,7 +12,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 
 public class TrainManager {
-    
+
     public static void tick(AbstractMinecart entity) {
         if (!entity.level().isClientSide()) {
 

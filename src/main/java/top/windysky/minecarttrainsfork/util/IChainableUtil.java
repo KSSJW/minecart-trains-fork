@@ -11,16 +11,24 @@ public interface IChainableUtil {
     /* Interfaces cannot have constructors */
 
     UUID getParentUUID();
+
     void setParentUUID(@Nullable UUID uuid);
 
     UUID getChildUUID();
+
     void setChildUUID(@Nullable UUID uuid);
 
     // 默认实现：客户端断开时清理引用和 ID
-    default @Nullable AbstractMinecart getChainedParent() { return null; }
+    default @Nullable AbstractMinecart getChainedParent() {
+        return null;
+    }
+
     default void setChainedParent(@Nullable AbstractMinecart newParent) {}
 
-    default @Nullable AbstractMinecart getChainedChild() { return null; }
+    default @Nullable AbstractMinecart getChainedChild() {
+        return null;
+    }
+
     default void setChainedChild(@Nullable AbstractMinecart newChild) {}
 
     default AbstractMinecart getAbstractMinecartEntity() {
@@ -37,7 +45,12 @@ public interface IChainableUtil {
 
     // 断开连接：同时清理引用和 ID
     static void unsetChainedParentChild(@Nullable IChainableUtil parent, @Nullable IChainableUtil child) {
-        if (parent != null) parent.setChainedChild(null);
-        if (child != null) child.setChainedParent(null);
+        if (parent != null) {
+            parent.setChainedChild(null);
+        }
+
+        if (child != null) {
+            child.setChainedParent(null);
+        }
     }
 }

@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 
 @Mixin(Player.class)
 public class PlayerMixin {
-    
+
     @Unique private ItemStack lastMainHand = ItemStack.EMPTY;
 
     @Inject(method = "tick", at = @At("TAIL"))

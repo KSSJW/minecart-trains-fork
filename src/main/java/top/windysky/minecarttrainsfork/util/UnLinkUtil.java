@@ -15,7 +15,7 @@ import net.minecraft.world.item.Items;
 
 public class UnLinkUtil {
 
-    private UnLinkUtil() {};
+    private UnLinkUtil() {}
 
     public static void unlinkHandle(IChainableUtil icu, ServerLevel world, Player player) {
         UUID parentUUID = icu.getParentUUID();
@@ -55,7 +55,7 @@ public class UnLinkUtil {
 
         NetworkManager.sendRelationshipPayload(((AbstractMinecart) icu).getUUID(), null, (ServerPlayer) player);
         NetworkManager.sendRelationshipPayload(null, ((AbstractMinecart) icu).getUUID(), (ServerPlayer) player);
-        
+
         // 根据情况掉落铁链
         if (wasLinked && icu instanceof Entity entity) {
             double dx;
@@ -85,13 +85,15 @@ public class UnLinkUtil {
             double y = entity.getY() + dy;
             double z = entity.getZ() + dz;
 
-            if (world == null) return;
+            if (world == null) {
+                return;
+            }
 
             if (hadParent) {
                 ItemEntity itemEntity = new ItemEntity(world, x, y, z, new ItemStack(Items.IRON_CHAIN));
                 world.addFreshEntity(itemEntity);
             }
-            
+
             if (hadChild) {
                 ItemEntity itemEntity = new ItemEntity(world, x, y, z, new ItemStack(Items.IRON_CHAIN));
                 world.addFreshEntity(itemEntity);

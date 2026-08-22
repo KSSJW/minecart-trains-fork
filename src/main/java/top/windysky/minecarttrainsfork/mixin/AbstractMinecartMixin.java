@@ -20,6 +20,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 public class AbstractMinecartMixin implements IChainableUtil {
 
     @Unique private @Nullable UUID parentUUID;
+
     @Unique private @Nullable UUID childUUID;
 
     @Override
