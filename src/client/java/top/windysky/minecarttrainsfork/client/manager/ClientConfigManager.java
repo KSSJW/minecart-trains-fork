@@ -30,6 +30,10 @@ public class ClientConfigManager {
 
     /* */
 
+    public static double getLineWidth() {
+        return config.lineWidth * 0.01;
+    }
+
     public static @NonNull SimpleParticleType getHeadParticleType() {
         return config.headParticleType.getType();
     }

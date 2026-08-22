@@ -43,6 +43,9 @@
     "text.autoconfig.minecart-trains-fork-client.option.enabledNotice.@PrefixText": "Notice",
     "text.autoconfig.minecart-trains-fork-client.option.enabledNotice": "    Show Chaining Notice",
 
+    "text.autoconfig.minecart-trains-fork-client.option.lineWidth.@PrefixText": "Link Line",
+    "text.autoconfig.minecart-trains-fork-client.option.lineWidth": "    Width of Link Line",
+
     "text.autoconfig.minecart-trains-fork-client.option.headParticleType.@PrefixText": "Head Particle",
     "text.autoconfig.minecart-trains-fork-client.option.headParticleType": "    Selected Custom Head Cart Particle",
     "text.autoconfig.minecart-trains-fork-client.option.headParticleNumber": "    Number of Head Particle",

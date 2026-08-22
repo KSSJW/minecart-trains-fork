@@ -25,7 +25,16 @@ import net.minecraft.world.phys.Vec3;
 public class ParticleManager {
 
     public static void linkLine(AbstractMinecart cart, Vec3 camPos, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
-        if (ClientLoadManager.isAPIFound() && !ClientConfigManager.isEnabledLinkLine()) return;
+        double lineWidth = 0.05;
+
+        if (ClientLoadManager.isAPIFound()) {
+            if (!ClientConfigManager.isEnabledLinkLine()) return;
+
+            lineWidth = ClientConfigManager.getLineWidth();
+        }
+
+        final double LINE_WIDTH = lineWidth;
+
         if (cart == null) return;
         if (!(cart.level() instanceof ClientLevel world)) return;
 
@@ -55,7 +64,7 @@ public class ParticleManager {
 
         Vec3 up = Math.abs(dir.y) > 0.9 ? new Vec3(1,0,0) : new Vec3(0,1,0);
 
-        double width = 0.05;
+        double width = LINE_WIDTH;
 
         Vec3 side1 = dir.cross(up).normalize().scale(width);    // Level
         Vec3 side2 = dir.cross(side1).normalize().scale(width); // Vertical
