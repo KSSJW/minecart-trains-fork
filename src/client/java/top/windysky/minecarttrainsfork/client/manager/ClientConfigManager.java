@@ -4,28 +4,23 @@ import net.minecraft.core.particles.SimpleParticleType;
 
 import org.jspecify.annotations.NonNull;
 
-import top.windysky.minecarttrainsfork.client.extension.config.ClientConfigValue;
-
-import me.shedaniel.autoconfig.AutoConfig;
+import static top.windysky.minecarttrainsfork.client.manager.ClientLoadManager.config;
 
 public class ClientConfigManager {
-    
-    private static ClientConfigValue config = AutoConfig.getConfigHolder(ClientConfigValue.class).getConfig();
-
     public static boolean isEnabledLinkLine() {
-        return ClientLoadManager.isAPIFound() ? config.enabledLinkLine : true;
+        return config != null ? config.enabledLinkLine : true;
     }
 
     public static boolean isEnabledHeadParticle() {
-        return ClientLoadManager.isAPIFound() ? config.enabledHeadParticle : true;
+        return config != null ? config.enabledHeadParticle : true;
     }
 
     public static boolean isEnabledLinkParticle() {
-        return ClientLoadManager.isAPIFound() ? config.enabledLinkParticle : false;
+        return config != null ? config.enabledLinkParticle : false;
     }
 
     public static boolean isEnabledNotice() {
-        return ClientLoadManager.isAPIFound() ? config.enabledNotice : true;
+        return config != null ? config.enabledNotice : true;
     }
 
     /* */

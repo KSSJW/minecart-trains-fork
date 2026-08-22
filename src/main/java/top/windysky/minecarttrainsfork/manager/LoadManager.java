@@ -1,9 +1,13 @@
 package top.windysky.minecarttrainsfork.manager;
 
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
+
 import top.windysky.minecarttrainsfork.extension.config.ConfigValue;
 
 public class LoadManager {
-    
+    public static ConfigValue config;
+
     private static boolean apiFound;
 
     public static void init() {
@@ -14,8 +18,10 @@ public class LoadManager {
             apiFound = false;
         }
 
-        if (apiFound == true) me.shedaniel.autoconfig.AutoConfig.register(ConfigValue.class, me.shedaniel.autoconfig.serializer.GsonConfigSerializer::new); // 替代 AutoConfig.register(ValueConfig.class, GsonConfigSerializer::new);
-        
+        if (apiFound == true) {
+            AutoConfig.register(ConfigValue.class, GsonConfigSerializer::new);
+            config = AutoConfig.getConfigHolder(ConfigValue.class).getConfig();
+        }
     }
 
     public static boolean isAPIFound() {
