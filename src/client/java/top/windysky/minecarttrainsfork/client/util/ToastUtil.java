@@ -10,7 +10,9 @@ public class ToastUtil {
     private ToastUtil() {}
 
     public static void toast(String title, String description) {
-        if (title == null || description == null) return;
+        if (title == null || description == null) {
+            return;
+        }
 
         ToastManager toastManager = Minecraft.getInstance().gui.toastManager();
         SystemToast.add(

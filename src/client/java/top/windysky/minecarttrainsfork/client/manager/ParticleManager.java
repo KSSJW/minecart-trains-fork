@@ -222,7 +222,7 @@ public class ParticleManager {
 
         if (cart == null) return;
         if (!(cart.level() instanceof ClientLevel world)) return;
-        
+
         final int FRAME_SKIP = frameSkip;
         final int MAX_STEPS = maxSteps;
         final double PARTICLE_HEIGHT = particleHeight;

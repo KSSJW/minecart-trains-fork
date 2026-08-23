@@ -13,28 +13,33 @@ import net.minecraft.client.multiplayer.ClientLevel;
 
 public class MinecartTrainsForkClient implements ClientModInitializer {
 
-	@Override
-	public void onInitializeClient() {
-		ClientLoadManager.init();
+    @Override
+    public void onInitializeClient() {
+        ClientLoadManager.init();
 
-		ClientPlayNetworking.registerGlobalReceiver(
-			NetworkManager.RelationshipPayload.TYPE,
-			(payload, context) -> {
-				context.client().execute(() -> {
-					ClientLevel clientWorld = Minecraft.getInstance().level;
-				
-					if (clientWorld != null) {
-						UUID childUUID = payload.childUUID();
-						UUID parentUUID = payload.parentUUID();
+        ClientPlayNetworking.registerGlobalReceiver(
+            NetworkManager.RelationshipPayload.TYPE,
+            (payload, context) -> {
+                context.client().execute(() -> {
+                    ClientLevel clientWorld = Minecraft.getInstance().level;
 
-						IChainableUtil childChainableUtil = (IChainableUtil) clientWorld.getEntity(childUUID);
-						IChainableUtil parentChainableUtil = (IChainableUtil) clientWorld.getEntity(parentUUID);
+                    if (clientWorld != null) {
+                        UUID childUUID = payload.childUUID();
+                        UUID parentUUID = payload.parentUUID();
 
-						if (childChainableUtil != null) childChainableUtil.setParentUUID(parentUUID);
-						if (parentChainableUtil != null) parentChainableUtil.setChildUUID(childUUID);
-					}
-				});
-			}
-		);
-	}
+                        IChainableUtil childChainableUtil = (IChainableUtil) clientWorld.getEntity(childUUID);
+                        IChainableUtil parentChainableUtil = (IChainableUtil) clientWorld.getEntity(parentUUID);
+
+                        if (childChainableUtil != null) {
+                            childChainableUtil.setParentUUID(parentUUID);
+                        }
+
+                        if (parentChainableUtil != null) {
+                            parentChainableUtil.setChildUUID(childUUID);
+                        }
+                    }
+                });
+            }
+        );
+    }
 }
