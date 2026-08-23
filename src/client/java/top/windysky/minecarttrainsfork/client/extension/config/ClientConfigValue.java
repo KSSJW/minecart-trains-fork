@@ -33,6 +33,12 @@ public class ClientConfigValue implements ConfigData {
 
     /* Advanced */
 
+    // Width of Link Line
+    @ConfigEntry.Category("advanced")
+    @ConfigEntry.Gui.PrefixText
+    @ConfigEntry.BoundedDiscrete(min = 1, max = 10)
+    public int lineWidth = 5;
+
     // Head particle type
     @ConfigEntry.Category("advanced")
     @ConfigEntry.Gui.PrefixText

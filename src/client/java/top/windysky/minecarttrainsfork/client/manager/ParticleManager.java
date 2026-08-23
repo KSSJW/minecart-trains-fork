@@ -25,22 +25,40 @@ import net.minecraft.world.phys.Vec3;
 public class ParticleManager {
 
     public static void linkLine(AbstractMinecart cart, Vec3 camPos, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
-        if (ClientLoadManager.isAPIFound() && !ClientConfigManager.isEnabledLinkLine()) return;
-        if (cart == null) return;
-        if (!(cart.level() instanceof ClientLevel world)) return;
+        double lineWidth = 0.05;
+
+        if (ClientLoadManager.isAPIFound()) {
+            if (!ClientConfigManager.isEnabledLinkLine()) {
+                return;
+            }
+
+            lineWidth = ClientConfigManager.getLineWidth();
+        }
+
+        final double LINE_WIDTH = lineWidth;
+
+        if (cart == null || !(cart.level() instanceof ClientLevel world)) {
+            return;
+        }
 
         UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
 
-        if (parentCartUuid == null) return;
+        if (parentCartUuid == null) {
+            return;
+        }
 
         AbstractMinecart parentCart = (AbstractMinecart) world.getEntity(parentCartUuid);
 
-        if (parentCart == null) return;
+        if (parentCart == null) {
+            return;
+        }
 
         Vec3 cartPos = cart.position();
         Vec3 parentPos = parentCart.position();
 
-        if (camPos == null) return;
+        if (camPos == null) {
+            return;
+        }
 
         // >= 1.20.5
         Vec3 pos1 = cartPos.subtract(camPos);
@@ -55,7 +73,7 @@ public class ParticleManager {
 
         Vec3 up = Math.abs(dir.y) > 0.9 ? new Vec3(1,0,0) : new Vec3(0,1,0);
 
-        double width = 0.05;
+        double width = LINE_WIDTH;
 
         Vec3 side1 = dir.cross(up).normalize().scale(width);    // Level
         Vec3 side2 = dir.cross(side1).normalize().scale(width); // Vertical
@@ -75,7 +93,9 @@ public class ParticleManager {
         Vec3 normal1 = side1.normalize();
         Vec3 normal2 = side2.normalize();
 
-        if (poseStack == null) return;
+        if (poseStack == null) {
+            return;
+        }
 
         submitNodeCollector.submitCustomGeometry(
             poseStack,
@@ -159,7 +179,9 @@ public class ParticleManager {
         SimpleParticleType particleType = ParticleTypes.COMPOSTER;
 
         if (ClientLoadManager.isAPIFound()) {
-            if (!ClientConfigManager.isEnabledHeadParticle()) return;
+            if (!ClientConfigManager.isEnabledHeadParticle()) {
+                return;
+            }
 
             frameSkip = ClientConfigManager.getHeadParticleCycle();
             maxSteps = ClientConfigManager.getHeadParticleNumber();
@@ -167,11 +189,15 @@ public class ParticleManager {
             particleType = ClientConfigManager.getHeadParticleType();
         }
 
-        if (!(cart.level() instanceof ClientLevel world)) return;
+        if (!(cart.level() instanceof ClientLevel world)) {
+            return;
+        }
 
         UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
 
-        if (parentCartUuid != null && world.getEntity(parentCartUuid) != null) return;
+        if (parentCartUuid != null && world.getEntity(parentCartUuid) != null) {
+            return;
+        }
 
         final int FRAME_SKIP = frameSkip;
         final int MAX_STEPS = maxSteps;
@@ -179,7 +205,9 @@ public class ParticleManager {
         final SimpleParticleType PARTICLE_TYPE = particleType;
         long ticks = Minecraft.getInstance().gui.hud.getGuiTicks();
 
-        if (ticks % FRAME_SKIP != 0) return;
+        if (ticks % FRAME_SKIP != 0) {
+            return;
+        }
 
         double baseX = cart.getX();
         double baseY = cart.getY() + PARTICLE_HEIGHT;
@@ -204,31 +232,40 @@ public class ParticleManager {
         SimpleParticleType particleType = ParticleTypes.SOUL_FIRE_FLAME;
 
         if (ClientLoadManager.isAPIFound()) {
-            if (!ClientConfigManager.isEnabledLinkParticle()) return;
+            if (!ClientConfigManager.isEnabledLinkParticle()) {
+                return;
+            }
 
             frameSkip = ClientConfigManager.getLinkParticleCycle();
             particleType = ClientConfigManager.getLinkParticleType();
             particleHeight = ClientConfigManager.getLinkParticleHeight();
         }
 
-        if (cart == null) return;
-        if (!(cart.level() instanceof ClientLevel world)) return;
-        
+        if (cart == null || !(cart.level() instanceof ClientLevel world)) {
+            return;
+        }
+
         final int FRAME_SKIP = frameSkip;
         final int MAX_STEPS = maxSteps;
         final double PARTICLE_HEIGHT = particleHeight;
         final SimpleParticleType PARTICLE_TYPE = particleType;
         long ticks = Minecraft.getInstance().gui.hud.getGuiTicks();
 
-        if (ticks % FRAME_SKIP != 0) return;
+        if (ticks % FRAME_SKIP != 0) {
+            return;
+        }
 
         UUID parentCartUuid = ((IChainableUtil) cart).getParentUUID();
 
-        if (parentCartUuid == null) return;
+        if (parentCartUuid == null) {
+            return;
+        }
 
         AbstractMinecart parentCart = (AbstractMinecart) world.getEntity(parentCartUuid);
 
-        if (parentCart == null) return;
+        if (parentCart == null) {
+            return;
+        }
 
         Vec3 parentPos = parentCart.position();
 
@@ -242,7 +279,9 @@ public class ParticleManager {
         double dx = ex - sx, dy = ey - sy, dz = ez - sz;
         double distSq = dx*dx + dy*dy + dz*dz;
 
-        if (distSq < 1e-6) return;
+        if (distSq < 1e-6) {
+            return;
+        }
 
         double dist = Math.sqrt(distSq);
 

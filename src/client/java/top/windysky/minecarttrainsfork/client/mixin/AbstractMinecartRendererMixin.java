@@ -19,7 +19,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 @Mixin(AbstractMinecartRenderer.class)
 public class AbstractMinecartRendererMixin {
     private Vec3 cachedCameraPos;
+
     private PoseStack cachedStack;
+
     private SubmitNodeCollector cachedCollector;
 
     @Inject(
@@ -30,9 +32,17 @@ public class AbstractMinecartRendererMixin {
         at = @At("HEAD")
     )
     private void injectSubmit(MinecartRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera, CallbackInfo ci) {
-        if (camera != null && camera.pos != null) cachedCameraPos = camera.pos;
-        if (poseStack != null) cachedStack = poseStack;
-        if (submitNodeCollector != null) cachedCollector = submitNodeCollector;
+        if (camera != null && camera.pos != null) {
+            cachedCameraPos = camera.pos;
+        }
+
+        if (poseStack != null) {
+            cachedStack = poseStack;
+        }
+
+        if (submitNodeCollector != null) {
+            cachedCollector = submitNodeCollector;
+        }
     }
 
     @Inject(method = "extractRenderState", at = @At("TAIL"))
@@ -41,7 +51,7 @@ public class AbstractMinecartRendererMixin {
         MinecartRenderState state,
         float tickDelta,
         CallbackInfo ci
-    ) { 
+    ) {
         try {
             ParticleManager.linkParticle(entity);
         } catch (Throwable ex) {

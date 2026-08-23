@@ -23,9 +23,11 @@ public class EntityMixin {
     private void injectStartSeenByPlayer(ServerPlayer player, CallbackInfo ci) {
         Entity self = (Entity)(Object)this;
 
-        if (self instanceof AbstractMinecart) NetworkManager.sendRelationshipPayload(self.getUUID(), ((IChainableUtil) self).getParentUUID(), player);
+        if (self instanceof AbstractMinecart) {
+            NetworkManager.sendRelationshipPayload(self.getUUID(), ((IChainableUtil) self).getParentUUID(), player);
+        }
     }
-    
+
     @Inject(method = "remove", at = @At("TAIL"))
     private void onRemove(Entity.RemovalReason reason, CallbackInfo ci) {
         Entity self = (Entity)(Object)this;
@@ -33,7 +35,7 @@ public class EntityMixin {
         if (self instanceof AbstractMinecart) {
             IChainableUtil icu = (IChainableUtil)(Object)this;
             Level world = ((Entity)(Object)this).level();
-            
+
             if (!world.isClientSide()) {
                 ServerLevel serverWorld = (ServerLevel)world;
                 UnLinkUtil.unlinkHandle(icu, serverWorld, null);

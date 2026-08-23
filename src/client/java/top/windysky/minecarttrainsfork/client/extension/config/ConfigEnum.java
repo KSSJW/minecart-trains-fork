@@ -10,7 +10,7 @@ public class ConfigEnum {
     private ConfigEnum() {}
 
     public enum ParticleOption {
-      
+
         // 26.2
         angry_villager(ParticleTypes.ANGRY_VILLAGER),
         ash(ParticleTypes.ASH),

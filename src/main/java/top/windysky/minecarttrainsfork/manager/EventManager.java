@@ -28,13 +28,13 @@ import top.windysky.minecarttrainsfork.util.UnLinkUtil;
 
 public class EventManager {
 
-    private static InteractionResult link(ItemStack stack, AbstractMinecart cart, Player player, InteractionHand hand, Level world, DataComponentType<UUID> PARENT_ID) {
+    private static InteractionResult link(ItemStack stack, AbstractMinecart cart, Player player, InteractionHand hand, Level world, DataComponentType<UUID> parentID) {
         if (
             player.isShiftKeyDown()
             && stack.is(Items.IRON_CHAIN)
             && world instanceof ServerLevel server
         ) {
-            UUID uuid = stack.get(PARENT_ID);
+            UUID uuid = stack.get(parentID);
 
             if (uuid != null && !cart.getUUID().equals(uuid)) {
                 if (server.getEntity(uuid) instanceof AbstractMinecart parent) {
@@ -59,26 +59,30 @@ public class EventManager {
                         return InteractionResult.PASS;
                     } else {
 
-                        if ((cartIChainable).getChainedParent() != null) IChainableUtil.unsetChainedParentChild(cartIChainable, (IChainableUtil)((cartIChainable).getChainedParent()));
+                        if ((cartIChainable).getChainedParent() != null) {
+                            IChainableUtil.unsetChainedParentChild(cartIChainable, (IChainableUtil)((cartIChainable).getChainedParent()));
+                        }
 
                         IChainableUtil.setChainedParentChild(parentIChainable, cartIChainable);
 
                         NetworkManager.sendRelationshipPayload(cart.getUUID(), parent.getUUID(), (ServerPlayer) player);
                     }
                 } else {
-                    stack.remove(PARENT_ID);
+                    stack.remove(parentID);
                 }
 
                 world.playSound(null, cart.getX(), cart.getY(), cart.getZ(), SoundEvents.CHAIN_PLACE, SoundSource.NEUTRAL, 1f, 1.1f);
 
-                if (!player.isCreative()) stack.shrink(1);
+                if (!player.isCreative()) {
+                    stack.shrink(1);
+                }
 
-                stack.remove(PARENT_ID);
+                stack.remove(parentID);
             } else {
-                stack.set(PARENT_ID, cart.getUUID());
+                stack.set(parentID, cart.getUUID());
                 world.playSound(null, cart.getX(), cart.getY(), cart.getZ(), SoundEvents.CHAIN_HIT, SoundSource.NEUTRAL, 1f, 1.1f);
             }
-            
+
             return InteractionResult.SUCCESS;
 
         } else {
@@ -90,8 +94,10 @@ public class EventManager {
         if (player.isShiftKeyDown() && stack.getItem() instanceof AxeItem) {
             IChainableUtil icu = (IChainableUtil)(Object)cart;
 
-            if (!player.isCreative() && (icu.getParentUUID() != null || icu.getChildUUID() != null)) stack.hurtAndBreak(1, player, hand);
-            
+            if (!player.isCreative() && (icu.getParentUUID() != null || icu.getChildUUID() != null)) {
+                stack.hurtAndBreak(1, player, hand);
+            }
+
             if (!world.isClientSide()) {
                 ServerLevel serverWorld = (ServerLevel)world;
                 UnLinkUtil.unlinkHandle(icu, serverWorld, player);
@@ -104,13 +110,13 @@ public class EventManager {
         }
     }
 
-    public static @NonNull InteractionResult init(Entity entity, Player player, InteractionHand hand, Level world, DataComponentType<UUID> PARENT_ID) {
+    public static @NonNull InteractionResult init(Entity entity, Player player, InteractionHand hand, Level world, DataComponentType<UUID> parentID) {
         if (entity instanceof AbstractMinecart cart && hand != null) {
             ItemStack stack = player.getItemInHand(hand);
 
             // 链接逻辑
-            InteractionResult linkResult = link(stack, cart, player, hand, world, PARENT_ID);
-            
+            InteractionResult linkResult = link(stack, cart, player, hand, world, parentID);
+
             if (linkResult == InteractionResult.SUCCESS) {
                 return InteractionResult.SUCCESS;
             }

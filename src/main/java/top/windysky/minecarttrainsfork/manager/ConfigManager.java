@@ -1,18 +1,13 @@
 package top.windysky.minecarttrainsfork.manager;
 
-import top.windysky.minecarttrainsfork.extension.config.ConfigValue;
-
-import me.shedaniel.autoconfig.AutoConfig;
+import static top.windysky.minecarttrainsfork.manager.LoadManager.config;
 
 public class ConfigManager {
-
-    private static ConfigValue config = AutoConfig.getConfigHolder(ConfigValue.class).getConfig();
-
     public static boolean isEnabledBrakingAfterTrainSeparation() {
-        return LoadManager.isAPIFound() ? config.brakingAfterTrainSeparation : true;
+        return config != null ? config.brakingAfterTrainSeparation : true;
     }
 
     public static double getCartSpacing() {
-        return LoadManager.isAPIFound() ? config.cartSpacing / 10.0 : 0.5;
+        return config != null ? config.cartSpacing / 10.0 : 0.5;
     }
 }

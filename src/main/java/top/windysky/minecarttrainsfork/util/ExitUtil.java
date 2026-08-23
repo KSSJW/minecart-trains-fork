@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public class ExitUtil {
-    
+
     private ExitUtil() {}
 
     public static void exit(ItemStack current, ItemStack lastMainHand, Player player) {
@@ -29,7 +29,9 @@ public class ExitUtil {
             for (int i = 0; i < inv.getContainerSize(); i++) {
                 ItemStack stack = inv.getItem(i);
 
-                if (stack.is(Items.IRON_CHAIN)) stack.remove(ComponentUtil.PARENT_ID);
+                if (stack.is(Items.IRON_CHAIN)) {
+                    stack.remove(ComponentUtil.PARENT_ID);
+                }
             }
 
             player.sendOverlayMessage(Component.translatable(MinecartTrainsFork.MOD_ID + " ")

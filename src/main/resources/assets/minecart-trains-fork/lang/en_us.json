@@ -16,15 +16,15 @@
     "screen.minecart-trains-fork.IllegalOperationScreen.yes": "OK",
     "screen.minecart-trains-fork.IllegalOperationScreen.no": "OK",
 
-    "text.autoconfig.minecart-trains-fork.title": "Minecart Trains Fork Configuration (Server)",
+    "text.autoconfig.minecart-trains-fork-server.title": "Minecart Trains Fork Configuration (Server)",
 
-    "text.autoconfig.minecart-trains-fork.category.general": "General Settings",
+    "text.autoconfig.minecart-trains-fork-server.category.general": "General Settings",
 
-    "text.autoconfig.minecart-trains-fork.option.brakingAfterTrainSeparation.@PrefixText": "Train",
-    "text.autoconfig.minecart-trains-fork.option.brakingAfterTrainSeparation": "    Braking After Train Separation",
-    "text.autoconfig.minecart-trains-fork.option.cartSpacing": "    Cart Spacing",
-    "text.autoconfig.minecart-trains-fork.option.cartSpacing.@Tooltip[0]": "Note: This value will be divided by 10.",
-    "text.autoconfig.minecart-trains-fork.option.cartSpacing.@Tooltip[1]": "Example: 5 -> 0.5",
+    "text.autoconfig.minecart-trains-fork-server.option.brakingAfterTrainSeparation.@PrefixText": "Train",
+    "text.autoconfig.minecart-trains-fork-server.option.brakingAfterTrainSeparation": "    Braking After Train Separation",
+    "text.autoconfig.minecart-trains-fork-server.option.cartSpacing": "    Cart Spacing",
+    "text.autoconfig.minecart-trains-fork-server.option.cartSpacing.@Tooltip[0]": "Note: This value will be divided by 10.",
+    "text.autoconfig.minecart-trains-fork-server.option.cartSpacing.@Tooltip[1]": "Example: 5 -> 0.5",
 
     "text.autoconfig.minecart-trains-fork-client.title": "Minecart Trains Fork Configuration (Client)",
 
@@ -42,6 +42,9 @@
 
     "text.autoconfig.minecart-trains-fork-client.option.enabledNotice.@PrefixText": "Notice",
     "text.autoconfig.minecart-trains-fork-client.option.enabledNotice": "    Show Chaining Notice",
+
+    "text.autoconfig.minecart-trains-fork-client.option.lineWidth.@PrefixText": "Link Line",
+    "text.autoconfig.minecart-trains-fork-client.option.lineWidth": "    Width of Link Line",
 
     "text.autoconfig.minecart-trains-fork-client.option.headParticleType.@PrefixText": "Head Particle",
     "text.autoconfig.minecart-trains-fork-client.option.headParticleType": "    Selected Custom Head Cart Particle",

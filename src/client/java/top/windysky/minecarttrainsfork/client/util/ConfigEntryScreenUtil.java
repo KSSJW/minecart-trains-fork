@@ -40,7 +40,7 @@ public class ConfigEntryScreenUtil extends Screen {
                 this.font
             )
         );
-        
+
         MutableComponent server = Component.translatable("screen.minecart-trains-fork.ConfigEntryScreen.server");
         this.addRenderableWidget(
             Button.builder(

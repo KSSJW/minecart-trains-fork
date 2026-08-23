@@ -20,6 +20,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 public class AbstractMinecartMixin implements IChainableUtil {
 
     @Unique private @Nullable UUID parentUUID;
+
     @Unique private @Nullable UUID childUUID;
 
     @Override
@@ -43,7 +44,7 @@ public class AbstractMinecartMixin implements IChainableUtil {
     }
 
     @Inject(method = "tick", at = @At("HEAD"))
-    private void mctrains$tick(CallbackInfo ci) {
+    private void injectTick(CallbackInfo ci) {
         TrainManager.tick((AbstractMinecart)(Object)this);
     }
 
@@ -68,14 +69,13 @@ public class AbstractMinecartMixin implements IChainableUtil {
         LinkUtil.setChainedChild(newChild, (IChainableUtil)(Object)this);
     }
 
-    // 数据存储与读取
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
-    public void mctrains$writeData(ValueOutput writeView, CallbackInfo ci) {
+    public void injectAddAdditionalSaveData(ValueOutput writeView, CallbackInfo ci) {
         DataUtil.writeData(writeView, (IChainableUtil)(Object)this);
     }
 
     @Inject(method="readAdditionalSaveData", at = @At("TAIL"))
-    public void mctrains$readData(ValueInput readView, CallbackInfo ci) {
+    public void injectReadAdditionalSaveData(ValueInput readView, CallbackInfo ci) {
         DataUtil.readData(readView, (IChainableUtil)(Object)this);
     }
 }

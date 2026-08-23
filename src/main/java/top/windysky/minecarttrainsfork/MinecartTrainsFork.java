@@ -14,21 +14,21 @@ import net.minecraft.resources.Identifier;
 
 public class MinecartTrainsFork implements ModInitializer {
 
-	public static final String MOD_ID = "minecart-trains-fork";
+    public static final String MOD_ID = "minecart-trains-fork";
 
-	@Override
-	public void onInitialize() {
-		LoadManager.init();
-		
-		Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "parent_id"), ComponentUtil.PARENT_ID);
+    @Override
+    public void onInitialize() {
+        LoadManager.init();
 
-		UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
-			return EventManager.init(entity, player, hand, world, ComponentUtil.PARENT_ID);
-		});
+        Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, Identifier.fromNamespaceAndPath(MOD_ID, "parent_id"), ComponentUtil.PARENT_ID);
 
-		PayloadTypeRegistry.clientboundPlay().register(NetworkManager.RelationshipPayload.TYPE, NetworkManager.RelationshipPayload.CODEC);
+        UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+            return EventManager.init(entity, player, hand, world, ComponentUtil.PARENT_ID);
+        });
 
-		// For Development
-		// ParticleEnumGenerator.generateEnum();
-	}
+        PayloadTypeRegistry.clientboundPlay().register(NetworkManager.RelationshipPayload.TYPE, NetworkManager.RelationshipPayload.CODEC);
+
+        // For Development
+        // ParticleEnumGenerator.generateEnum();
+    }
 }
