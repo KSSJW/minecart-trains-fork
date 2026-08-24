@@ -239,6 +239,8 @@ public class ParticleManager {
             frameSkip = ClientConfigManager.getLinkParticleCycle();
             particleType = ClientConfigManager.getLinkParticleType();
             particleHeight = ClientConfigManager.getLinkParticleHeight();
+        } else {
+            return;
         }
 
         if (cart == null || !(cart.level() instanceof ClientLevel world)) {
