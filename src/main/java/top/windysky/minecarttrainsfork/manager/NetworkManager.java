@@ -19,7 +19,7 @@ public class NetworkManager {
         }
 
         RelationshipPayload relationship = new RelationshipPayload(childUUID, parentUUID);
-        
+
         for (ServerPlayer p : player.level().getServer().getPlayerList().getPlayers()) {
             if (p != null) {
                 ServerPlayNetworking.send(p, relationship);
