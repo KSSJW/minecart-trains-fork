@@ -12,7 +12,7 @@
     "screen.minecart-trains-fork.ConfigEntryScreen.cancel": "Cancel",
 
     "screen.minecart-trains-fork.IllegalOperationScreen.title": "§cIllegal Operation",
-    "screen.minecart-trains-fork.IllegalOperationScreen.desc": ":( Don't be discouraged, this is not a bug.\n\nIt looks like you're playing a multiplayer game.\nYou cannot change the server configuration through this setting.\n\nIf you need to make changes, please contact the server administrator\nto modify the configuration file.\n§6... > config > minecart-trains-fork.json",
+    "screen.minecart-trains-fork.IllegalOperationScreen.desc": ":( Don't be discouraged, this is not a bug.\n\nIt looks like you're playing a multiplayer game.\nYou cannot change the server configuration through this setting.\n\nIf you need to make changes, please contact the server administrator\nto modify the configuration file.\n§6... > config > minecart-trains-fork-server.json",
     "screen.minecart-trains-fork.IllegalOperationScreen.yes": "OK",
     "screen.minecart-trains-fork.IllegalOperationScreen.no": "OK",
 
