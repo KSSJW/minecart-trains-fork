@@ -53,7 +53,7 @@ public class ClientConfigValue implements ConfigData {
     // Height of head particle
     @ConfigEntry.Category("advanced")
     @ConfigEntry.BoundedDiscrete(min = 1, max = 20)
-    public int headParticleHeight = 8;
+    public int headParticleHeight = 14;
 
     // Cycle of head particle
     @ConfigEntry.Category("advanced")
