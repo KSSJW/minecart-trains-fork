@@ -19,7 +19,12 @@ public class NetworkManager {
         }
 
         RelationshipPayload relationship = new RelationshipPayload(childUUID, parentUUID);
-        ServerPlayNetworking.send(player, relationship);
+        
+        for (ServerPlayer p : player.level().getServer().getPlayerList().getPlayers()) {
+            if (p != null) {
+                ServerPlayNetworking.send(p, relationship);
+            }
+        }
     }
 
     public record RelationshipPayload(UUID childUUID, UUID parentUUID) implements CustomPacketPayload {
