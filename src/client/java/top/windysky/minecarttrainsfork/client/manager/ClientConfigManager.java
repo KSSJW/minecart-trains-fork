@@ -29,6 +29,10 @@ public class ClientConfigManager {
         return config.lineWidth * 0.01;
     }
 
+    public static boolean isAlwaysRenderHeadParticle() {
+        return config.alwaysRenderHeadParticle;
+    }
+
     public static @NonNull SimpleParticleType getHeadParticleType() {
         return config.headParticleType.getType();
     }

@@ -39,9 +39,13 @@ public class ClientConfigValue implements ConfigData {
     @ConfigEntry.BoundedDiscrete(min = 1, max = 10)
     public int lineWidth = 5;
 
-    // Head particle type
+    // Always render head particle
     @ConfigEntry.Category("advanced")
     @ConfigEntry.Gui.PrefixText
+    public boolean alwaysRenderHeadParticle = false;
+
+    // Head particle type
+    @ConfigEntry.Category("advanced")
     @ConfigEntry.ColorPicker
     public ParticleOption headParticleType = ParticleOption.composter;
 
