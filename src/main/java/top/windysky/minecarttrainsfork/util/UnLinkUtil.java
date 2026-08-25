@@ -5,10 +5,8 @@ import java.util.UUID;
 import top.windysky.minecarttrainsfork.manager.NetworkManager;
 
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -17,7 +15,7 @@ public class UnLinkUtil {
 
     private UnLinkUtil() {}
 
-    public static void unlinkHandle(IChainableUtil icu, ServerLevel world, Player player) {
+    public static void unlinkHandle(IChainableUtil icu, ServerLevel world) {
         UUID parentUUID = icu.getParentUUID();
         UUID childUUID = icu.getChildUUID();
 
@@ -29,7 +27,7 @@ public class UnLinkUtil {
             if (parentEntity instanceof IChainableUtil parent) {
                 parent.setChildUUID(null);
 
-                NetworkManager.sendRelationshipPayload(null, parentEntity.getUUID(), (ServerPlayer) player);
+                NetworkManager.sendRelationshipPayload(null, parentEntity.getUUID(), world);
             }
         }
 
@@ -40,7 +38,7 @@ public class UnLinkUtil {
             if (childEntity instanceof IChainableUtil child) {
                 child.setParentUUID(null);
 
-                NetworkManager.sendRelationshipPayload(childEntity.getUUID(), null, (ServerPlayer) player);
+                NetworkManager.sendRelationshipPayload(childEntity.getUUID(), null, world);
             }
         }
 
@@ -53,8 +51,8 @@ public class UnLinkUtil {
         icu.setParentUUID(null);
         icu.setChildUUID(null);
 
-        NetworkManager.sendRelationshipPayload(((AbstractMinecart) icu).getUUID(), null, (ServerPlayer) player);
-        NetworkManager.sendRelationshipPayload(null, ((AbstractMinecart) icu).getUUID(), (ServerPlayer) player);
+        NetworkManager.sendRelationshipPayload(((AbstractMinecart) icu).getUUID(), null, world);
+        NetworkManager.sendRelationshipPayload(null, ((AbstractMinecart) icu).getUUID(), world);
 
         // 根据情况掉落铁链
         if (wasLinked && icu instanceof Entity entity) {
@@ -62,24 +60,12 @@ public class UnLinkUtil {
             double dy;
             double dz;
 
-            if (player == null) {
-                float yaw = entity.getYRot(); // 矿车朝向角度
-                double offset = 0.6;         // 偏移距离，控制掉落在轨道两侧
+            float yaw = entity.getYRot(); // 矿车朝向角度
+            double offset = 0.6;         // 偏移距离，控制掉落在轨道两侧
 
-                dx = Math.cos(Math.toRadians(yaw + 90)) * offset;
-                dy = 0.8;
-                dz = Math.sin(Math.toRadians(yaw + 90)) * offset;
-
-            } else {
-
-                // 掉落在玩家附近
-                double px = player.getX();
-                double pz = player.getZ();
-
-                dx = Math.signum(px - entity.getX()) * 0.5;
-                dy = 0.8;
-                dz = Math.signum(pz - entity.getZ()) * 0.5;
-            }
+            dx = Math.cos(Math.toRadians(yaw + 90)) * offset;
+            dy = 0.8;
+            dz = Math.sin(Math.toRadians(yaw + 90)) * offset;
 
             double x = entity.getX() + dx;
             double y = entity.getY() + dy;

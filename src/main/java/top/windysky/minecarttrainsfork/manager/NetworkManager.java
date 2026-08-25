@@ -9,20 +9,20 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
 
 public class NetworkManager {
 
-    public static void sendRelationshipPayload(UUID childUUID, UUID parentUUID, ServerPlayer player) {
-        if (player == null) {
+    public static void sendRelationshipPayload(UUID childUUID, UUID parentUUID, Level level) {
+        if (level == null || !(level instanceof ServerLevel serverLevel)) {
             return;
         }
 
-        RelationshipPayload relationship = new RelationshipPayload(childUUID, parentUUID);
-
-        for (ServerPlayer p : player.level().getServer().getPlayerList().getPlayers()) {
+        for (ServerPlayer p : serverLevel.getServer().getPlayerList().getPlayers()) {
             if (p != null) {
-                ServerPlayNetworking.send(p, relationship);
+                ServerPlayNetworking.send(p, new RelationshipPayload(childUUID, parentUUID));
             }
         }
     }

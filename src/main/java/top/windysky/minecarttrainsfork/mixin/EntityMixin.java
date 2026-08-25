@@ -24,7 +24,7 @@ public class EntityMixin {
         Entity self = (Entity)(Object)this;
 
         if (self instanceof AbstractMinecart) {
-            NetworkManager.sendRelationshipPayload(self.getUUID(), ((IChainableUtil) self).getParentUUID(), player);
+            NetworkManager.sendRelationshipPayload(self.getUUID(), ((IChainableUtil) self).getParentUUID(), player.level());
         }
     }
 
@@ -38,7 +38,7 @@ public class EntityMixin {
 
             if (!world.isClientSide()) {
                 ServerLevel serverWorld = (ServerLevel)world;
-                UnLinkUtil.unlinkHandle(icu, serverWorld, null);
+                UnLinkUtil.unlinkHandle(icu, serverWorld);
             }
         }
     }

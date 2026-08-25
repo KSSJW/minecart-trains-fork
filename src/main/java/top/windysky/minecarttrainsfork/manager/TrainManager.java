@@ -3,9 +3,7 @@ package top.windysky.minecarttrainsfork.manager;
 import top.windysky.minecarttrainsfork.util.IChainableUtil;
 
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -54,10 +52,8 @@ public class TrainManager {
                     IChainableUtil.unsetChainedParentChild((IChainableUtil)parentCart, entityIChainable);
                     entity.spawnAtLocation((ServerLevel) entity.level(), new ItemStack(Items.IRON_CHAIN));
 
-                    for (Player p : entity.level().players()) {
-                        NetworkManager.sendRelationshipPayload(entity.getUUID(), null, (ServerPlayer) p);
-                        NetworkManager.sendRelationshipPayload(null, parentCart.getUUID(), (ServerPlayer) p);
-                    }
+                    NetworkManager.sendRelationshipPayload(entity.getUUID(), null, entity.level());
+                    NetworkManager.sendRelationshipPayload(null, parentCart.getUUID(), entity.level());
 
                     return;
                 }
@@ -67,10 +63,8 @@ public class TrainManager {
 
                     IChainableUtil.unsetChainedParentChild((IChainableUtil)parentCart, entityIChainable);
 
-                    for (Player p : entity.level().players()) {
-                        NetworkManager.sendRelationshipPayload(entity.getUUID(), null, (ServerPlayer) p);
-                        NetworkManager.sendRelationshipPayload(null, parentCart.getUUID(), (ServerPlayer) p);
-                    }
+                    NetworkManager.sendRelationshipPayload(entity.getUUID(), null, entity.level());
+                    NetworkManager.sendRelationshipPayload(null, parentCart.getUUID(), entity.level());
                 }
             }
 
@@ -79,10 +73,8 @@ public class TrainManager {
 
                 IChainableUtil.unsetChainedParentChild(entityIChainable, (IChainableUtil)childCart);
 
-                for (Player p : entity.level().players()) {
-                        NetworkManager.sendRelationshipPayload(childCart.getUUID(), null, (ServerPlayer) p);
-                        NetworkManager.sendRelationshipPayload(null, childCart.getUUID(), (ServerPlayer) p);
-                }
+                NetworkManager.sendRelationshipPayload(childCart.getUUID(), null, entity.level());
+                NetworkManager.sendRelationshipPayload(null, childCart.getUUID(), entity.level());
             }
 
             for (Entity otherEntity : entity.level().getEntities(entity, entity.getBoundingBox().inflate(0.1), entity::canCollideWith)) {

@@ -10,7 +10,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -65,7 +64,7 @@ public class EventManager {
 
                         IChainableUtil.setChainedParentChild(parentIChainable, cartIChainable);
 
-                        NetworkManager.sendRelationshipPayload(cart.getUUID(), parent.getUUID(), (ServerPlayer) player);
+                        NetworkManager.sendRelationshipPayload(cart.getUUID(), parent.getUUID(), world);
                     }
                 } else {
                     stack.remove(parentID);
@@ -100,7 +99,7 @@ public class EventManager {
 
             if (!world.isClientSide()) {
                 ServerLevel serverWorld = (ServerLevel)world;
-                UnLinkUtil.unlinkHandle(icu, serverWorld, player);
+                UnLinkUtil.unlinkHandle(icu, serverWorld);
             }
 
             return InteractionResult.SUCCESS;
