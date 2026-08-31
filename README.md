@@ -54,7 +54,7 @@ This project was originally forked from [Minecart Trains](https://github.com/Lar
 
 ## Progress
 
-Check out the latest development progress here: [Development Progress](https://www.windysky.top/docs/minecraft-java-edition/minecart-trains-fork/version)
+Check out the latest development progress here: [Development Progress](https://fuseleaf.org/windysky/docs/minecraft-java-edition/minecart-trains-fork/version)
 
 ![Line](./assets/Line.png)
 
