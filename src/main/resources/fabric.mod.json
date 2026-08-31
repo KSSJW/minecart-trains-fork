@@ -20,13 +20,13 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"top.windysky.minecarttrainsfork.MinecartTrainsFork"
+			"org.fuseleaf.minecarttrainsfork.MinecartTrainsFork"
 		],
 		"client": [
-			"top.windysky.minecarttrainsfork.client.MinecartTrainsForkClient"
+			"org.fuseleaf.minecarttrainsfork.client.MinecartTrainsForkClient"
 		],
 		"modmenu": [
-			"top.windysky.minecarttrainsfork.client.extension.config.ConfigEntry"
+			"org.fuseleaf.minecarttrainsfork.client.extension.config.ConfigEntry"
 		]
 	},
 	"custom": {
