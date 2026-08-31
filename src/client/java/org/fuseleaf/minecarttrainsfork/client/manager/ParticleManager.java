@@ -198,10 +198,8 @@ public class ParticleManager {
             return;
         }
 
-        UUID childCartUuid = ((IChainableUtil) cart).getChildUUID();
-
         if (!ClientLoadManager.isAPIFound() || !ClientConfigManager.isAlwaysRenderHeadParticle()) {
-            if (cart.isVehicle() || childCartUuid == null || world.getEntity(childCartUuid) == null) {
+            if (cart.isVehicle()) {
                 return;
             }
         }
