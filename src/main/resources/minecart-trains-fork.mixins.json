@@ -1,6 +1,6 @@
 {
 	"required": true,
-	"package": "top.windysky.minecarttrainsfork.mixin",
+	"package": "org.fuseleaf.minecarttrainsfork.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
 		"AbstractMinecartMixin",
