@@ -1,6 +1,9 @@
 package org.fuseleaf.minecarttrainsfork.util;
 
 import java.util.UUID;
+
+import org.jspecify.annotations.NonNull;
+
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -11,7 +14,8 @@ public class ComponentUtil {
 
     private ComponentUtil() {}
 
-    public static final DataComponentType<UUID> PARENT_ID = DataComponentType.<UUID>builder().persistent(
+    @SuppressWarnings("null")
+    public static final @NonNull DataComponentType<UUID> PARENT_ID = DataComponentType.<UUID>builder().persistent(
         RecordCodecBuilder.create(uuidInstance -> uuidInstance.group(
             Codec.LONG.fieldOf("most_sig_bits").forGetter(UUID::getMostSignificantBits),
             Codec.LONG.fieldOf("least_sig_bits").forGetter(UUID::getLeastSignificantBits)

@@ -27,7 +27,7 @@ import net.minecraft.world.level.Level;
 
 public class EventManager {
 
-    private static InteractionResult link(ItemStack stack, AbstractMinecart cart, Player player, InteractionHand hand, Level world, DataComponentType<UUID> parentID) {
+    private static InteractionResult link(ItemStack stack, AbstractMinecart cart, Player player, InteractionHand hand, Level world, @NonNull DataComponentType<UUID> parentID) {
         if (
             player.isShiftKeyDown()
             && stack.is(Items.IRON_CHAIN)
@@ -93,7 +93,7 @@ public class EventManager {
         if (player.isShiftKeyDown() && stack.getItem() instanceof AxeItem) {
             IChainableUtil icu = (IChainableUtil)(Object)cart;
 
-            if (!player.isCreative() && (icu.getParentUUID() != null || icu.getChildUUID() != null)) {
+            if (!player.isCreative() && (icu.getParentUUID() != null || icu.getChildUUID() != null) && hand != null) {
                 stack.hurtAndBreak(1, player, hand);
             }
 
@@ -109,7 +109,7 @@ public class EventManager {
         }
     }
 
-    public static @NonNull InteractionResult init(Entity entity, Player player, InteractionHand hand, Level world, DataComponentType<UUID> parentID) {
+    public static @NonNull InteractionResult init(Entity entity, Player player, InteractionHand hand, Level world, @NonNull DataComponentType<UUID> parentID) {
         if (entity instanceof AbstractMinecart cart && hand != null) {
             ItemStack stack = player.getItemInHand(hand);
 

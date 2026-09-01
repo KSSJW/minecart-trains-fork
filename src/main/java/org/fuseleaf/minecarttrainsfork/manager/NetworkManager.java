@@ -3,6 +3,8 @@ package org.fuseleaf.minecarttrainsfork.manager;
 import java.util.UUID;
 
 import org.fuseleaf.minecarttrainsfork.MinecartTrainsFork;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
@@ -27,25 +29,28 @@ public class NetworkManager {
         }
     }
 
-    public record RelationshipPayload(UUID childUUID, UUID parentUUID) implements CustomPacketPayload {
-        public static final Type<RelationshipPayload> TYPE = new Type<>(
+    public record RelationshipPayload(@Nullable UUID childUUID, @Nullable UUID parentUUID) implements CustomPacketPayload {
+        public static @NonNull final Type<RelationshipPayload> TYPE = new Type<>(
             Identifier.fromNamespaceAndPath(MinecartTrainsFork.MOD_ID, "relationship")
         );
 
         @Override
-        public Type<? extends CustomPacketPayload> type() {
+        public @NonNull Type<? extends CustomPacketPayload> type() {
             return TYPE;
         }
 
-        public static final StreamCodec<FriendlyByteBuf, RelationshipPayload> CODEC = StreamCodec.of(
+        public static final @NonNull StreamCodec<FriendlyByteBuf, RelationshipPayload> CODEC = StreamCodec.of(
 
-            // 写入 UUID
+            // Write
             (buf, payload) -> {
-                buf.writeUUID(payload.childUUID() != null ? payload.childUUID() : new UUID(0L, 0L));
-                buf.writeUUID(payload.parentUUID() != null ? payload.parentUUID() : new UUID(0L, 0L));
+                UUID child = payload.childUUID();
+                UUID parent = payload.parentUUID();
+
+                buf.writeUUID(child != null ? child : new UUID(0L, 0L));
+                buf.writeUUID(parent != null ? parent : new UUID(0L, 0L));
             },
 
-            // 读取 UUID
+            // Read
             buf -> {
                 UUID child = buf.readUUID();
                 UUID parent = buf.readUUID();
