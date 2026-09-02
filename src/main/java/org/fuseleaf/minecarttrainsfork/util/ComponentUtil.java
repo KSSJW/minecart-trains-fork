@@ -15,7 +15,7 @@ public class ComponentUtil {
     private ComponentUtil() {}
 
     @SuppressWarnings("null")
-    public static final @NonNull DataComponentType<UUID> PARENT_ID = DataComponentType.<UUID>builder().persistent(
+    public static final @NonNull DataComponentType<@NonNull UUID> PARENT_ID = DataComponentType.<UUID>builder().persistent(
         RecordCodecBuilder.create(uuidInstance -> uuidInstance.group(
             Codec.LONG.fieldOf("most_sig_bits").forGetter(UUID::getMostSignificantBits),
             Codec.LONG.fieldOf("least_sig_bits").forGetter(UUID::getLeastSignificantBits)

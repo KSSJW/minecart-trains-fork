@@ -8,6 +8,7 @@ import org.fuseleaf.minecarttrainsfork.MinecartTrainsFork;
 import org.fuseleaf.minecarttrainsfork.util.IChainableUtil;
 import org.fuseleaf.minecarttrainsfork.util.UnLinkUtil;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponentType;
@@ -27,13 +28,13 @@ import net.minecraft.world.level.Level;
 
 public class EventManager {
 
-    private static InteractionResult link(ItemStack stack, AbstractMinecart cart, Player player, InteractionHand hand, Level world, @NonNull DataComponentType<UUID> parentID) {
+    private static InteractionResult link(ItemStack stack, AbstractMinecart cart, Player player, InteractionHand hand, Level world, @NonNull DataComponentType<@NonNull UUID> parentID) {
         if (
             player.isShiftKeyDown()
             && stack.is(Items.IRON_CHAIN)
             && world instanceof ServerLevel server
         ) {
-            UUID uuid = stack.get(parentID);
+            @Nullable UUID uuid = stack.get(parentID);
 
             if (uuid != null && !cart.getUUID().equals(uuid)) {
                 if (server.getEntity(uuid) instanceof AbstractMinecart parent) {
@@ -109,7 +110,7 @@ public class EventManager {
         }
     }
 
-    public static @NonNull InteractionResult init(Entity entity, Player player, InteractionHand hand, Level world, @NonNull DataComponentType<UUID> parentID) {
+    public static @NonNull InteractionResult init(Entity entity, Player player, InteractionHand hand, Level world, @NonNull DataComponentType<@NonNull UUID> parentID) {
         if (entity instanceof AbstractMinecart cart && hand != null) {
             ItemStack stack = player.getItemInHand(hand);
 
