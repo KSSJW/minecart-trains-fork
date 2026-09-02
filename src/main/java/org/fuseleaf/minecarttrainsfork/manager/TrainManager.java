@@ -77,7 +77,7 @@ public class TrainManager {
                 NetworkManager.sendRelationshipPayload(null, childCart.getUUID(), entity.level());
             }
 
-            for (Entity otherEntity : entity.level().getEntities(entity, entity.getBoundingBox().inflate(0.1), entity::canCollideWith)) {
+            for (Entity otherEntity : entity.level().getEntities(entity, entity.getBoundingBox().inflate(0.1))) {
 
                 if (
                     otherEntity instanceof AbstractMinecart otherCart
