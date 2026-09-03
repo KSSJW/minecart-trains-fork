@@ -12,7 +12,7 @@
     "screen.minecart-trains-fork.ConfigEntryScreen.cancel": "Cancel",
 
     "screen.minecart-trains-fork.IllegalOperationScreen.title": "§cIllegal Operation",
-    "screen.minecart-trains-fork.IllegalOperationScreen.desc": ":( Don't be discouraged, this is not a bug.\n\nIt looks like you're playing a multiplayer game.\nYou cannot change the server configuration through this setting.\n\nIf you need to make changes, please contact the server administrator\nto modify the configuration file.\n§6... > config > minecart-trains-fork-server.json",
+    "screen.minecart-trains-fork.IllegalOperationScreen.desc": ":( Don't be discouraged, this is not a bug.\n\nIt looks like you're playing a multiplayer server.\nYou cannot change the server configuration from here.\n\nIf you need to make changes, please contact the server administrator\nto modify the configuration file.\n§6... > config > minecart-trains-fork-server.json",
     "screen.minecart-trains-fork.IllegalOperationScreen.yes": "OK",
     "screen.minecart-trains-fork.IllegalOperationScreen.no": "OK",
 
@@ -21,6 +21,7 @@
     "text.autoconfig.minecart-trains-fork-server.category.general": "General Settings",
 
     "text.autoconfig.minecart-trains-fork-server.option.brakingAfterTrainSeparation.@PrefixText": "Train",
+
     "text.autoconfig.minecart-trains-fork-server.option.brakingAfterTrainSeparation": "    Braking After Train Separation",
     "text.autoconfig.minecart-trains-fork-server.option.cartSpacing": "    Cart Spacing",
     "text.autoconfig.minecart-trains-fork-server.option.cartSpacing.@Tooltip[0]": "Note: This value will be divided by 10.",
@@ -28,33 +29,40 @@
 
     "text.autoconfig.minecart-trains-fork-client.title": "Minecart Trains Fork Configuration (Client)",
 
-    "text.autoconfig.minecart-trains-fork-client.category.general": "General Settings",
-    "text.autoconfig.minecart-trains-fork-client.category.advanced": "Advanced Settings",
+    "text.autoconfig.minecart-trains-fork-client.category.general": "General",
+    "text.autoconfig.minecart-trains-fork-client.category.advanced": "Advanced",
 
     "text.autoconfig.minecart-trains-fork-client.option.enabledLinkLine.@PrefixText": "Link Line",
+
     "text.autoconfig.minecart-trains-fork-client.option.enabledLinkLine": "    Show Link Line",
 
-    "text.autoconfig.minecart-trains-fork-client.option.enabledHeadParticle.@PrefixText": "Head Particle",
-    "text.autoconfig.minecart-trains-fork-client.option.enabledHeadParticle": "    Show Default Head Cart Particle",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledHeadParticle.@PrefixText": "Head Particles",
 
-    "text.autoconfig.minecart-trains-fork-client.option.enabledLinkParticle.@PrefixText": "Link Particle",
-    "text.autoconfig.minecart-trains-fork-client.option.enabledLinkParticle": "    Show Default Link Particle",
+    "text.autoconfig.minecart-trains-fork-client.option.enabledHeadParticle": "    Show Head Cart Particles",
+
+    "text.autoconfig.minecart-trains-fork-client.option.enabledLinkParticle.@PrefixText": "Link Particles",
+
+    "text.autoconfig.minecart-trains-fork-client.option.enabledLinkParticle": "    Show Link Particles",
 
     "text.autoconfig.minecart-trains-fork-client.option.enabledNotice.@PrefixText": "Notice",
+
     "text.autoconfig.minecart-trains-fork-client.option.enabledNotice": "    Show Chaining Notice",
 
     "text.autoconfig.minecart-trains-fork-client.option.lineWidth.@PrefixText": "Link Line",
-    "text.autoconfig.minecart-trains-fork-client.option.lineWidth": "    Width of Link Line",
 
-    "text.autoconfig.minecart-trains-fork-client.option.alwaysRenderHeadParticle.@PrefixText": "Head Particle",
-    "text.autoconfig.minecart-trains-fork-client.option.alwaysRenderHeadParticle": "    Always Render Head Particle",
-    "text.autoconfig.minecart-trains-fork-client.option.headParticleType": "    Selected Custom Head Cart Particle",
-    "text.autoconfig.minecart-trains-fork-client.option.headParticleNumber": "    Number of Head Particle",
-    "text.autoconfig.minecart-trains-fork-client.option.headParticleHeight": "    Height of Head Particle",
-    "text.autoconfig.minecart-trains-fork-client.option.headParticleCycle": "    Custom Head Particle Interval",
+    "text.autoconfig.minecart-trains-fork-client.option.lineWidth": "    Link Line Width",
 
-    "text.autoconfig.minecart-trains-fork-client.option.linkParticleType.@PrefixText": "Link Particle",
-    "text.autoconfig.minecart-trains-fork-client.option.linkParticleType": "    Selected Custom Link Particle",
-    "text.autoconfig.minecart-trains-fork-client.option.linkParticleHeight": "    Height of Link Particle",
-    "text.autoconfig.minecart-trains-fork-client.option.linkParticleCycle": "    Custom Link Particle Interval"
+    "text.autoconfig.minecart-trains-fork-client.option.alwaysRenderHeadParticle.@PrefixText": "Head Particles",
+
+    "text.autoconfig.minecart-trains-fork-client.option.alwaysRenderHeadParticle": "    Always Render Head Particles",
+    "text.autoconfig.minecart-trains-fork-client.option.headParticleType": "    Type of Head Cart Particle",
+    "text.autoconfig.minecart-trains-fork-client.option.headParticleNumber": "    Number of Head Particles",
+    "text.autoconfig.minecart-trains-fork-client.option.headParticleHeight": "    Head Particle Height",
+    "text.autoconfig.minecart-trains-fork-client.option.headParticleCycle": "    Head Particle Interval",
+
+    "text.autoconfig.minecart-trains-fork-client.option.linkParticleType.@PrefixText": "Link Particles",
+
+    "text.autoconfig.minecart-trains-fork-client.option.linkParticleType": "    Type of Link Particle",
+    "text.autoconfig.minecart-trains-fork-client.option.linkParticleHeight": "    Link Particle Height",
+    "text.autoconfig.minecart-trains-fork-client.option.linkParticleCycle": "    Link Particle Interval"
 }
