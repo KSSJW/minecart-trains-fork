@@ -27,7 +27,7 @@ public class TrainManager {
                     if (distance > cartSpacing) {
                         Vec3 parentVelocity = entityIChainable.getChainedParent().getDeltaMovement();
 
-                        if (parentVelocity.length() == 0) {
+                        if (parentVelocity.length() < 0.1) {
                             entity.setDeltaMovement(directionToParent.scale(0.05));
                         } else {
                             entity.setDeltaMovement(directionToParent.scale(parentVelocity.length()));
