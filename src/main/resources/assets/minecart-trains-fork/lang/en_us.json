@@ -24,8 +24,7 @@
 
     "text.autoconfig.minecart-trains-fork-server.option.brakingAfterTrainSeparation": "    Braking After Train Separation",
     "text.autoconfig.minecart-trains-fork-server.option.cartSpacing": "    Cart Spacing",
-    "text.autoconfig.minecart-trains-fork-server.option.cartSpacing.@Tooltip[0]": "Note: This value will be divided by 10.",
-    "text.autoconfig.minecart-trains-fork-server.option.cartSpacing.@Tooltip[1]": "Example: 5 -> 0.5",
+    "text.autoconfig.minecart-trains-fork-server.option.cartSpacing.@Tooltip[0]": "Example: 5 -> 0.5 Blocks",
 
     "text.autoconfig.minecart-trains-fork-client.title": "Minecart Trains Fork Configuration (Client)",
 
