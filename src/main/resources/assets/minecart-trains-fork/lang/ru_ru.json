@@ -39,6 +39,8 @@
 
     "text.autoconfig.minecart-trains-fork-client.option.enabledHeadParticle": "    Показывать Стандартные Частицы От Ведущей Вагонетки",
 
+    "text.autoconfig.minecart-trains-fork-client.option.lineWidth.@PrefixText": "Связующая Цепь",
+
     "text.autoconfig.minecart-trains-fork-client.option.enabledLinkParticle.@PrefixText": "Частицы Над Местом Сцепки",
 
     "text.autoconfig.minecart-trains-fork-client.option.enabledLinkParticle": "    Показывать Стандартные Частицы Над Местом Сцепки",
