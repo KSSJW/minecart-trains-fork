@@ -27,7 +27,7 @@ public class TrainManager {
                     if (distance > cartSpacing) {
                         Vec3 parentVelocity = entityIChainable.getChainedParent().getDeltaMovement();
 
-                        if (parentVelocity.length() == 0) {
+                        if (parentVelocity.length() < 0.1) {
                             entity.setDeltaMovement(directionToParent.scale(0.05));
                         } else {
                             entity.setDeltaMovement(directionToParent.scale(parentVelocity.length()));
@@ -77,7 +77,7 @@ public class TrainManager {
                 NetworkManager.sendRelationshipPayload(null, childCart.getUUID(), entity.level());
             }
 
-            for (Entity otherEntity : entity.level().getEntities(entity, entity.getBoundingBox().inflate(0.1), entity::canCollideWith)) {
+            for (Entity otherEntity : entity.level().getEntities(entity, entity.getBoundingBox().inflate(0.1))) {
 
                 if (
                     otherEntity instanceof AbstractMinecart otherCart

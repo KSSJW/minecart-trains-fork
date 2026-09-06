@@ -27,15 +27,20 @@ public class MinecartTrainsForkClient implements ClientModInitializer {
                         UUID childUUID = payload.childUUID();
                         UUID parentUUID = payload.parentUUID();
 
-                        IChainableUtil childChainableUtil = (IChainableUtil) clientWorld.getEntity(childUUID);
-                        IChainableUtil parentChainableUtil = (IChainableUtil) clientWorld.getEntity(parentUUID);
+                        if (childUUID != null) {
+                            IChainableUtil childChainableUtil = (IChainableUtil) clientWorld.getEntity(childUUID);
 
-                        if (childChainableUtil != null) {
-                            childChainableUtil.setParentUUID(parentUUID);
+                            if (childChainableUtil != null) {
+                                childChainableUtil.setParentUUID(parentUUID);
+                            }
                         }
 
-                        if (parentChainableUtil != null) {
-                            parentChainableUtil.setChildUUID(childUUID);
+                        if (parentUUID != null) {
+                            IChainableUtil parentChainableUtil = (IChainableUtil) clientWorld.getEntity(parentUUID);
+
+                            if (parentChainableUtil != null) {
+                                parentChainableUtil.setChildUUID(childUUID);
+                            }
                         }
                     }
                 });

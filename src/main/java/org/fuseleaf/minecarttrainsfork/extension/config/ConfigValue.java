@@ -12,7 +12,7 @@ public class ConfigValue implements ConfigData {
     public boolean brakingAfterTrainSeparation = true;
 
     @ConfigEntry.Category("general")
-    @ConfigEntry.Gui.Tooltip(count = 2)
+    @ConfigEntry.Gui.Tooltip
     @ConfigEntry.BoundedDiscrete(min = 3, max = 10)
     public int cartSpacing = 5;
 }

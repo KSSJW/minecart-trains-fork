@@ -17,6 +17,7 @@ public class MinecartTrainsFork implements ModInitializer {
 
     public static final String MOD_ID = "minecart-trains-fork";
 
+    @SuppressWarnings("null")
     @Override
     public void onInitialize() {
         LoadManager.init();
